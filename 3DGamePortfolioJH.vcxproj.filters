@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\Common">
+      <UniqueIdentifier>{754f7cb8-cde9-4302-a2b3-bcb7d8fc152e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics">
+      <UniqueIdentifier>{baa5cf56-d697-48e9-8077-a2f0b9520144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources">
+      <UniqueIdentifier>{bb9f0b26-a9a2-47fc-9859-3931cab3f09a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Include">
+      <UniqueIdentifier>{98e93c22-e778-410f-8424-eaa323f78d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\ShaderFiles">
+      <UniqueIdentifier>{ad8bb748-3c24-43bf-b0f1-469807e4826e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\HighLevelApp">
+      <UniqueIdentifier>{933196f1-f809-45fd-979c-7b0b775db596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject">
+      <UniqueIdentifier>{c83d9557-2244-432e-b744-4a6d09295f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Common\Entity">
+      <UniqueIdentifier>{c8ca2d52-d73d-4285-b24f-ba65ba6666da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component">
+      <UniqueIdentifier>{fbab8bea-8b47-43fe-8dc9-3a61f2eaf3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Transform">
+      <UniqueIdentifier>{5aa34789-8ac5-4d9b-bd2f-c1a170ad2bdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Base">
+      <UniqueIdentifier>{7dfa48d2-fc75-4ff8-97ac-4b1d2de7d550}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\ConstantGPUBuffer">
+      <UniqueIdentifier>{34c79f16-6134-4823-8ab0-a164ebbf3474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Camera">
+      <UniqueIdentifier>{60d6d1e5-7765-4582-a1a9-a241a5079504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Script">
+      <UniqueIdentifier>{b09a227b-b61a-4876-93d1-149da2792a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Script\Base">
+      <UniqueIdentifier>{1ccc3e82-b801-46a9-a976-d6a753f97f0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Script\CameraScript">
+      <UniqueIdentifier>{4a3a0176-cbf9-4227-89a4-cc75c95f1107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers">
+      <UniqueIdentifier>{05653f17-b2c5-4b5a-8fa4-c83c3f8dac47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers\Time">
+      <UniqueIdentifier>{2308b127-db72-47ce-bac2-5c26d2f50cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers\InputManager">
+      <UniqueIdentifier>{2588c791-58cf-4ca7-8dc9-5eedda992534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Renderer">
+      <UniqueIdentifier>{5daeeb0b-93d8-403c-b404-65df68f7c3e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Renderer\Base">
+      <UniqueIdentifier>{cd29182f-6e5a-4859-ab27-8c85abcc26c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Renderer\MeshRenderer">
+      <UniqueIdentifier>{803dbc93-5086-4d74-8b25-4c850d88f5b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Script\MovingScript">
+      <UniqueIdentifier>{fa4c74b7-117d-4f9f-8f6d-cb17626625f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Scene">
+      <UniqueIdentifier>{7940cca3-936f-4fc8-8799-0a7a7eb6534f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Scene\Base">
+      <UniqueIdentifier>{3057baf0-680f-49d4-a9a2-310569fbbdeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Scene\Layer">
+      <UniqueIdentifier>{ed2925cc-fc94-4a1c-827d-e4cedd2a62ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers\SceneManager">
+      <UniqueIdentifier>{5d010daa-a9ab-4e42-8d08-257965a8113f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources\Mesh">
+      <UniqueIdentifier>{325287e1-8742-4079-91da-b083ba06e421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources\Texture">
+      <UniqueIdentifier>{218f2e41-cfd3-4432-8185-bbae33820598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources\Base">
+      <UniqueIdentifier>{be0005e7-d23f-4edf-b3bd-70d8f2a9cc0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources\Base\Resource">
+      <UniqueIdentifier>{e5c7c9a7-68f0-42d4-9992-8ff64f17381d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources\Material">
+      <UniqueIdentifier>{6557a3a1-3726-4873-8775-d206c14a1742}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\ResourcesManager">
+      <UniqueIdentifier>{e4be4a80-f296-4073-8435-692ecf6e321a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\GrapicsKeyContainer">
+      <UniqueIdentifier>{a9080398-e348-4911-bcf7-aa97ea711d11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\RigidBody2D">
+      <UniqueIdentifier>{a6be7372-8803-4654-84c1-b2c81fcb2e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\BoxCollider2D">
+      <UniqueIdentifier>{59c956ce-88c2-4c6a-a5cc-c507d234513f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers\Box2D">
+      <UniqueIdentifier>{39f7e041-a4ab-46d3-beb4-6f2b2742bfb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources\DebugMesh">
+      <UniqueIdentifier>{1ad9c0af-3db6-47d4-a6e3-df43f186e5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources\Animation">
+      <UniqueIdentifier>{957ad59f-97fe-420a-ab37-e1bf7017d58b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Animator">
+      <UniqueIdentifier>{e064d127-c9b1-4daf-b2ad-6bf0a4963a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Base">
+      <UniqueIdentifier>{7e0b53a7-3e41-47fc-b8e3-176e61d04a5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Contents">
+      <UniqueIdentifier>{b6fbc749-64ed-4dc0-a432-498b4020dd4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Contents\MoveableGameObject">
+      <UniqueIdentifier>{29731517-685d-4f55-815f-817fc7bde822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Contents\MoveableGameObject\Base">
+      <UniqueIdentifier>{5fa2fb15-13a0-45b1-8ab3-17bad7c9c56d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Contents\MoveableGameObject\Player">
+      <UniqueIdentifier>{4fec157e-d4a9-4cec-a676-56444061d200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\FSM">
+      <UniqueIdentifier>{641bbd44-2b2d-4558-be20-f3e79bf873b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\FSM\Base">
+      <UniqueIdentifier>{e41ae2f1-1f02-446a-8a9a-dcf039b546e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\FSM\PlayerStateMachine">
+      <UniqueIdentifier>{1267fb1c-760c-40c3-a9a1-f71f6c58af0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Script\Player">
+      <UniqueIdentifier>{e277edef-2ff2-4c00-94c7-047a51f21d68}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="2DGamePortfolio.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>소스 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>소스 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicDeviceDX11.h">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicPSO.h">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsPSOManager.h">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DUtills.h">
+      <Filter>소스 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GeomatryGenerator.h">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsCommon.h">
+      <Filter>소스 파일\Graphics\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsDatas.h">
+      <Filter>소스 파일\Graphics\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DApp.h">
+      <Filter>소스 파일\HighLevelApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>소스 파일\Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>소스 파일\Component\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>소스 파일\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="UtillFunc.h">
+      <Filter>소스 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantGPUBuffer.h">
+      <Filter>소스 파일\Graphics\ConstantGPUBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>소스 파일\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>소스 파일\Component\Script\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraScript.h">
+      <Filter>소스 파일\Component\Script\CameraScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>소스 파일\Managers\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>소스 파일\Managers\InputManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>소스 파일\Component\Renderer\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>소스 파일\Component\Renderer\MeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingScript.h">
+      <Filter>소스 파일\Component\Script\MovingScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>소스 파일\Scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
+      <Filter>소스 파일\Scene\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>소스 파일\Managers\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>소스 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>소스 파일\Graphics\Resources\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicResource.h">
+      <Filter>소스 파일\Graphics\Resources\Base\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>소스 파일\Graphics\Resources\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesManager.h">
+      <Filter>소스 파일\Graphics\ResourcesManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsKeyContainer.h">
+      <Filter>소스 파일\Graphics\GrapicsKeyContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody2D.h">
+      <Filter>소스 파일\Component\RigidBody2D</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider2D.h">
+      <Filter>소스 파일\Component\BoxCollider2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Box2DPhysicsManager.h">
+      <Filter>소스 파일\Managers\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Box2DDebugDrawManager.h">
+      <Filter>소스 파일\Managers\Box2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Box2DebugMesh.h">
+      <Filter>소스 파일\Graphics\Resources\DebugMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>소스 파일\Graphics\Resources\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>소스 파일\Component\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>소스 파일\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveableGameObject.h">
+      <Filter>소스 파일\GameObject\Contents\MoveableGameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>소스 파일\GameObject\Contents\MoveableGameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>소스 파일\FSM\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>소스 파일\FSM\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>소스 파일\FSM\PlayerStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerScript.h">
+      <Filter>소스 파일\Component\Script\Player</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="2DGamePortfolio.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicDeviceDX11.cpp">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicPSO.cpp">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsPSOManager.cpp">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DUtills.cpp">
+      <Filter>소스 파일\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GeomatryGenerator.cpp">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DApp.cpp">
+      <Filter>소스 파일\HighLevelApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>소스 파일\Common\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>소스 파일\Component\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>소스 파일\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantGPUBuffer.cpp">
+      <Filter>소스 파일\Graphics\ConstantGPUBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>소스 파일\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>소스 파일\Component\Script\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraScript.cpp">
+      <Filter>소스 파일\Component\Script\CameraScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>소스 파일\Managers\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>소스 파일\Managers\InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>소스 파일\Component\Renderer\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>소스 파일\Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="MovingScript.cpp">
+      <Filter>소스 파일\Component\Script\MovingScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>소스 파일\Scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>소스 파일\Scene\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>소스 파일\Managers\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>소스 파일\Graphics\Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicResource.cpp">
+      <Filter>소스 파일\Graphics\Resources\Base\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>소스 파일\Graphics\Resources\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesManager.cpp">
+      <Filter>소스 파일\Graphics\ResourcesManager</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody2D.cpp">
+      <Filter>소스 파일\Component\RigidBody2D</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider2D.cpp">
+      <Filter>소스 파일\Component\BoxCollider2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Box2DPhysicsManager.cpp">
+      <Filter>소스 파일\Managers\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Box2DDebugDrawManager.cpp">
+      <Filter>소스 파일\Managers\Box2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Box2DebugMesh.cpp">
+      <Filter>소스 파일\Graphics\Resources\DebugMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>소스 파일\Graphics\Resources\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>소스 파일\Component\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>소스 파일\GameObject\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveableGameObject.cpp">
+      <Filter>소스 파일\GameObject\Contents\MoveableGameObject\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일\GameObject\Contents\MoveableGameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerScript.cpp">
+      <Filter>소스 파일\Component\Script\Player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="2DGamePortfolio.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="2DGamePortfolio.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Basic2DVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="Basic2DPS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugBox2DVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugBox2DPS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>
