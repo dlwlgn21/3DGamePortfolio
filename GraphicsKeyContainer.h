@@ -3,9 +3,6 @@
 
 namespace jh::graphics::keys
 {
-	
-	static const std::string BASIC_2D_MATERIAL_KEY = "a";
-	static const std::string BASIC_2D_DIFFUISE_TEXTURE_KEY = "b";
-	static const std::string PLAYER_SPRITE_SHEET_TEXTURE_KEY = "c";
-
+	static const std::string BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY = "t1";
+	static const std::string BASIC_3D_MATERIAL_KEY = "a";
 }

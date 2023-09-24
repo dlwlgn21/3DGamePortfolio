@@ -75,9 +75,6 @@
     <Filter Include="소스 파일\Component\Renderer\MeshRenderer">
       <UniqueIdentifier>{803dbc93-5086-4d74-8b25-4c850d88f5b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Component\Script\MovingScript">
-      <UniqueIdentifier>{fa4c74b7-117d-4f9f-8f6d-cb17626625f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\Scene">
       <UniqueIdentifier>{7940cca3-936f-4fc8-8799-0a7a7eb6534f}</UniqueIdentifier>
     </Filter>
@@ -111,24 +108,6 @@
     <Filter Include="소스 파일\Graphics\GrapicsKeyContainer">
       <UniqueIdentifier>{a9080398-e348-4911-bcf7-aa97ea711d11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Component\RigidBody2D">
-      <UniqueIdentifier>{a6be7372-8803-4654-84c1-b2c81fcb2e4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Component\BoxCollider2D">
-      <UniqueIdentifier>{59c956ce-88c2-4c6a-a5cc-c507d234513f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Managers\Box2D">
-      <UniqueIdentifier>{39f7e041-a4ab-46d3-beb4-6f2b2742bfb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Graphics\Resources\DebugMesh">
-      <UniqueIdentifier>{1ad9c0af-3db6-47d4-a6e3-df43f186e5df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Graphics\Resources\Animation">
-      <UniqueIdentifier>{957ad59f-97fe-420a-ab37-e1bf7017d58b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Component\Animator">
-      <UniqueIdentifier>{e064d127-c9b1-4daf-b2ad-6bf0a4963a06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\GameObject\Base">
       <UniqueIdentifier>{7e0b53a7-3e41-47fc-b8e3-176e61d04a5c}</UniqueIdentifier>
     </Filter>
@@ -141,9 +120,6 @@
     <Filter Include="소스 파일\GameObject\Contents\MoveableGameObject\Base">
       <UniqueIdentifier>{5fa2fb15-13a0-45b1-8ab3-17bad7c9c56d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\GameObject\Contents\MoveableGameObject\Player">
-      <UniqueIdentifier>{4fec157e-d4a9-4cec-a676-56444061d200}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\FSM">
       <UniqueIdentifier>{641bbd44-2b2d-4558-be20-f3e79bf873b1}</UniqueIdentifier>
     </Filter>
@@ -153,8 +129,14 @@
     <Filter Include="소스 파일\FSM\PlayerStateMachine">
       <UniqueIdentifier>{1267fb1c-760c-40c3-a9a1-f71f6c58af0f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Component\Script\Player">
-      <UniqueIdentifier>{e277edef-2ff2-4c00-94c7-047a51f21d68}</UniqueIdentifier>
+    <Filter Include="소스 파일\Managers\LightingManager">
+      <UniqueIdentifier>{a51e9627-4440-4173-b916-08bee0de4b27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Light">
+      <UniqueIdentifier>{6b37f949-c182-4a0d-a8e6-8b715d8e747f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers\CameraManager">
+      <UniqueIdentifier>{a0ca6842-7304-4691-8c5e-346daaa379a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +159,6 @@
       <Filter>소스 파일\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="GraphicPSO.h">
-      <Filter>소스 파일\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsPSOManager.h">
       <Filter>소스 파일\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="D3DUtills.h">
@@ -233,9 +212,6 @@
     <ClInclude Include="MeshRenderer.h">
       <Filter>소스 파일\Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="MovingScript.h">
-      <Filter>소스 파일\Component\Script\MovingScript</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>소스 파일\Scene\Base</Filter>
     </ClInclude>
@@ -269,35 +245,11 @@
     <ClInclude Include="GraphicsKeyContainer.h">
       <Filter>소스 파일\Graphics\GrapicsKeyContainer</Filter>
     </ClInclude>
-    <ClInclude Include="RigidBody2D.h">
-      <Filter>소스 파일\Component\RigidBody2D</Filter>
-    </ClInclude>
-    <ClInclude Include="BoxCollider2D.h">
-      <Filter>소스 파일\Component\BoxCollider2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Box2DPhysicsManager.h">
-      <Filter>소스 파일\Managers\Box2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Box2DDebugDrawManager.h">
-      <Filter>소스 파일\Managers\Box2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Box2DebugMesh.h">
-      <Filter>소스 파일\Graphics\Resources\DebugMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>소스 파일\Graphics\Resources\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Animator.h">
-      <Filter>소스 파일\Component\Animator</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>소스 파일\GameObject\Base</Filter>
     </ClInclude>
     <ClInclude Include="MoveableGameObject.h">
       <Filter>소스 파일\GameObject\Contents\MoveableGameObject\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>소스 파일\GameObject\Contents\MoveableGameObject\Player</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>소스 파일\FSM\Base</Filter>
@@ -308,8 +260,17 @@
     <ClInclude Include="PlayerState.h">
       <Filter>소스 파일\FSM\PlayerStateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerScript.h">
-      <Filter>소스 파일\Component\Script\Player</Filter>
+    <ClInclude Include="LightingManager.h">
+      <Filter>소스 파일\Managers\LightingManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>소스 파일\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>소스 파일\Managers\CameraManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsPSOManager.h">
+      <Filter>소스 파일\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,9 +328,6 @@
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>소스 파일\Component\Renderer\MeshRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="MovingScript.cpp">
-      <Filter>소스 파일\Component\Script\MovingScript</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>소스 파일\Scene\Base</Filter>
     </ClCompile>
@@ -397,38 +355,20 @@
     <ClCompile Include="ResourcesManager.cpp">
       <Filter>소스 파일\Graphics\ResourcesManager</Filter>
     </ClCompile>
-    <ClCompile Include="RigidBody2D.cpp">
-      <Filter>소스 파일\Component\RigidBody2D</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxCollider2D.cpp">
-      <Filter>소스 파일\Component\BoxCollider2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Box2DPhysicsManager.cpp">
-      <Filter>소스 파일\Managers\Box2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Box2DDebugDrawManager.cpp">
-      <Filter>소스 파일\Managers\Box2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Box2DebugMesh.cpp">
-      <Filter>소스 파일\Graphics\Resources\DebugMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>소스 파일\Graphics\Resources\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Animator.cpp">
-      <Filter>소스 파일\Component\Animator</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>소스 파일\GameObject\Base</Filter>
     </ClCompile>
     <ClCompile Include="MoveableGameObject.cpp">
       <Filter>소스 파일\GameObject\Contents\MoveableGameObject\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>소스 파일\GameObject\Contents\MoveableGameObject\Player</Filter>
+    <ClCompile Include="LightingManager.cpp">
+      <Filter>소스 파일\Managers\LightingManager</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerScript.cpp">
-      <Filter>소스 파일\Component\Script\Player</Filter>
+    <ClCompile Include="Light.cpp">
+      <Filter>소스 파일\Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>소스 파일\Managers\CameraManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -445,10 +385,10 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Basic2DVS.hlsl">
+    <FxCompile Include="Basic3DVS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="Basic2DPS.hlsl">
+    <FxCompile Include="Basic3DPS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="DebugBox2DVS.hlsl">
@@ -457,5 +397,16 @@
     <FxCompile Include="DebugBox2DPS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="DebugNormalVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugNormalPS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VSCommon.hlsli">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

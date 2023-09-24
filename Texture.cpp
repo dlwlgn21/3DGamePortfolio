@@ -46,11 +46,14 @@ namespace jh::graphics
 		auto& gdc = GraphicDeviceDX11::GetInstance().GetDeivceContext();
 		switch (meType)
 		{
-		case eTextureType::NON_ANIMATION_TEXTURE:
+		case eTextureType::DIFFUSE:
 			gdc.PSSetShaderResources(0, 1, mcpSRV.GetAddressOf());
 			break;
-		case eTextureType::SPRITE_SHHET_TEXTURE:
+		case eTextureType::SPECULAR:
 			gdc.PSSetShaderResources(1, 1, mcpSRV.GetAddressOf());
+			break;
+		case eTextureType::AMBIENT:
+			gdc.PSSetShaderResources(2, 1, mcpSRV.GetAddressOf());
 			break;
 		default:
 			assert(false);

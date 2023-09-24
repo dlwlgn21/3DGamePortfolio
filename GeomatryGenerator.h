@@ -17,6 +17,8 @@ namespace jh::graphics
 
 		std::vector<Vertex2D> GetTriangle();
 		std::vector<Vertex2D> GetSquare();
+		void MakeBox(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices);
+		void MakeSphere(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float radius, const int numSlices, const int numStacks);
 
 	private:
 		GeomatryGenerator() = default;

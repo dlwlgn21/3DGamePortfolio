@@ -42,7 +42,11 @@ void Transform::UpdateConstantBuffer()
 	graphics::TransformConstantCPUBuffer cpuBuffer;
 	ZeroMemory(&cpuBuffer, sizeof(graphics::TransformConstantCPUBuffer));
 	cpuBuffer.WorldMat = mWolrdMatRow.Transpose();
-	cpuBuffer.WolrdInvTransposedMat = mWolrdMatRow.Invert().Transpose();
+
+	cpuBuffer.WolrdInvTransposedMat = cpuBuffer.WorldMat;
+	cpuBuffer.WolrdInvTransposedMat.Translation(Vector3(0.0f));
+	cpuBuffer.WolrdInvTransposedMat = cpuBuffer.WolrdInvTransposedMat.Transpose().Invert();
+	
 	cpuBuffer.ViewMat = Camera::GetGpuViewMatrixRow().Transpose();
 	cpuBuffer.ProjectionMat = Camera::GetGpuProjectionMatrixRow().Transpose();
 	gpuBuffer.UpdateBuffer(&cpuBuffer);

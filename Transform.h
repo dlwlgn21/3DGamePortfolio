@@ -21,7 +21,7 @@ namespace jh
 		//void SetParent(GameObject* pGameObject) { assert(pGameObject != nullptr); mpParent = pGameObject->GetTransform(); }
 
 		__forceinline DirectX::SimpleMath::Vector3 GetPosition() const { return mPosition; }
-		__forceinline DirectX::SimpleMath::Vector3 GetRotation() const { return mRotation; }
+		__forceinline DirectX::SimpleMath::Vector3 GetRotation() { return mRotation; }
 		__forceinline DirectX::SimpleMath::Vector3 GetScale() const { return mScale; }
 
 		__forceinline float GetOnlyXPosition() const { return mPosition.x; }
@@ -35,6 +35,8 @@ namespace jh
 		const DirectX::SimpleMath::Matrix& GetWorldMatrix()			{ return mWolrdMatRow; }
 
 		void UpdateConstantBuffer();
+
+		DirectX::SimpleMath::Vector3& GetRotationRef() { return mRotation; }
 
 	private:
 		DirectX::SimpleMath::Vector3		mForwardVector;

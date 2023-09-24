@@ -4,7 +4,9 @@
 #include "Time.h"
 #include "InputManager.h"
 #include "SceneManager.h"
-#include "Box2DPhysicsManager.h"
+#include "LightingManager.h"
+#include "CameraManager.h"
+
 #include "Scene.h"
 
 #include <imgui_impl_dx11.h>
@@ -22,7 +24,6 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	return D3DApp::GetInstance().MsgProc(hWnd, msg, wParam, lParam);
 }
 
-
 const bool D3DApp::Initialize()
 {
 	if (!initializeWindow())
@@ -35,8 +36,8 @@ const bool D3DApp::Initialize()
 	GraphicsPSOManager::GetInstance().Initialize();
 	InputManager::Initialize();
 	Time::Initialize();
-	Box2DManager::GetInstance().Initialize();
 	SceneManager::GetInstance().Initialize();
+	LightingManager::GetInstance().Initialize();
 	if (!initGUI())
 	{
 		assert(false);
@@ -138,12 +139,18 @@ void D3DApp::update()
 void D3DApp::fixedUpdate()
 {
 	SceneManager::GetInstance().FixedUpdate();
-	Box2DManager::GetInstance().FixedUpdate();
+	LightingManager::GetInstance().FixedUpdate();
 }
 
 void D3DApp::updateGUI()
 {
-
+	auto& camera = CameraManager::GetInstance();
+	ImGui::Checkbox("IsUseTexture", LightingManager::GetInstance().GetIsUseTexture());
+	ImGui::Checkbox("IsDrawWireFrame", &mbIsDrawWire);
+	ImGui::Checkbox("IsDrawNormal", &mbIsDrawNormal);
+	ImGui::SliderFloat("Camera Pitch", &camera.GetRotation().x, 0.0f, 360.0f);
+	ImGui::SliderFloat("Camera Roll", &camera.GetRotation().z, 0.0f, 360.0f);
+	ImGui::SliderFloat("Camera Yaw", &camera.GetRotation().y, 0.0f, 360.0f);
 }
 
 void D3DApp::render()
@@ -153,7 +160,6 @@ void D3DApp::render()
 	auto& gd = GraphicDeviceDX11::GetInstance();
 	gd.Clear();
 	SceneManager::GetInstance().Render();
-	Box2DManager::GetInstance().Render();
 }
 
 const bool D3DApp::initializeWindow()
@@ -240,7 +246,6 @@ const bool D3DApp::initGUI()
 D3DApp::~D3DApp()
 {
 	SceneManager::GetInstance().Release();
-	Box2DManager::GetInstance().Release();
 	GraphicsPSOManager::GetInstance().Release();
 	//ImGui_ImplDX11_Shutdown();
 	//ImGui_ImplWin32_Shutdown();

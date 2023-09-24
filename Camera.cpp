@@ -36,7 +36,7 @@ namespace jh
 	void Camera::createViewMatrix()
 	{
 		auto& transform = GetOwner().GetTransform();
-		mViewMatRow = DirectX::XMMatrixLookToLH(
+		mViewMatRow = DirectX::XMMatrixLookAtLH(
 			transform.GetPosition(),
 			-transform.GetForward(),
 			transform.GetUp()

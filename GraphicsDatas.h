@@ -1,10 +1,10 @@
 #pragma once
 #include <directxtk/SimpleMath.h>
 
+static constexpr const UINT MAX_LIGHTS = 3;
 static constexpr const UINT SIMD_ALIGN_SIZE = 16;
 static constexpr const UINT TRANSFORM_CONSTANT_BUFFER_SLOT = 0;
-static constexpr const UINT ANIMATION_CONSTANT_BUFFER_SLOT = 1;
-static constexpr const UINT DEBUG_TRANSFORM_CONSTANT_BUFFER_SLOT = 0;
+static constexpr const UINT LIGHTING_CONSTANT_BUFFER_SLOT = 1;
 
 namespace jh::graphics
 {
@@ -16,18 +16,27 @@ namespace jh::graphics
 
 	struct Vertex3D
 	{
-		DirectX::SimpleMath::Vector4 Pos;
-		DirectX::SimpleMath::Vector4 Color;
-		DirectX::SimpleMath::Vector2 UV;
-		DirectX::SimpleMath::Vector3 Tangent;
-		DirectX::SimpleMath::Vector3 Binormal;
+		DirectX::SimpleMath::Vector3 Pos;
 		DirectX::SimpleMath::Vector3 Normal;
+		DirectX::SimpleMath::Vector2 UV;
 	};
 
-	struct Box2DVertex
+	struct alignas(SIMD_ALIGN_SIZE) GrapicsMaterial
 	{
-		DirectX::SimpleMath::Vector3 Pos;
-		DirectX::SimpleMath::Vector3 Color;
+		DirectX::SimpleMath::Vector3  MaterialAmbient;
+		float						  MaterialShininess;
+		DirectX::SimpleMath::Vector4  MaterialDiffuse;
+		DirectX::SimpleMath::Vector4  MaterialSpecular;
+	};
+
+	struct alignas(SIMD_ALIGN_SIZE) GrapicsLight
+	{
+		DirectX::SimpleMath::Vector3	LightStrengh;
+		DirectX::SimpleMath::Vector3	LightDirection;
+		DirectX::SimpleMath::Vector3	LightPosition;
+		float							LightFallOffStart;
+		float							LightFallOffEnd;
+		float							LightSpotPower;
 	};
 
 	struct alignas(SIMD_ALIGN_SIZE) TransformConstantCPUBuffer
@@ -38,26 +47,18 @@ namespace jh::graphics
 		DirectX::SimpleMath::Matrix ProjectionMat;
 	};
 
-	struct alignas(SIMD_ALIGN_SIZE) DebugTransformConstantCPUBuffer
+	struct alignas(SIMD_ALIGN_SIZE) LighthingConstantCPUBuffer
 	{
-		DirectX::SimpleMath::Matrix ViewMat;
-		DirectX::SimpleMath::Matrix ProjectionMat;
-	};
-
-	struct alignas(SIMD_ALIGN_SIZE) AnimationConstantCPUBuffer
-	{
-		DirectX::SimpleMath::Vector2 LeftTop;
-		DirectX::SimpleMath::Vector2 Size;
-		DirectX::SimpleMath::Vector2 Offset;
-		DirectX::SimpleMath::Vector2 AtlasImageSize;
-		UINT						 IsFlip = 0;
+		DirectX::SimpleMath::Vector4	CBEyeWorld;
+		int								CBIsUseTexture;
+		GrapicsMaterial					CBMaterial;
+		GrapicsLight					CBLight[MAX_LIGHTS];
 	};
 
 	enum class eCBType
 	{
 		TRANSFORM,
-		DEBUG_TRANSFORM,
-		ANIMATION,
+		LIGHTING,
 		COUNT
 	};
 
@@ -74,8 +75,9 @@ namespace jh::graphics
 
 	enum class eTextureType
 	{
-		NON_ANIMATION_TEXTURE,
-		SPRITE_SHHET_TEXTURE,
+		DIFFUSE,
+		AMBIENT,
+		SPECULAR,
 		COUNT
 	};
 }

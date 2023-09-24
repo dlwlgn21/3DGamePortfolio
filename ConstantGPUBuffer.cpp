@@ -58,14 +58,9 @@ void ConstantGPUBuffer::UpdateBuffer(void* pData)
 		context.VSSetConstantBuffers(TRANSFORM_CONSTANT_BUFFER_SLOT, 1, mcpGPUBuffer.GetAddressOf());
 		break;
 	}
-	case jh::graphics::eCBType::DEBUG_TRANSFORM:
+	case jh::graphics::eCBType::LIGHTING:
 	{
-		context.VSSetConstantBuffers(DEBUG_TRANSFORM_CONSTANT_BUFFER_SLOT, 1, mcpGPUBuffer.GetAddressOf());
-		break;
-	}
-	case jh::graphics::eCBType::ANIMATION:
-	{
-		context.PSSetConstantBuffers(ANIMATION_CONSTANT_BUFFER_SLOT, 1, mcpGPUBuffer.GetAddressOf());
+		context.PSSetConstantBuffers(LIGHTING_CONSTANT_BUFFER_SLOT, 1, mcpGPUBuffer.GetAddressOf());
 		break;
 	}
 	default:

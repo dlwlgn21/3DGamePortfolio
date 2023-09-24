@@ -1,5 +1,5 @@
 #include "Mesh.h"
-#include "GraphicDeviceDX11.h"
+#include "GraphicsPSOManager.h"
 
 using namespace jh::enums;
 
@@ -7,10 +7,6 @@ namespace jh::graphics
 {
 	Mesh::Mesh()
 		: GraphicResource(eResourceType::MESH)
-		, mcpVertexBuffer()
-		, mcpIndexBuffer()
-		, mStride(0)
-		, mIndexCount(0)
 	{
 
 	}
@@ -19,37 +15,8 @@ namespace jh::graphics
 	{
 		mcpIndexBuffer.Reset();
 		mcpVertexBuffer.Reset();
-	}
-
-	void Mesh::InitVertexIndexBuffer(D3D11_BUFFER_DESC& VBDesc, void* pVertexInitData, UINT stride, D3D11_BUFFER_DESC& IBDesc, void* pIndexInitData, UINT indexCount)
-	{
-		auto& gd = GraphicDeviceDX11::GetInstance().GetDeivce();
-		mStride = stride;
-		mIndexCount = indexCount;
-		D3D11_SUBRESOURCE_DATA subData = {};
-		subData.pSysMem = pVertexInitData;
-		HRESULT hr = gd.CreateBuffer(
-			&VBDesc,
-			&subData,
-			mcpVertexBuffer.ReleaseAndGetAddressOf()
-		);
-		if (FAILED(hr))
-		{
-			assert(false);
-			return;
-		}
-		ZeroMemory(&subData, sizeof(D3D11_SUBRESOURCE_DATA));
-		subData.pSysMem = pIndexInitData;
-		hr = gd.CreateBuffer(
-			&IBDesc,
-			&subData,
-			mcpIndexBuffer.ReleaseAndGetAddressOf()
-		);
-		if (FAILED(hr))
-		{
-			assert(false);
-			return;
-		}
+		mcpDebugNormalIndexBuffer.Reset();
+		mcpDebugNormalVertexBuffer.Reset();
 	}
 
 	void Mesh::Render()
@@ -70,6 +37,32 @@ namespace jh::graphics
 			0
 		);
 		gdc.DrawIndexed(mIndexCount, 0, 0);
+	}
+
+	void Mesh::DebugNormalRender()
+	{
+		assert(mStride != 0);
+		auto& gdc = GraphicDeviceDX11::GetInstance().GetDeivceContext();
+		auto& PSO = GraphicsPSOManager::GetInstance().mDebugDrawNormalPSO;
+
+		gdc.IASetPrimitiveTopology(PSO.mPrimitiveTopology);
+		gdc.RSSetState(PSO.mcpRS.Get());
+		gdc.VSSetShader(PSO.mcpVertexShader.Get(), nullptr, 0);
+		gdc.PSSetShader(PSO.mcpPixelShader.Get(), nullptr, 0);
+		UINT offset = 0;
+		gdc.IASetVertexBuffers(
+			0,
+			1,
+			mcpDebugNormalVertexBuffer.GetAddressOf(),
+			&mStride,
+			&offset
+		);
+		gdc.IASetIndexBuffer(
+			mcpDebugNormalIndexBuffer.Get(),
+			DXGI_FORMAT::DXGI_FORMAT_R32_UINT,
+			0
+		);
+		gdc.DrawIndexed(mDebugNormalIndexCount, 0, 0);
 	}
 
 }

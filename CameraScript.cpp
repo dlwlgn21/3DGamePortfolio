@@ -12,7 +12,7 @@ namespace jh
 
 CameraScript::CameraScript()
 	: Script()
-	, mMovementSpeed(3.0f)
+	, mMovementSpeed(15.0f)
 {
 }
 

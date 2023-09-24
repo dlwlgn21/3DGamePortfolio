@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "GraphicDeviceDX11.h"
+#include "D3DApp.h"
+
 
 using namespace jh::enums;
 using namespace jh::graphics;
@@ -21,6 +23,10 @@ void MeshRenderer::Render()
 	GetOwner().GetTransform().UpdateConstantBuffer();
 	mpMaterial->SetPipeline();
 	mpMesh->Render(); 
+	if (D3DApp::GetInstance().IsDrawNormal())
+	{
+		mpMesh->DebugNormalRender();
+	}
 	mpMaterial->ClearPipeline();
 }
 

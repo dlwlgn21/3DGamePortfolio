@@ -4,50 +4,58 @@
 
 namespace jh
 {
-	class Camera;
-	class D3DApp final
+
+class Camera;
+class D3DApp final
+{
+public:
+	static D3DApp& GetInstance()
 	{
-	public:
-		static D3DApp& GetInstance()
-		{
-			static D3DApp instance;
-			return instance;
-		}
+		static D3DApp instance;
+		return instance;
+	}
 
-		D3DApp(const D3DApp& other) = delete;
-		const D3DApp& operator=(const D3DApp& other) = delete;
+	D3DApp(const D3DApp& other) = delete;
+	const D3DApp& operator=(const D3DApp& other) = delete;
 
-		const bool Initialize();
-		const int Run();
+	const bool Initialize();
+	const int Run();
 
-		void Present();
+	void Present();
 
-		HWND GetHwnd() const { assert(mHwnd != nullptr); return mHwnd; }
-		UINT GetWidth() const { return mScreenWidth; }
-		UINT GetHeight() const { return mScreenHeight; }
+	HWND GetHwnd() const { assert(mHwnd != nullptr); return mHwnd; }
+	UINT GetWidth() const { return mScreenWidth; }
+	UINT GetHeight() const { return mScreenHeight; }
 
-		LRESULT MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	LRESULT MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-	private:
-		void update();
-		void fixedUpdate();
-		void updateGUI();
-		void render();
+	const bool IsDrawWire() const { return mbIsDrawWire; }
+	const bool IsDrawNormal() const { return mbIsDrawNormal; }
 
-	private:
-		const bool initializeWindow();
-		const bool initGUI();
-	private:
-		D3DApp() = default;
-		~D3DApp();
+private:
+	void update();
+	void fixedUpdate();
+	void updateGUI();
+	void render();
 
-	private:
-		HWND	mHwnd = NULL;
-		HDC		mHdc = NULL;
-		UINT	mGuiWidth = 0;
-		UINT	mScreenWidth = 1600;
-		UINT	mScreenHeight = 900;
-	};
+private:
+	const bool initializeWindow();
+	const bool initGUI();
+private:
+	D3DApp() = default;
+	~D3DApp();
+
+private:
+	HWND	mHwnd = NULL;
+	HDC		mHdc = NULL;
+	UINT	mGuiWidth = 0;
+	UINT	mScreenWidth = 1600;
+	UINT	mScreenHeight = 900;
+
+	bool	mbIsDrawWire = false;
+	bool	mbIsDrawNormal = false;
+};
+
 }
 
 

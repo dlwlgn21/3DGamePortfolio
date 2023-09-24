@@ -22,10 +22,11 @@ void GraphicsPSOManager::Initialize()
 	initRS();
 	initConstantBuffers();
 	initSamplers();
+	initPipelineStates();
 	initTextures();
 	initMaterials();
-	initPipelineStates();
 }
+
 void GraphicsPSOManager::Release()
 {
 	mcpPointBorderSampler.Reset();
@@ -41,83 +42,35 @@ void GraphicsPSOManager::Release()
 void GraphicsPSOManager::initMesh()
 {
 	auto& geoGenerator = GeomatryGenerator::GetInstance();
+	mspBoxMesh = std::make_unique<Mesh>();
+	std::vector<Vertex3D> boxVertices;
 	std::vector<UINT> indices;
-	D3D11_BUFFER_DESC vbDesc;
-	ZeroMemory(&vbDesc, sizeof(D3D11_BUFFER_DESC));
-	vbDesc.ByteWidth = sizeof(Vertex2D) * 3;
-	vbDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vbDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
-	vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
+	geoGenerator.MakeBox(boxVertices, indices);
+	mspBoxMesh->InitVertexIndexBuffer<Vertex3D>(boxVertices, indices);
 
-	indices.push_back(0);
-	indices.push_back(1);
-	indices.push_back(2);
-
-	D3D11_BUFFER_DESC ibDesc;
-	ZeroMemory(&ibDesc, sizeof(D3D11_BUFFER_DESC));
-
-	ibDesc.ByteWidth = sizeof(UINT) * static_cast<UINT>(indices.size());
-	ibDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
-	ibDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
-	ibDesc.CPUAccessFlags = 0;
-
-	mspTriangleMesh = std::make_unique<Mesh>();
-
-	mspTriangleMesh->InitVertexIndexBuffer(
-		vbDesc,
-		geoGenerator.GetTriangle().data(),
-		static_cast<UINT>(sizeof(Vertex2D)),
-		ibDesc,
-		indices.data(),
-		static_cast<UINT>(indices.size())
-	);
-
+	mspSphereMesh = std::make_unique<Mesh>();
+	std::vector<Vertex3D> sphereVertices;
 	indices.clear();
-	indices.push_back(0);
-	indices.push_back(1);
-	indices.push_back(2);
+	geoGenerator.MakeSphere(sphereVertices, indices, 1.0f, 10, 10);
+	mspSphereMesh->InitVertexIndexBuffer<Vertex3D>(sphereVertices, indices);
 
-	indices.push_back(0);
-	indices.push_back(2);
-	indices.push_back(3);
-
-	D3D11_BUFFER_DESC squreVBDesc;
-	ZeroMemory(&squreVBDesc, sizeof(D3D11_BUFFER_DESC));
-	squreVBDesc.ByteWidth = sizeof(Vertex2D) * 4;
-	squreVBDesc.Usage = D3D11_USAGE_DYNAMIC;
-	squreVBDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
-	squreVBDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
-
-	ibDesc.ByteWidth = sizeof(UINT) * static_cast<UINT>(indices.size());
-
-	mspSqureMesh = std::make_unique<Mesh>();
-
-	mspSqureMesh->InitVertexIndexBuffer(
-		squreVBDesc,
-		geoGenerator.GetSquare().data(),
-		static_cast<UINT>(sizeof(Vertex2D)),
-		ibDesc,
-		indices.data(),
-		static_cast<UINT>(indices.size())
-	);
-
-	mspBox2DebugMesh = std::make_unique<Box2DebugMesh>();
 }
 void GraphicsPSOManager::initShaders()
 {
-#pragma region BASIC_2D_PSO
+#pragma region BASIC_3D_PSO
 	{
-		vector<D3D11_INPUT_ELEMENT_DESC> basicIEs =
-		{
+		vector<D3D11_INPUT_ELEMENT_DESC> basicIEs = {
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
-				D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3,
-				D3D11_INPUT_PER_VERTEX_DATA, 0},
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 4 * 3,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3 + 4 * 3,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 
 		D3D11Utils::CreateVertexShaderAndInputLayout(
 			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
-			L"Basic2DVS.hlsl",
+			L"Basic3DVS.hlsl",
 			basicIEs,
 			mBasicPSO.mcpVertexShader,
 			mBasicPSO.mcpInputLayout
@@ -125,37 +78,40 @@ void GraphicsPSOManager::initShaders()
 
 		D3D11Utils::CreatePixelShader(
 			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
-			L"Basic2DPS.hlsl",
+			L"Basic3DPS.hlsl",
 			mBasicPSO.mcpPixelShader
 		);
 	}
 #pragma endregion
 
-#pragma region BOX2D_DEBUG_PSO
+#pragma region DEBUG_DRAW_NORMAL_PSO
 	{
-		vector<D3D11_INPUT_ELEMENT_DESC> debugIEs =
-		{
+		vector<D3D11_INPUT_ELEMENT_DESC> basicIEs = {
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
-			D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 4 * 3,
-			D3D11_INPUT_PER_VERTEX_DATA, 0},
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 4 * 3,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3 + 4 * 3,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 
 		D3D11Utils::CreateVertexShaderAndInputLayout(
 			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
-			L"DebugBox2DVS.hlsl",
-			debugIEs,
-			mBox2DebugPSO.mcpVertexShader,
-			mBox2DebugPSO.mcpInputLayout
+			L"DebugNormalVS.hlsl",
+			basicIEs,
+			mDebugDrawNormalPSO.mcpVertexShader,
+			mDebugDrawNormalPSO.mcpInputLayout
 		);
 
 		D3D11Utils::CreatePixelShader(
 			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
-			L"DebugBox2DPS.hlsl",
-			mBox2DebugPSO.mcpPixelShader
+			L"DebugNormalPS.hlsl",
+			mDebugDrawNormalPSO.mcpPixelShader
 		);
 	}
 #pragma endregion
+
+
 }
 void GraphicsPSOManager::initRS()
 {
@@ -209,11 +165,8 @@ void GraphicsPSOManager::initConstantBuffers()
 	mspConstantBuffers[static_cast<UINT>(eCBType::TRANSFORM)] = std::make_unique<jh::graphics::ConstantGPUBuffer>(eCBType::TRANSFORM);
 	mspConstantBuffers[static_cast<UINT>(eCBType::TRANSFORM)]->Create(sizeof(TransformConstantCPUBuffer));
 
-	mspConstantBuffers[static_cast<UINT>(eCBType::DEBUG_TRANSFORM)] = std::make_unique<jh::graphics::ConstantGPUBuffer>(eCBType::DEBUG_TRANSFORM);
-	mspConstantBuffers[static_cast<UINT>(eCBType::DEBUG_TRANSFORM)]->Create(sizeof(DebugTransformConstantCPUBuffer));
-
-	mspConstantBuffers[static_cast<UINT>(eCBType::ANIMATION)] = std::make_unique<jh::graphics::ConstantGPUBuffer>(eCBType::ANIMATION);
-	mspConstantBuffers[static_cast<UINT>(eCBType::ANIMATION)]->Create(sizeof(AnimationConstantCPUBuffer));
+	mspConstantBuffers[static_cast<UINT>(eCBType::LIGHTING)] = std::make_unique<jh::graphics::ConstantGPUBuffer>(eCBType::LIGHTING);
+	mspConstantBuffers[static_cast<UINT>(eCBType::LIGHTING)]->Create(sizeof(LighthingConstantCPUBuffer));
 }
 
 void GraphicsPSOManager::initSamplers()
@@ -264,17 +217,11 @@ void GraphicsPSOManager::initSamplers()
 
 void GraphicsPSOManager::initTextures()
 {
-	loadAndInsertTexture(eTextureType::SPRITE_SHHET_TEXTURE, keys::PLAYER_SPRITE_SHEET_TEXTURE_KEY, L"D:\\2DGamePortfolio\\Assets\\Textures\\PLAYER_SpriteSheet_90x37.png");
+	loadAndInsertTexture(eTextureType::DIFFUSE, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY, L"D:\\3DGamePortfolioJH\\Assets\\Textures\\brickwall.jpg");
 }
 void GraphicsPSOManager::initMaterials()
 {
-	insertMaterial(keys::BASIC_2D_MATERIAL_KEY, mBasicPSO);
-	Texture* pTex = ResourcesManager::Find<Texture>(keys::PLAYER_SPRITE_SHEET_TEXTURE_KEY);
-	assert(pTex != nullptr);
-	ResourcesManager::Find<Material>(keys::BASIC_2D_MATERIAL_KEY)->SetTexture(
-		pTex->GetTextureType(),
-		pTex
-	);
+	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO);
 }
 
 void GraphicsPSOManager::loadAndInsertTexture(const eTextureType eType,const std::string& key, const std::wstring& fileName)
@@ -287,14 +234,15 @@ void GraphicsPSOManager::insertMaterial(const std::string& key, GraphicsPSO& pso
 {
 	Material* pMaterial = new Material();
 	pMaterial->SetPSO(pso);
+	pMaterial->SetTexture(eTextureType::DIFFUSE, ResourcesManager::Find<Texture>(keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY));
 	ResourcesManager::Insert<Material>(key, pMaterial);
 }
 void GraphicsPSOManager::initPipelineStates()
 {
-	mBasicPSO.mcpRS = mcpWireRS;
-	//mBasicPSO.mcpRS = mcpSolidRS;
-	//mBasicPSO.mcpSampler = mcpPointBorderSampler;
-	mBox2DebugPSO.mcpRS = mcpBox2DebugDrawRS;
-}
+	mBasicPSO.mcpRS = mcpSolidRS;
+	mBasicPSO.mcpSampler = mcpPointBorderSampler;
 
+	mDebugDrawNormalPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+	mDebugDrawNormalPSO.mcpRS = mcpSolidRS;
+}
 }

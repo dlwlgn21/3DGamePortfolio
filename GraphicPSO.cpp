@@ -17,6 +17,6 @@ namespace jh::graphics
 		mcpInputLayout = pso.mcpInputLayout;
 		mcpSampler = pso.mcpSampler;
 		mcpRS = pso.mcpRS;
-		mPrimitiveTopology = pso.mPrimitiveTopology;
+		mPrimitiveTopology = pso.mPrimitiveTopology; 
 	}
 }
