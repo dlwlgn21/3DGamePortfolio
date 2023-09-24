@@ -1,4 +1,5 @@
 #include "GeomatryGenerator.h"
+#include "ModelLoader.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -199,6 +200,44 @@ void GeomatryGenerator::MakeSphere(std::vector<Vertex3D>& outVertices, std::vect
             outIndices.push_back(offset + i + 1);
         }
     }
+}
+
+std::vector<MeshData> GeomatryGenerator::ReadFromFile(const std::string& basePath, const std::string& fileName)
+{
+    ModelLoader loader;
+    loader.Load(basePath, fileName);
+    std::vector<MeshData>& meshDatas = loader.MeshDatas;
+    Vector3 vmin(1000, 1000, 1000);
+    Vector3 vmax(-1000, -1000, -1000);
+    for (MeshData& mesh : meshDatas) 
+    {
+        for (Vertex3D& v : mesh.Vertices) 
+        {
+            vmin.x = DirectX::XMMin(vmin.x, v.Pos.x);
+            vmin.y = DirectX::XMMin(vmin.y, v.Pos.y);
+            vmin.z = DirectX::XMMin(vmin.z, v.Pos.z);
+            vmax.x = DirectX::XMMax(vmax.x, v.Pos.x);
+            vmax.y = DirectX::XMMax(vmax.y, v.Pos.y);
+            vmax.z = DirectX::XMMax(vmax.z, v.Pos.z);
+        }
+    }
+
+    float dx = vmax.x - vmin.x, dy = vmax.y - vmin.y, dz = vmax.z - vmin.z;
+    float dl = DirectX::XMMax(DirectX::XMMax(dx, dy), dz);
+    float cx = (vmax.x + vmin.x) * 0.5f, cy = (vmax.y + vmin.y) * 0.5f,
+        cz = (vmax.z + vmin.z) * 0.5f;
+
+    for (MeshData& mesh : meshDatas)
+    {
+        for (Vertex3D& v : mesh.Vertices)
+        {
+            v.Pos.x = (v.Pos.x - cx) / dl;
+            v.Pos.y = (v.Pos.y - cy) / dl;
+            v.Pos.z = (v.Pos.z - cz) / dl;
+        }
+    }
+
+    return meshDatas;
 }
 
 }

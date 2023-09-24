@@ -24,16 +24,6 @@ public:
 	const GraphicsPSO& GetBasicPSO() { return mBasicPSO; }
 	GraphicsPSO* GetBasicPSOPtr() { return &mBasicPSO; }
 
-	Mesh& GetTriangleMesh() { return *mspTriangleMesh.get(); }
-	Mesh& GetSqureMesh() { return *mspSqureMesh.get(); }
-	Mesh& GetBoxMesh() { return *mspBoxMesh.get(); }
-	Mesh& GetSpeherMesh() { return *mspSphereMesh.get(); }
-
-	Mesh* GetTriangleMeshPtr() { return mspTriangleMesh.get(); }
-	Mesh* GetSqureMeshPtr() { return mspSqureMesh.get(); }
-	Mesh* GetBoxMeshPtr() { return mspBoxMesh.get(); }
-	Mesh* GetSpeherMeshPtr() { return mspSphereMesh.get(); }
-
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>& GetRSWire() { return mcpWireRS; }
 
 	ConstantGPUBuffer& GetConstantBuffer(const eCBType eType) { assert(mspConstantBuffers[static_cast<UINT>(eType)] != nullptr); return *mspConstantBuffers[static_cast<UINT>(eType)].get(); }
@@ -58,14 +48,9 @@ private:
 public:
 	GraphicsPSO											mBasicPSO;
 	GraphicsPSO											mDebugDrawNormalPSO;
+
 private:
-	std::unique_ptr<Mesh>								mspTriangleMesh;
-	std::unique_ptr<Mesh>								mspSqureMesh;
-	std::unique_ptr<Mesh>								mspBoxMesh;
-	std::unique_ptr<Mesh>								mspSphereMesh;
-
 	std::vector<std::unique_ptr<ConstantGPUBuffer>>		mspConstantBuffers;
-
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>			mcpPointBorderSampler;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>			mcpPointWrapSampler;
 

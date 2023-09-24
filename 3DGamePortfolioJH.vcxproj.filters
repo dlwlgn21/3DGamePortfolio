@@ -138,6 +138,9 @@
     <Filter Include="소스 파일\Managers\CameraManager">
       <UniqueIdentifier>{a0ca6842-7304-4691-8c5e-346daaa379a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Managers\ModelLoader">
+      <UniqueIdentifier>{4461eedc-9daa-4b5e-ab95-a0cba03f70f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h">
@@ -272,6 +275,12 @@
     <ClInclude Include="GraphicsPSOManager.h">
       <Filter>소스 파일\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="ModelLoader.h">
+      <Filter>소스 파일\Managers\ModelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -369,6 +378,12 @@
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>소스 파일\Managers\CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelLoader.cpp">
+      <Filter>소스 파일\Managers\ModelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

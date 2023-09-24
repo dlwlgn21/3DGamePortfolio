@@ -5,6 +5,7 @@
 #include "D3DUtills.h"
 #include "GeomatryGenerator.h"
 
+#include "MeshData.h"
 #include "Texture.h"
 #include "Material.h"
 #include "ResourcesManager.h"
@@ -42,18 +43,30 @@ void GraphicsPSOManager::Release()
 void GraphicsPSOManager::initMesh()
 {
 	auto& geoGenerator = GeomatryGenerator::GetInstance();
-	mspBoxMesh = std::make_unique<Mesh>();
+	Mesh* pBoxMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::BOX_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
 	std::vector<Vertex3D> boxVertices;
 	std::vector<UINT> indices;
 	geoGenerator.MakeBox(boxVertices, indices);
-	mspBoxMesh->InitVertexIndexBuffer<Vertex3D>(boxVertices, indices);
+	pBoxMesh->InitVertexIndexBuffer<Vertex3D>(boxVertices, indices);
 
-	mspSphereMesh = std::make_unique<Mesh>();
+	Mesh* pSpehereMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::SPEHERE_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
 	std::vector<Vertex3D> sphereVertices;
 	indices.clear();
 	geoGenerator.MakeSphere(sphereVertices, indices, 1.0f, 10, 10);
-	mspSphereMesh->InitVertexIndexBuffer<Vertex3D>(sphereVertices, indices);
+	pSpehereMesh->InitVertexIndexBuffer<Vertex3D>(sphereVertices, indices);
 
+	{
+		Mesh* pMonkeyMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::MONKEY_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
+		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "Monkey.obj");
+		pMonkeyMesh->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
+	}
+
+	{
+		Mesh* pZeldaMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::ZELDA_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
+		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "zeldaPosed001.fbx");
+		std::cout << "Zelda data Size is " << meshDatas.size() << std::endl;
+		pZeldaMesh->InitVertexIndexBuffer(meshDatas[2].Vertices, meshDatas[2].Indices);
+	}
 }
 void GraphicsPSOManager::initShaders()
 {
@@ -232,10 +245,9 @@ void GraphicsPSOManager::loadAndInsertTexture(const eTextureType eType,const std
 
 void GraphicsPSOManager::insertMaterial(const std::string& key, GraphicsPSO& pso)
 {
-	Material* pMaterial = new Material();
+	Material* pMaterial = ResourcesManager::InsertOrNull<Material>(key, std::make_unique<Material>());
 	pMaterial->SetPSO(pso);
 	pMaterial->SetTexture(eTextureType::DIFFUSE, ResourcesManager::Find<Texture>(keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY));
-	ResourcesManager::Insert<Material>(key, pMaterial);
 }
 void GraphicsPSOManager::initPipelineStates()
 {

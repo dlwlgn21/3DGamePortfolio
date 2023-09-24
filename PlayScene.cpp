@@ -76,7 +76,7 @@ void PlayScene::initGround()
 	Material* pMaterial = ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY);
 	assert(pMaterial != nullptr);
 	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-	renderer.SetMesh(GraphicsPSOManager::GetInstance().GetSpeherMeshPtr());
+	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::ZELDA_MESH_KEY));
 	renderer.SetMaterial(pMaterial);
 	AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 }
