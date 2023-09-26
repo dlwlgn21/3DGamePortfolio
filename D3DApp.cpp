@@ -1,16 +1,25 @@
+#include <imgui_impl_dx11.h>
+#include <imgui_impl_win32.h>
+
 #include "D3DApp.h"
 #include "GraphicDeviceDX11.h"
 #include "GraphicsPSOManager.h"
 #include "Time.h"
 #include "InputManager.h"
 #include "SceneManager.h"
+
+
 #include "LightingManager.h"
 #include "CameraManager.h"
 
+
+
+
+#include "GameObject.h"
+#include "Transform.h"
+#include "Light.h"
 #include "Scene.h"
 
-#include <imgui_impl_dx11.h>
-#include <imgui_impl_win32.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam,LPARAM lParam);
 
@@ -144,13 +153,19 @@ void D3DApp::fixedUpdate()
 
 void D3DApp::updateGUI()
 {
+	static const float ANGLE = 180.0f;
 	auto& camera = CameraManager::GetInstance();
+	auto& dirLight = LightingManager::GetInstance().GetDirectionalLight();
+	auto& dirLightPos = dirLight.GetOwner().GetTransform().GetPositionRef();
+
 	ImGui::Checkbox("IsUseTexture", LightingManager::GetInstance().GetIsUseTexture());
 	ImGui::Checkbox("IsDrawWireFrame", &mbIsDrawWire);
 	ImGui::Checkbox("IsDrawNormal", &mbIsDrawNormal);
-	ImGui::SliderFloat("Camera Pitch", &camera.GetRotation().x, 0.0f, 360.0f);
-	ImGui::SliderFloat("Camera Roll", &camera.GetRotation().z, 0.0f, 360.0f);
-	ImGui::SliderFloat("Camera Yaw", &camera.GetRotation().y, 0.0f, 360.0f);
+	ImGui::SliderFloat("Camera Pitch", &camera.GetRotation().x, -ANGLE, ANGLE);
+	ImGui::SliderFloat("Camera Roll", &camera.GetRotation().z, -ANGLE, ANGLE);
+	ImGui::SliderFloat("Camera Yaw", &camera.GetRotation().y, -ANGLE, ANGLE);
+	ImGui::SliderFloat3("Light Translation", &dirLightPos.x, -10.0f, 10.0f);
+
 }
 
 void D3DApp::render()

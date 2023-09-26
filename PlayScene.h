@@ -17,6 +17,7 @@ namespace jh
 		void initPlayer();
 		void initGround();
 		void initLight();
+		void initCubeMap();
 	};
 }
 

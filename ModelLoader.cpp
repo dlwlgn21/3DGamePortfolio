@@ -109,7 +109,9 @@ jh::graphics::MeshData ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* sce
             aiString filepath;
             material->GetTexture(aiTextureType_DIFFUSE, 0, &filepath);
             std::string fullPath = this->BasePath + std::string(std::filesystem::path(filepath.C_Str()).filename().string());
-            newMesh.TextureFileFullPath = fullPath;
+            std::wstring wFullPath(fullPath.begin(), fullPath.end());
+            newMesh.TextureFileFullPath = wFullPath;
+            std::cout << fullPath << std::endl;
         }
     }
 

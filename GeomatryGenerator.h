@@ -19,7 +19,7 @@ namespace jh::graphics
 
 		std::vector<Vertex2D> GetTriangle();
 		std::vector<Vertex2D> GetSquare();
-		void MakeBox(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices);
+		void MakeBox(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale = 1.0f);
 		void MakeSphere(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float radius, const int numSlices, const int numStacks);
 
 		std::vector<MeshData> ReadFromFile(const std::string& basePath, const std::string& fileName);

@@ -19,7 +19,7 @@ namespace jh
 		, meProjectionType(eProjectionType::PERSPECTIVE)
 		, mAspectRatio(D3DApp::GetInstance().GetWidth() / static_cast<float>(D3DApp::GetInstance().GetHeight()))
 		, mFov(60.0f)
-		, mNearPlain(1.0f)
+		, mNearPlain(0.1f)
 		, mFarPlain(1000.0f)
 		, mScale(1.0f)
 	{
@@ -38,7 +38,7 @@ namespace jh
 		auto& transform = GetOwner().GetTransform();
 		mViewMatRow = DirectX::XMMatrixLookAtLH(
 			transform.GetPosition(),
-			-transform.GetForward(),
+			transform.GetForward(),
 			transform.GetUp()
 		);
 	}

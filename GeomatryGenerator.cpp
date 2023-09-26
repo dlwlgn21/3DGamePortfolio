@@ -44,7 +44,7 @@ std::vector<Vertex2D> GeomatryGenerator::GetSquare()
 	return squre;
 }
 
-void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices)
+void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale)
 {
     outVertices.reserve(24);
     std::vector<Vector3> positions;
@@ -52,10 +52,10 @@ void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<
     std::vector<Vector2> texcoords;
 
     // À­¸é
-    positions.push_back(Vector3(-1.0f, 1.0f, -1.0f));
-    positions.push_back(Vector3(-1.0f, 1.0f, 1.0f));
-    positions.push_back(Vector3(1.0f, 1.0f, 1.0f));
-    positions.push_back(Vector3(1.0f, 1.0f, -1.0f));
+    positions.push_back(Vector3(-1.0f, 1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, 1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 1.0f, -1.0f) * scale);
     normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
     normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
     normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
@@ -66,10 +66,10 @@ void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<
     texcoords.push_back(Vector2(0.0f, 1.0f));
 
     // ¾Æ·§¸é
-    positions.push_back(Vector3(-1.0f, -1.0f, -1.0f));
-    positions.push_back(Vector3(1.0f, -1.0f, -1.0f) );
-    positions.push_back(Vector3(1.0f, -1.0f, 1.0f) );
-    positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) );
+    positions.push_back(Vector3(-1.0f, -1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(1.0f, -1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(1.0f, -1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) * scale);
     normals.push_back(Vector3(0.0f, -1.0f, 0.0f));
     normals.push_back(Vector3(0.0f, -1.0f, 0.0f));
     normals.push_back(Vector3(0.0f, -1.0f, 0.0f));
@@ -80,10 +80,10 @@ void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<
     texcoords.push_back(Vector2(0.0f, 1.0f));
 
     // ¾Õ¸é
-    positions.push_back(Vector3(-1.0f, -1.0f, -1.0f) );
-    positions.push_back(Vector3(-1.0f, 1.0f, -1.0f) );
-    positions.push_back(Vector3(1.0f, 1.0f, -1.0f) );
-    positions.push_back(Vector3(1.0f, -1.0f, -1.0f));
+    positions.push_back(Vector3(-1.0f, -1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, 1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(1.0f, -1.0f, -1.0f) * scale);
     normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
     normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
     normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
@@ -94,10 +94,10 @@ void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<
     texcoords.push_back(Vector2(0.0f, 1.0f));
 
     // µÞ¸é
-    positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) );
-    positions.push_back(Vector3(1.0f, -1.0f, 1.0f) );
-    positions.push_back(Vector3(1.0f, 1.0f, 1.0f) );
-    positions.push_back(Vector3(-1.0f, 1.0f, 1.0f));
+    positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, -1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, 1.0f, 1.0f) * scale);
     normals.push_back(Vector3(0.0f, 0.0f, 1.0f));
     normals.push_back(Vector3(0.0f, 0.0f, 1.0f));
     normals.push_back(Vector3(0.0f, 0.0f, 1.0f));
@@ -108,10 +108,10 @@ void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<
     texcoords.push_back(Vector2(0.0f, 1.0f));
 
     // ¿ÞÂÊ
-    positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) );
-    positions.push_back(Vector3(-1.0f, 1.0f, 1.0f) );
-    positions.push_back(Vector3(-1.0f, 1.0f, -1.0f) );
-    positions.push_back(Vector3(-1.0f, -1.0f, -1.0f));
+    positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, 1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, 1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, -1.0f, -1.0f) * scale);
     normals.push_back(Vector3(-1.0f, 0.0f, 0.0f));
     normals.push_back(Vector3(-1.0f, 0.0f, 0.0f));
     normals.push_back(Vector3(-1.0f, 0.0f, 0.0f));
@@ -122,10 +122,10 @@ void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<
     texcoords.push_back(Vector2(0.0f, 1.0f));
 
     // ¿À¸¥ÂÊ
-    positions.push_back(Vector3(1.0f, -1.0f, 1.0f));
-    positions.push_back(Vector3(1.0f, -1.0f, -1.0f));
-    positions.push_back(Vector3(1.0f, 1.0f, -1.0f));
-    positions.push_back(Vector3(1.0f, 1.0f, 1.0f));
+    positions.push_back(Vector3(1.0f, -1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, -1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 1.0f, 1.0f) * scale);
     normals.push_back(Vector3(1.0f, 0.0f, 0.0f));
     normals.push_back(Vector3(1.0f, 0.0f, 0.0f));
     normals.push_back(Vector3(1.0f, 0.0f, 0.0f));

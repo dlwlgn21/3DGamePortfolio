@@ -26,6 +26,8 @@ public:
 
 	bool* GetIsUseTexture() { return &mbIsUseTexture; }
 
+	Light& GetDirectionalLight() { return *mpLights[0]; }
+
 private:
 	void updateConstantBuffer();
 

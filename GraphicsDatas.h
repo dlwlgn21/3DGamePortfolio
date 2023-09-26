@@ -21,6 +21,7 @@ namespace jh::graphics
 		DirectX::SimpleMath::Vector2 UV;
 	};
 
+
 	struct alignas(SIMD_ALIGN_SIZE) GrapicsMaterial
 	{
 		DirectX::SimpleMath::Vector3  MaterialAmbient;

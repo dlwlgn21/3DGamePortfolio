@@ -2,10 +2,10 @@
 #include "GraphicPSO.h"
 #include "Mesh.h"
 #include "ConstantGPUBuffer.h"
+#include "CubeMapping.h"
 
 namespace jh::graphics
 {
-
 class GraphicsPSOManager final
 {
 public:
@@ -31,6 +31,7 @@ public:
 private:
 	void initMesh();
 	void initShaders();
+	void initCubeMap();
 	void initRS();
 	void initConstantBuffers();
 	void initSamplers();
@@ -39,7 +40,7 @@ private:
 	void initPipelineStates();
 
 	void loadAndInsertTexture(const eTextureType, const std::string& key, const std::wstring& fileName);
-	void insertMaterial(const std::string& key, GraphicsPSO& pso);
+	void insertMaterial(const std::string& materialKey, GraphicsPSO& pso, const std::string& textureKeyOrNull);
 
 private:
 	GraphicsPSOManager() = default;
@@ -48,6 +49,8 @@ private:
 public:
 	GraphicsPSO											mBasicPSO;
 	GraphicsPSO											mDebugDrawNormalPSO;
+	GraphicsPSO											mCubeMapPSO;
+	CubeMapping											mCubeMapping;
 
 private:
 	std::vector<std::unique_ptr<ConstantGPUBuffer>>		mspConstantBuffers;

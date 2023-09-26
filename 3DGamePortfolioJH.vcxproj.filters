@@ -281,6 +281,7 @@
     <ClInclude Include="MeshData.h">
       <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="CubeMapping.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -382,8 +383,8 @@
     <ClCompile Include="ModelLoader.cpp">
       <Filter>소스 파일\Managers\ModelLoader</Filter>
     </ClCompile>
-    <ClCompile Include="MeshData.cpp">
-      <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
+    <ClCompile Include="CubeMapping.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -416,6 +417,12 @@
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="DebugNormalPS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMappingVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMappingPS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

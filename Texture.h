@@ -18,8 +18,8 @@ namespace jh::graphics
 		UINT GetHeight() const { return static_cast<UINT>(mTextureDesc.Height); }
 		UINT GetWidth() const { return static_cast<UINT>(mTextureDesc.Width); }
 
+		void InitSRV(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& cpSRV);
 		void PSSetSRV();
-
 		const eTextureType GetTextureType() const { return meType; }
 		void SetTextureType(const eTextureType eType) { meType = eType; }
 

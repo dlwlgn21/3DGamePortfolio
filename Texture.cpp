@@ -41,6 +41,12 @@ namespace jh::graphics
 		return S_OK;
 	}
 
+	void Texture::InitSRV(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& cpSRV)
+	{
+		assert(mcpSRV == nullptr);
+		mcpSRV = cpSRV;
+	}
+
 	void Texture::PSSetSRV()
 	{
 		auto& gdc = GraphicDeviceDX11::GetInstance().GetDeivceContext();

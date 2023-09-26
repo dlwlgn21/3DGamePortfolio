@@ -19,6 +19,7 @@ enum class eLayerType
 	PARTICLE,
 	POST_PROCESS,
 	LIGHT,
+	CUBE_MAP,
 	UI,
 	COUNT
 };

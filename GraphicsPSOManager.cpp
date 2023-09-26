@@ -1,4 +1,6 @@
 #include <directxtk/SimpleMath.h>
+#include <directxtk/DDSTextureLoader.h> 
+#include <directxtk/WICTextureLoader.h>
 #include "GraphicsPSOManager.h"
 #include "GraphicDeviceDX11.h"
 #include "GraphicsDatas.h"
@@ -23,6 +25,7 @@ void GraphicsPSOManager::Initialize()
 	initRS();
 	initConstantBuffers();
 	initSamplers();
+	initCubeMap();
 	initPipelineStates();
 	initTextures();
 	initMaterials();
@@ -36,7 +39,6 @@ void GraphicsPSOManager::Release()
 	mcpWireRS.Reset();
 	mcpSolidRS.Reset();
 	mcpBox2DebugDrawRS.Reset();
-
 	mspConstantBuffers.clear();
 }
 
@@ -55,6 +57,8 @@ void GraphicsPSOManager::initMesh()
 	geoGenerator.MakeSphere(sphereVertices, indices, 1.0f, 10, 10);
 	pSpehereMesh->InitVertexIndexBuffer<Vertex3D>(sphereVertices, indices);
 
+
+
 	{
 		Mesh* pMonkeyMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::MONKEY_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
 		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "Monkey.obj");
@@ -62,10 +66,45 @@ void GraphicsPSOManager::initMesh()
 	}
 
 	{
-		Mesh* pZeldaMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::ZELDA_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
 		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "zeldaPosed001.fbx");
-		std::cout << "Zelda data Size is " << meshDatas.size() << std::endl;
-		pZeldaMesh->InitVertexIndexBuffer(meshDatas[2].Vertices, meshDatas[2].Indices);
+		
+		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+			keys::ZELDA1_MESH, std::make_unique<jh::graphics::Mesh>()
+		)->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA1_TEXTURE, meshDatas[0].TextureFileFullPath);
+
+		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+			keys::ZELDA2_MESH, std::make_unique<jh::graphics::Mesh>()
+			)->InitVertexIndexBuffer(meshDatas[1].Vertices, meshDatas[1].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA2_TEXTURE, meshDatas[1].TextureFileFullPath);
+
+		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+			keys::ZELDA3_MESH, std::make_unique<jh::graphics::Mesh>()
+			)->InitVertexIndexBuffer(meshDatas[2].Vertices, meshDatas[2].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA3_TEXTURE, meshDatas[2].TextureFileFullPath);
+
+
+		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+			keys::ZELDA4_MESH, std::make_unique<jh::graphics::Mesh>()
+			)->InitVertexIndexBuffer(meshDatas[3].Vertices, meshDatas[3].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA4_TEXTURE, meshDatas[3].TextureFileFullPath);
+
+
+		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+			keys::ZELDA5_MESH, std::make_unique<jh::graphics::Mesh>()
+			)->InitVertexIndexBuffer(meshDatas[4].Vertices, meshDatas[4].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA5_TEXTURE, meshDatas[4].TextureFileFullPath);
+
+
+		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+			keys::ZELDA6_MESH, std::make_unique<jh::graphics::Mesh>()
+			)->InitVertexIndexBuffer(meshDatas[5].Vertices, meshDatas[5].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA6_TEXTURE, meshDatas[5].TextureFileFullPath);
+
+		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+			keys::ZELDA7_MESH, std::make_unique<jh::graphics::Mesh>()
+			)->InitVertexIndexBuffer(meshDatas[6].Vertices, meshDatas[6].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA7_TEXTURE, meshDatas[6].TextureFileFullPath);
 	}
 }
 void GraphicsPSOManager::initShaders()
@@ -121,11 +160,26 @@ void GraphicsPSOManager::initShaders()
 			L"DebugNormalPS.hlsl",
 			mDebugDrawNormalPSO.mcpPixelShader
 		);
+
+		D3D11Utils::CreateVertexShaderAndInputLayout(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"CubeMappingVS.hlsl",
+			basicIEs,
+			mCubeMapping.cpVertexShader,
+			mCubeMapping.cpInputLayout
+		);
+
+		D3D11Utils::CreatePixelShader(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"CubeMappingPS.hlsl",
+			mCubeMapping.cpPixelShader
+		);
 	}
 #pragma endregion
 
 
 }
+
 void GraphicsPSOManager::initRS()
 {
 	HRESULT hr;
@@ -231,10 +285,24 @@ void GraphicsPSOManager::initSamplers()
 void GraphicsPSOManager::initTextures()
 {
 	loadAndInsertTexture(eTextureType::DIFFUSE, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY, L"D:\\3DGamePortfolioJH\\Assets\\Textures\\brickwall.jpg");
+	
+
+	// CubeMapping
+	Texture* pTex = ResourcesManager::InsertOrNull<Texture>(keys::CUBE_MAP_TEXTURE, std::make_unique<Texture>());
+	pTex->SetTextureType(eTextureType::DIFFUSE);
+	pTex->InitSRV(mCubeMapping.cpCubeMapRSV);
 }
 void GraphicsPSOManager::initMaterials()
 {
-	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO);
+	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO, "");
+	insertMaterial(keys::ZELDA1_MATERIAL, mBasicPSO, keys::ZELDA1_TEXTURE);
+	insertMaterial(keys::ZELDA2_MATERIAL, mBasicPSO, keys::ZELDA2_TEXTURE);
+	insertMaterial(keys::ZELDA3_MATERIAL, mBasicPSO, keys::ZELDA3_TEXTURE);
+	insertMaterial(keys::ZELDA4_MATERIAL, mBasicPSO, keys::ZELDA4_TEXTURE);
+	insertMaterial(keys::ZELDA5_MATERIAL, mBasicPSO, keys::ZELDA5_TEXTURE);
+	insertMaterial(keys::ZELDA6_MATERIAL, mBasicPSO, keys::ZELDA6_TEXTURE);
+	insertMaterial(keys::ZELDA7_MATERIAL, mBasicPSO, keys::ZELDA7_TEXTURE);
+	insertMaterial(keys::CUBE_MAP_MATERIAL, mCubeMapPSO, keys::CUBE_MAP_TEXTURE);
 }
 
 void GraphicsPSOManager::loadAndInsertTexture(const eTextureType eType,const std::string& key, const std::wstring& fileName)
@@ -243,11 +311,15 @@ void GraphicsPSOManager::loadAndInsertTexture(const eTextureType eType,const std
 	pTex->SetTextureType(eType);
 }
 
-void GraphicsPSOManager::insertMaterial(const std::string& key, GraphicsPSO& pso)
+void GraphicsPSOManager::insertMaterial(const std::string& materialKey, GraphicsPSO& pso, const std::string& textureKeyOrNull)
 {
-	Material* pMaterial = ResourcesManager::InsertOrNull<Material>(key, std::make_unique<Material>());
+	Material* pMaterial = ResourcesManager::InsertOrNull<Material>(materialKey, std::make_unique<Material>());
 	pMaterial->SetPSO(pso);
-	pMaterial->SetTexture(eTextureType::DIFFUSE, ResourcesManager::Find<Texture>(keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY));
+	if (textureKeyOrNull.empty())
+	{
+		return;
+	}
+	pMaterial->SetTexture(eTextureType::DIFFUSE, ResourcesManager::Find<Texture>(textureKeyOrNull));
 }
 void GraphicsPSOManager::initPipelineStates()
 {
@@ -256,5 +328,47 @@ void GraphicsPSOManager::initPipelineStates()
 
 	mDebugDrawNormalPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 	mDebugDrawNormalPSO.mcpRS = mcpSolidRS;
+
+	mCubeMapPSO.mcpRS = mcpSolidRS;
+	mCubeMapPSO.mcpVertexShader = mCubeMapping.cpVertexShader;
+	mCubeMapPSO.mcpPixelShader = mCubeMapping.cpPixelShader;
+	mCubeMapPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+	mCubeMapPSO.mcpInputLayout = mCubeMapping.cpInputLayout;
+	mCubeMapPSO.mcpSampler = mcpPointWrapSampler;
 }
+
+void GraphicsPSOManager::initCubeMap()
+{
+	Mesh* pCubeMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::CUBE_MAP_MESH, std::make_unique<Mesh>());
+	mCubeMapping.pMesh = pCubeMesh;
+	ComPtr<ID3D11Texture2D> cpTexture;
+	auto& gd = jh::graphics::GraphicDeviceDX11::GetInstance();
+	HRESULT hr = DirectX::CreateDDSTextureFromFileEx(
+		&gd.GetDeivce(),
+		L"D:\\3DGamePortfolioJH\\Assets\\skybox\\skybox.dds",
+		0,
+		D3D11_USAGE_DEFAULT,
+		D3D11_BIND_SHADER_RESOURCE,
+		0,
+		D3D11_RESOURCE_MISC_TEXTURECUBE,
+		DirectX::DX11::DDS_LOADER_FLAGS(false),
+		(ID3D11Resource**)cpTexture.GetAddressOf(),
+		mCubeMapping.cpCubeMapRSV.ReleaseAndGetAddressOf(),
+		nullptr
+	);
+	if (FAILED(hr))
+	{
+		std::cout << "GraphicsPSOManager::initCubeMap() CreateDDSTextureFromFileEx FAILED" << std::endl;
+		assert(false);
+	}
+
+	std::vector<Vertex3D> vertices;
+	std::vector<UINT> indices;
+
+	GeomatryGenerator::GetInstance().MakeBox(vertices, indices, 5.0f);
+	//std::reverse(indices.begin(), indices.end());
+	pCubeMesh->InitVertexIndexBuffer<Vertex3D>(vertices, indices);
+}
+
+
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "GraphicsDatas.h"
-#include "Texture.h"
 
 namespace jh::graphics
 {
@@ -9,7 +8,7 @@ namespace jh::graphics
 	{
 		std::vector<Vertex3D>	Vertices;
 		std::vector<UINT>		Indices;
-		std::string				TextureFileFullPath;
+		std::wstring			TextureFileFullPath;
 	};
 }
 
