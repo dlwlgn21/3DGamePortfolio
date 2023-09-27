@@ -27,10 +27,10 @@ struct Material
 struct Light
 {
     float3  LightStrengh;
-    float3  LightDirection;
-    float3  LightPosition;
     float   LightFallOffStart;
+    float3  LightDirection;
     float   LightFallOffEnd;
+    float3  LightPosition;
     float   LightSpotPower;
 };
 
@@ -140,5 +140,6 @@ float4 main(PixelInput Input) : SV_TARGET
     //return float4(color, 1.0);
     //return float4(1.0, 1.0, 1.0, 1.0);
     return CBIsUseTexture == 1 ? float4(color, 1.0) * DiffuseTexture.Sample(PointSampler, Input.UV) : float4(color, 1.0);
+    //return float4(Input.Color, 1.0);
     
 }

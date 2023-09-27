@@ -8,12 +8,11 @@ namespace jh::graphics
 
 struct CubeMapping
 {
-	Mesh* pMesh;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> cpCubeMapRSV;
-
-    Microsoft::WRL::ComPtr<ID3D11VertexShader> cpVertexShader;
-    Microsoft::WRL::ComPtr<ID3D11PixelShader> cpPixelShader;
-    Microsoft::WRL::ComPtr<ID3D11InputLayout> cpInputLayout;
+	Mesh* pMesh = nullptr;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> cpCubeMapRSV = nullptr;
+    Microsoft::WRL::ComPtr<ID3D11VertexShader> cpVertexShader = nullptr;
+    Microsoft::WRL::ComPtr<ID3D11PixelShader> cpPixelShader = nullptr;
+    Microsoft::WRL::ComPtr<ID3D11InputLayout> cpInputLayout = nullptr;
 
     CubeMapping() = default;
     ~CubeMapping()

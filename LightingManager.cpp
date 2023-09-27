@@ -14,7 +14,7 @@ void LightingManager::Initialize()
 {
 	mpLights.reserve(MAX_LIGHTS);
 	mMaterial.MaterialAmbient = DirectX::SimpleMath::Vector3(0.2f, 0.2f, 0.2f);
-	mMaterial.MaterialShininess = 10.0f;
+	mMaterial.MaterialShininess = 100.0f; 
 	mMaterial.MaterialDiffuse = DirectX::SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 0.0f); 
 	mMaterial.MaterialSpecular = DirectX::SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 0.0f);
 }
@@ -42,7 +42,6 @@ void LightingManager::updateConstantBuffer()
 	for (auto& l : mpLights)
 	{
 		cpuBuffer.CBEyeWorld = Vector4(camPos.x, camPos.y, camPos.z, 0.0f);
-
 		if (mbIsUseTexture) {cpuBuffer.CBIsUseTexture = 1;}
 		else                {cpuBuffer.CBIsUseTexture = 0;}
 
@@ -52,6 +51,5 @@ void LightingManager::updateConstantBuffer()
 
 	gpuBuffer.UpdateBuffer(&cpuBuffer);
 }
-
 
 }

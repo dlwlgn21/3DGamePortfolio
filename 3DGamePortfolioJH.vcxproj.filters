@@ -141,6 +141,9 @@
     <Filter Include="소스 파일\Managers\ModelLoader">
       <UniqueIdentifier>{4461eedc-9daa-4b5e-ab95-a0cba03f70f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Managers\CubeMapManager">
+      <UniqueIdentifier>{26d2f109-f00d-4d5a-8433-fe4d4f2b0d66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h">
@@ -187,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>소스 파일\Component\Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="UtillFunc.h">
-      <Filter>소스 파일\Common</Filter>
     </ClInclude>
     <ClInclude Include="ConstantGPUBuffer.h">
       <Filter>소스 파일\Graphics\ConstantGPUBuffer</Filter>
@@ -281,7 +281,12 @@
     <ClInclude Include="MeshData.h">
       <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="CubeMapping.h" />
+    <ClInclude Include="CubeMapping.h">
+      <Filter>소스 파일\Managers\CubeMapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMapManager.h">
+      <Filter>소스 파일\Managers\CubeMapManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -383,8 +388,8 @@
     <ClCompile Include="ModelLoader.cpp">
       <Filter>소스 파일\Managers\ModelLoader</Filter>
     </ClCompile>
-    <ClCompile Include="CubeMapping.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="CubeMapManager.cpp">
+      <Filter>소스 파일\Managers\CubeMapManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -423,6 +428,12 @@
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="CubeMappingPS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugWorldCoordinateVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugWorldCoordinatePS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

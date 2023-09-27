@@ -44,12 +44,58 @@ std::vector<Vertex2D> GeomatryGenerator::GetSquare()
 	return squre;
 }
 
+void GeomatryGenerator::MakeWorldCoordinate(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale)
+{
+    std::vector<Vector3> positions;
+    std::vector<Vector3> colors;
+    std::vector<Vector2> uvs;
+
+    // X √‡ 
+    positions.push_back(Vector3(0.0f, 0.0f, 0.0f));
+    positions.push_back(Vector3(1.0f, 0.0f, 0.0f) * scale);
+    colors.push_back(Vector3(0.0f, 0.0f, 1.0f));
+    colors.push_back(Vector3(0.0f, 0.0f, 1.0f));
+    uvs.push_back(Vector2(0.0f, 0.0f));
+    uvs.push_back(Vector2(1.0f, 1.0f));
+    // Y √‡
+    positions.push_back(Vector3(0.0f, 0.0f, 0.0f));
+    positions.push_back(Vector3(0.0f, 1.0f, 0.0f) * scale);
+    colors.push_back(Vector3(1.0f, 0.0f, 0.0f));
+    colors.push_back(Vector3(1.0f, 0.0f, 0.0f));
+    uvs.push_back(Vector2(0.0f, 0.0f));
+    uvs.push_back(Vector2(1.0f, 1.0f));
+
+    // Z √‡
+    positions.push_back(Vector3(0.0f, 0.0f, 0.0f));
+    positions.push_back(Vector3(0.0f, 0.0f, 1.0f) * scale);
+    colors.push_back(Vector3(0.0f, 1.0f, 0.0f));
+    colors.push_back(Vector3(0.0f, 1.0f, 0.0f));
+    uvs.push_back(Vector2(0.0f, 0.0f));
+    uvs.push_back(Vector2(1.0f, 1.0f));
+
+
+    for (UINT i = 0; i < 6; ++i)
+    {
+        Vertex3D v;
+        v.Pos = positions[i];
+        v.Normal = colors[i];
+        v.UV = uvs[i];
+        outVertices.push_back(v);
+    }
+    for (UINT i = 0; i < positions.size() / 2; ++i)
+    {
+        outIndices.push_back(2 * i);
+        outIndices.push_back(2 * i + 1);
+    }
+}
+
 void GeomatryGenerator::MakeBox(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale)
 {
     outVertices.reserve(24);
     std::vector<Vector3> positions;
     std::vector<Vector3> normals;
     std::vector<Vector2> texcoords;
+
 
     // ¿≠∏È
     positions.push_back(Vector3(-1.0f, 1.0f, -1.0f) * scale);

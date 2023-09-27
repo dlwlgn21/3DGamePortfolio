@@ -6,6 +6,8 @@ namespace jh
 {
 
 class Camera;
+class CameraScript;
+struct Rotation;
 class CameraManager final
 {
 public:
@@ -18,10 +20,12 @@ public:
 	CameraManager(const CameraManager& other) = delete;
 	CameraManager& operator=(const CameraManager& other) = delete;
 
-	void SetCamera(Camera& camera) { assert(mpCamera == nullptr); mpCamera = &camera; }
+	void SetCamera(Camera& camera);
 	Camera& GetCamera() { assert(mpCamera != nullptr); return *mpCamera; }
 
 	DirectX::SimpleMath::Vector3& GetRotation();
+	void OnMouseMove(float mouseNdcX, float mouseNdcY);
+
 
 private:
 	CameraManager() = default;
@@ -29,6 +33,7 @@ private:
 
 private:
 	Camera* mpCamera = nullptr;
+	CameraScript* mpScript = nullptr;
 };
 
 }

@@ -54,9 +54,17 @@ void GraphicsPSOManager::initMesh()
 	Mesh* pSpehereMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::SPEHERE_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
 	std::vector<Vertex3D> sphereVertices;
 	indices.clear();
-	geoGenerator.MakeSphere(sphereVertices, indices, 1.0f, 10, 10);
+	geoGenerator.MakeSphere(sphereVertices, indices, 0.2f, 10, 10);
 	pSpehereMesh->InitVertexIndexBuffer<Vertex3D>(sphereVertices, indices);
 
+	{
+		std::vector<Vertex3D> wcVertices;
+		std::vector<UINT> wcIndices;
+		Mesh* pWcMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::WORLD_COORD_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
+		geoGenerator.MakeWorldCoordinate(wcVertices, wcIndices, 5.0f);
+		pWcMesh->InitVertexIndexBuffer<Vertex3D>(wcVertices, wcIndices); 
+
+	}
 
 
 	{
@@ -133,8 +141,48 @@ void GraphicsPSOManager::initShaders()
 			L"Basic3DPS.hlsl",
 			mBasicPSO.mcpPixelShader
 		);
+
+
+		D3D11Utils::CreateVertexShaderAndInputLayout(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"DebugWorldCoordinateVS.hlsl",
+			basicIEs,
+			mDebugDrawWorldCoordPSO.mcpVertexShader,
+			mDebugDrawWorldCoordPSO.mcpInputLayout
+		);
+
+		D3D11Utils::CreatePixelShader(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"DebugWorldCoordinatePS.hlsl",
+			mDebugDrawWorldCoordPSO.mcpPixelShader
+		);
 	}
 #pragma endregion
+
+
+#pragma region CUBE_MAPPING
+	{
+		vector<D3D11_INPUT_ELEMENT_DESC> cubeMappingIEs = {
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
+		D3D11Utils::CreateVertexShaderAndInputLayout(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"CubeMappingVS.hlsl",
+			cubeMappingIEs,
+			mCubeMapping.cpVertexShader,
+			mCubeMapping.cpInputLayout
+		);
+
+		D3D11Utils::CreatePixelShader(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"CubeMappingPS.hlsl",
+			mCubeMapping.cpPixelShader
+		);
+	}
+#pragma endregion
+
+
 
 #pragma region DEBUG_DRAW_NORMAL_PSO
 	{
@@ -161,19 +209,7 @@ void GraphicsPSOManager::initShaders()
 			mDebugDrawNormalPSO.mcpPixelShader
 		);
 
-		D3D11Utils::CreateVertexShaderAndInputLayout(
-			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
-			L"CubeMappingVS.hlsl",
-			basicIEs,
-			mCubeMapping.cpVertexShader,
-			mCubeMapping.cpInputLayout
-		);
 
-		D3D11Utils::CreatePixelShader(
-			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
-			L"CubeMappingPS.hlsl",
-			mCubeMapping.cpPixelShader
-		);
 	}
 #pragma endregion
 
@@ -285,7 +321,6 @@ void GraphicsPSOManager::initSamplers()
 void GraphicsPSOManager::initTextures()
 {
 	loadAndInsertTexture(eTextureType::DIFFUSE, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY, L"D:\\3DGamePortfolioJH\\Assets\\Textures\\brickwall.jpg");
-	
 
 	// CubeMapping
 	Texture* pTex = ResourcesManager::InsertOrNull<Texture>(keys::CUBE_MAP_TEXTURE, std::make_unique<Texture>());
@@ -294,7 +329,8 @@ void GraphicsPSOManager::initTextures()
 }
 void GraphicsPSOManager::initMaterials()
 {
-	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO, "");
+	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY);
+	insertMaterial(keys::WORLD_COORD_MATERIAL, mDebugDrawWorldCoordPSO, "");
 	insertMaterial(keys::ZELDA1_MATERIAL, mBasicPSO, keys::ZELDA1_TEXTURE);
 	insertMaterial(keys::ZELDA2_MATERIAL, mBasicPSO, keys::ZELDA2_TEXTURE);
 	insertMaterial(keys::ZELDA3_MATERIAL, mBasicPSO, keys::ZELDA3_TEXTURE);
@@ -332,9 +368,13 @@ void GraphicsPSOManager::initPipelineStates()
 	mCubeMapPSO.mcpRS = mcpSolidRS;
 	mCubeMapPSO.mcpVertexShader = mCubeMapping.cpVertexShader;
 	mCubeMapPSO.mcpPixelShader = mCubeMapping.cpPixelShader;
-	mCubeMapPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+	mCubeMapPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mCubeMapPSO.mcpInputLayout = mCubeMapping.cpInputLayout;
 	mCubeMapPSO.mcpSampler = mcpPointWrapSampler;
+
+	mDebugDrawWorldCoordPSO.mcpRS = mcpSolidRS;
+	mDebugDrawWorldCoordPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+	mDebugDrawWorldCoordPSO.mcpSampler = mcpPointWrapSampler;
 }
 
 void GraphicsPSOManager::initCubeMap()
@@ -365,8 +405,8 @@ void GraphicsPSOManager::initCubeMap()
 	std::vector<Vertex3D> vertices;
 	std::vector<UINT> indices;
 
-	GeomatryGenerator::GetInstance().MakeBox(vertices, indices, 5.0f);
-	//std::reverse(indices.begin(), indices.end());
+	GeomatryGenerator::GetInstance().MakeBox(vertices, indices, 20.0f);
+	std::reverse(indices.begin(), indices.end());
 	pCubeMesh->InitVertexIndexBuffer<Vertex3D>(vertices, indices);
 }
 

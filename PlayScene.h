@@ -15,9 +15,9 @@ namespace jh
 	private:
 		void initCamera();
 		void initPlayer();
+		void initWorldCoord();
 		void initGround();
 		void initLight();
-		void initCubeMap();
 	};
 }
 

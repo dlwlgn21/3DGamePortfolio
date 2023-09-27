@@ -11,7 +11,7 @@
 
 #include "LightingManager.h"
 #include "CameraManager.h"
-
+#include "CubeMapManager.h"
 
 
 
@@ -47,6 +47,7 @@ const bool D3DApp::Initialize()
 	Time::Initialize();
 	SceneManager::GetInstance().Initialize();
 	LightingManager::GetInstance().Initialize();
+	CubeMapManager::GetInstance().Initialize();
 	if (!initGUI())
 	{
 		assert(false);
@@ -119,7 +120,7 @@ LRESULT D3DApp::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			return 0;
 		break;
 	case WM_MOUSEMOVE:
-		// cout << "Mouse " << LOWORD(lParam) << " " << HIWORD(lParam) << endl;
+		onMouseMove(wParam, LOWORD(lParam), HIWORD(lParam));
 		break;
 	case WM_LBUTTONUP:
 		// cout << "WM_LBUTTONUP Left mouse button" << endl;
@@ -154,16 +155,15 @@ void D3DApp::fixedUpdate()
 void D3DApp::updateGUI()
 {
 	static const float ANGLE = 180.0f;
-	auto& camera = CameraManager::GetInstance();
+	auto& camera = CameraManager::GetInstance().GetCamera();
 	auto& dirLight = LightingManager::GetInstance().GetDirectionalLight();
 	auto& dirLightPos = dirLight.GetOwner().GetTransform().GetPositionRef();
-
 	ImGui::Checkbox("IsUseTexture", LightingManager::GetInstance().GetIsUseTexture());
 	ImGui::Checkbox("IsDrawWireFrame", &mbIsDrawWire);
 	ImGui::Checkbox("IsDrawNormal", &mbIsDrawNormal);
-	ImGui::SliderFloat("Camera Pitch", &camera.GetRotation().x, -ANGLE, ANGLE);
-	ImGui::SliderFloat("Camera Roll", &camera.GetRotation().z, -ANGLE, ANGLE);
-	ImGui::SliderFloat("Camera Yaw", &camera.GetRotation().y, -ANGLE, ANGLE);
+	//ImGui::SliderFloat("Camera Pitch", &camera.GetTrasform().GetRotation().x, -ANGLE, ANGLE);
+	//ImGui::SliderFloat("Camera Roll", &camera.GetRotation().z, -ANGLE, ANGLE);
+	//ImGui::SliderFloat("Camera Yaw", &camera.GetRotation().y, -ANGLE, ANGLE);
 	ImGui::SliderFloat3("Light Translation", &dirLightPos.x, -10.0f, 10.0f);
 
 }
@@ -175,6 +175,20 @@ void D3DApp::render()
 	auto& gd = GraphicDeviceDX11::GetInstance();
 	gd.Clear();
 	SceneManager::GetInstance().Render();
+	CubeMapManager::GetInstance().Render();
+}
+
+void D3DApp::onMouseMove(WPARAM btnState, const int mouseX, const int mouseY)
+{
+	float x = mouseX * 2.0f / mScreenWidth - 1.0f;
+	float y = -mouseY * 2.0f / mScreenHeight + 1.0f;
+
+	// 커서가 화면 밖으로 나갔을 경우 범위 조절
+	// 게임에서는 클램프를 안할 수도 있습니다.
+	x = std::clamp(x, -1.0f, 1.0f);
+	y = std::clamp(y, -1.0f, 1.0f);
+
+	CameraManager::GetInstance().OnMouseMove(x, y);
 }
 
 const bool D3DApp::initializeWindow()
@@ -262,9 +276,9 @@ D3DApp::~D3DApp()
 {
 	SceneManager::GetInstance().Release();
 	GraphicsPSOManager::GetInstance().Release();
-	//ImGui_ImplDX11_Shutdown();
-	//ImGui_ImplWin32_Shutdown();
-	//ImGui::DestroyContext();
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 	GraphicDeviceDX11::GetInstance().Release();
 	DestroyWindow(mHwnd);
 }

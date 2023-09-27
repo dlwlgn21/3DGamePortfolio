@@ -37,6 +37,7 @@ private:
 	void fixedUpdate();
 	void updateGUI();
 	void render();
+	void onMouseMove(WPARAM btnState, const int mouseX, const int mouseY);
 
 private:
 	const bool initializeWindow();

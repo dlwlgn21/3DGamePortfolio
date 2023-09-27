@@ -56,7 +56,7 @@ void Light::InitLight(const eLightType eType)
 		assert(false);
 		break;
 	}
-	LightingManager::GetInstance().PushLight(*this);
+	LightingManager::GetInstance().PushLight(*this); 
 }
 
 }

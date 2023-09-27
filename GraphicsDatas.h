@@ -33,10 +33,10 @@ namespace jh::graphics
 	struct alignas(SIMD_ALIGN_SIZE) GrapicsLight
 	{
 		DirectX::SimpleMath::Vector3	LightStrengh;
-		DirectX::SimpleMath::Vector3	LightDirection;
-		DirectX::SimpleMath::Vector3	LightPosition;
 		float							LightFallOffStart;
+		DirectX::SimpleMath::Vector3	LightDirection;
 		float							LightFallOffEnd;
+		DirectX::SimpleMath::Vector3	LightPosition;
 		float							LightSpotPower;
 	};
 

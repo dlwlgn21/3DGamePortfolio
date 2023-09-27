@@ -14,6 +14,7 @@ namespace jh::graphics::keys
 	static const std::string ZELDA6_MATERIAL = "zma6";
 	static const std::string ZELDA7_MATERIAL = "zma7";
 	static const std::string CUBE_MAP_MATERIAL = "cubeMat";
+	static const std::string WORLD_COORD_MATERIAL = "wcMat";
 
 	static const std::string ZELDA1_MESH = "zm1";
 	static const std::string ZELDA2_MESH = "zm2";
@@ -40,5 +41,6 @@ namespace jh::graphics::keys
 	static const std::string BOX_MESH_KEY = "box";
 	static const std::string SPEHERE_MESH_KEY = "spehere";
 	static const std::string MONKEY_MESH_KEY = "monkey";
+	static const std::string WORLD_COORD_MESH_KEY = "wc";
 
 }

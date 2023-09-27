@@ -49,6 +49,7 @@ private:
 public:
 	GraphicsPSO											mBasicPSO;
 	GraphicsPSO											mDebugDrawNormalPSO;
+	GraphicsPSO											mDebugDrawWorldCoordPSO;
 	GraphicsPSO											mCubeMapPSO;
 	CubeMapping											mCubeMapping;
 

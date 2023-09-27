@@ -17,7 +17,6 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "CameraScript.h"
-#include "MovingScript.h"
 #include "MeshRenderer.h"
 #include "Light.h"
 
@@ -35,10 +34,10 @@ PlayScene::PlayScene()
 void PlayScene::Initialize()
 {
 	initCamera();
-	//initPlayer(); 
-	initGround();
+	initPlayer(); 
+	//initGround();
+	initWorldCoord();
 	initLight();
-	//initCubeMap();
 	Scene::Initialize();
 }
 void PlayScene::Update()
@@ -55,7 +54,7 @@ void PlayScene::initCamera()
 	spCameraGameObject->AddScript(eScriptType::MOVING, std::make_unique<CameraScript>());
 
 	assert(pTestCamera != nullptr);
-	spCameraGameObject->GetTransform().SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+	spCameraGameObject->GetTransform().SetPosition(Vector3(0.0f, 0.0f, -2.0f));
 
 	AddGameObject(spCameraGameObject, eLayerType::CAMERA);
 	LightingManager::GetInstance().SetCamera(*pTestCamera);
@@ -115,11 +114,20 @@ void PlayScene::initPlayer()
 	}
 }
 
+void PlayScene::initWorldCoord()
+{
+	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
+	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
+	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::WORLD_COORD_MESH_KEY));
+	renderer.SetMaterial(ResourcesManager::Find<Material>(keys::WORLD_COORD_MATERIAL));
+	AddGameObject(spSqureGameObject, eLayerType::PARTICLE);
+}
+
 void PlayScene::initGround()
 {
 	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::SPEHERE_MESH_KEY));
+	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::BOX_MESH_KEY));
 	renderer.SetMaterial(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
 	AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 }
@@ -129,21 +137,16 @@ void PlayScene::initLight()
 	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 	spSqureGameObject->SetName("DirectionalLight");
 	auto& transform = spSqureGameObject->GetTransform();
-	transform.SetPosition(Vector3(0.0f, 0.0f, -2.0f));
+	transform.SetPosition(Vector3(0.0f, 00.0f, -10.0f));
 	auto& light = static_cast<Light&>(spSqureGameObject->AddComponent(eComponentType::LIGHT, std::make_unique<Light>()));
 	light.InitLight(eLightType::DIRECTIONAL);
+	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
+	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::SPEHERE_MESH_KEY));
+	renderer.SetMaterial(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
 	AddGameObject(spSqureGameObject, eLayerType::LIGHT);
 }
 
-void PlayScene::initCubeMap()
-{
-	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-	spSqureGameObject->SetName("CubeMap");
-	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::CUBE_MAP_MESH));
-	renderer.SetMaterial(ResourcesManager::Find<Material>(keys::CUBE_MAP_MATERIAL));
-	AddGameObject(spSqureGameObject, eLayerType::CUBE_MAP);
-}
+
 
 
 }

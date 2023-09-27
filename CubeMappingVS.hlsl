@@ -1,19 +1,30 @@
-#include "VSCommon.hlsli"
+struct VertexInput
+{
+    float3 Position : POSITION;
+};
 
+struct VertexOutput
+{
+    float4 PositionProjection : SV_Position;
+    float3 PositionWorld : POSITION;
+};
+
+cbuffer TransformBuffer : register(b0)
+{
+    matrix CBWorldMat;
+    matrix CBWorldInvTransposedMat;
+    matrix CBViewMat;
+    matrix CBProjectionMat;
+}
 VertexOutput main(VertexInput Input)
 {
     VertexOutput output;
-    //float4 worldPos = mul(float4(Input.Position, 1.0), CBWorldMat); // Ientity
+    float4 worldPos = mul(float4(Input.Position, 1.0), CBWorldMat); // Ientity
     output.PositionWorld = Input.Position;
     
-    
-    float4 viewPos = mul(float4(output.PositionWorld, 1.0f), CBViewMat);
+    float4 viewPos = mul(worldPos, CBViewMat);
     float4 projectionPos = mul(viewPos, CBProjectionMat);
     output.PositionProjection = projectionPos;
-    output.UV = Input.UV;
-    
-    float4 normal = float4(Input.Normal, 0.0f);
-    output.NormalWorld = normalize(mul(normal, CBWorldInvTransposedMat).xyz);
     
     return output;
 }
