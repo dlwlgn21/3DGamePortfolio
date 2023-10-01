@@ -149,7 +149,6 @@ void D3DApp::update()
 void D3DApp::fixedUpdate()
 {
 	SceneManager::GetInstance().FixedUpdate();
-	LightingManager::GetInstance().FixedUpdate();
 }
 
 void D3DApp::updateGUI()
@@ -158,7 +157,8 @@ void D3DApp::updateGUI()
 	auto& camera = CameraManager::GetInstance().GetCamera();
 	auto& dirLight = LightingManager::GetInstance().GetDirectionalLight();
 	auto& dirLightPos = dirLight.GetOwner().GetTransform().GetPositionRef();
-	ImGui::Checkbox("IsUseTexture", LightingManager::GetInstance().GetIsUseTexture());
+	ImGui::Checkbox("IsUseDiffuseTexture", LightingManager::GetInstance().GetIsUseDuffuseTexture());
+	ImGui::Checkbox("IsUseNormalTexture", LightingManager::GetInstance().GetIsUseNormalTexture());
 	ImGui::Checkbox("IsDrawWireFrame", &mbIsDrawWire);
 	ImGui::Checkbox("IsDrawNormal", &mbIsDrawNormal);
 	//ImGui::SliderFloat("Camera Pitch", &camera.GetTrasform().GetRotation().x, -ANGLE, ANGLE);

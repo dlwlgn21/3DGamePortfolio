@@ -34,8 +34,8 @@ PlayScene::PlayScene()
 void PlayScene::Initialize()
 {
 	initCamera();
-	initPlayer(); 
-	//initGround();
+	//initPlayer(); 
+	initBox();
 	initWorldCoord();
 	initLight();
 	Scene::Initialize();
@@ -123,7 +123,7 @@ void PlayScene::initWorldCoord()
 	AddGameObject(spSqureGameObject, eLayerType::PARTICLE);
 }
 
-void PlayScene::initGround()
+void PlayScene::initBox()
 {
 	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
@@ -135,15 +135,15 @@ void PlayScene::initGround()
 void PlayScene::initLight()
 {
 	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-	spSqureGameObject->SetName("DirectionalLight");
+	spSqureGameObject->SetName("Point");
 	auto& transform = spSqureGameObject->GetTransform();
-	transform.SetPosition(Vector3(0.0f, 00.0f, -10.0f));
+	transform.SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 	auto& light = static_cast<Light&>(spSqureGameObject->AddComponent(eComponentType::LIGHT, std::make_unique<Light>()));
-	light.InitLight(eLightType::DIRECTIONAL);
+	light.InitLight(eLightType::POINT);
 	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
 	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::SPEHERE_MESH_KEY));
 	renderer.SetMaterial(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
-	AddGameObject(spSqureGameObject, eLayerType::LIGHT);
+	AddGameObject(spSqureGameObject, eLayerType::LIGHT); 
 }
 
 

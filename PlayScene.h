@@ -16,7 +16,7 @@ namespace jh
 		void initCamera();
 		void initPlayer();
 		void initWorldCoord();
-		void initGround();
+		void initBox();
 		void initLight();
 	};
 }

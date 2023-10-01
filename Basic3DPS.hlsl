@@ -15,6 +15,7 @@ SamplerState PointSampler : register(s0);
 Texture2D DiffuseTexture : register(t0);
 Texture2D AmbientTexture : register(t1);
 Texture2D SpecularTexture : register(t2);
+Texture2D NormalTexture : register(t3);
 
 struct Material
 {
@@ -37,7 +38,10 @@ struct Light
 cbuffer LighthingConstantBuffer : register(b1)
 {
     float4          CBEyeWorld;
-    int             CBIsUseTexture;
+    int             CBIsUseDiffuseTexture;
+    int             CBIsUseAmbientTexture;
+    int             CBIsUseSpecularTexture;
+    int             CBIsUseNormalTexture;
     Material        CBMaterial;
     Light           CBLight[MAX_LIGHTS];
 }
@@ -119,27 +123,39 @@ float4 main(PixelInput Input) : SV_TARGET
     
     int i = 0;
     
-    [unroll]
-    for (i = 0; i < NUM_DIR_LIGHTS; ++i)
+    float3 normalWorld = Input.NormalWorld;
+    if (CBIsUseNormalTexture == 1)
     {
-        color += ComputeDirectionalLight(CBLight[i], CBMaterial, Input.NormalWorld, toEyeDirVec);
+        float3 normalTex = NormalTexture.Sample(PointSampler, Input.UV).rgb;
+        normalTex = 2.0 * normalTex - 1.0;
+        float3 T = float3(1.0, 0.0, 0.0);
+        float3 B = float3(0.0, -1.0, 0.0);
+        float3 N = float3(0.0, 0.0, -1.0);
+        float3x3 TBN = float3x3(T, B, N);
+        normalWorld = normalize(mul(normalTex, TBN));
     }
     
     //[unroll]
-    //for (i = NUM_DIR_LIGHTS; i < NUM_DIR_LIGHTS + NUM_POINT_LIGHTS; ++i)
+    //for (i = 0; i < NUM_DIR_LIGHTS; ++i)
     //{
-    //    color += ComputePointLight(CBLight[i], CBMaterial, Input.PositionWorld, Input.NormalWorld, toEyeDirVec);
+    //    color += ComputeDirectionalLight(CBLight[i], CBMaterial, normalWorld, toEyeDirVec);
     //}
+    
+    [unroll]
+    for (i = NUM_DIR_LIGHTS; i < NUM_DIR_LIGHTS + NUM_POINT_LIGHTS; ++i)
+    {
+        color += ComputePointLight(CBLight[i], CBMaterial, Input.PositionWorld, normalWorld, toEyeDirVec);
+    }
     
     //[unroll]
     //for (i = NUM_DIR_LIGHTS + NUM_POINT_LIGHTS; i < NUM_DIR_LIGHTS + NUM_POINT_LIGHTS + NUM_SPOT_LIGHTS; ++i)
     //{
-    //    color += ComputeSpotLight(CBLight[i], CBMaterial, Input.PositionWorld, Input.NormalWorld, toEyeDirVec);
+    //    color += ComputeSpotLight(CBLight[i], CBMaterial, Input.PositionWorld, normalWorld, toEyeDirVec);
     //}
     
     //return float4(color, 1.0);
     //return float4(1.0, 1.0, 1.0, 1.0);
-    return CBIsUseTexture == 1 ? float4(color, 1.0) * DiffuseTexture.Sample(PointSampler, Input.UV) : float4(color, 1.0);
+    return CBIsUseDiffuseTexture == 1 ? float4(color, 1.0) * DiffuseTexture.Sample(PointSampler, Input.UV) : float4(color, 1.0);
     //return float4(Input.Color, 1.0);
     
 }

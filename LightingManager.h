@@ -20,16 +20,16 @@ public:
 	LightingManager& operator=(const LightingManager& other) = delete;
 
 	void Initialize();
-	void FixedUpdate();
 	void SetCamera(Camera& camera);
 	void PushLight(Light& light);
+	void UpdateConstantBuffer();
 
-	bool* GetIsUseTexture() { return &mbIsUseTexture; }
+	bool* GetIsUseDuffuseTexture() { return &mbIsUseDiffseTexture; }
+	bool* GetIsUseNormalTexture() { return &mbIsUseNormalTexture; }
 
 	Light& GetDirectionalLight() { return *mpLights[0]; }
 
 private:
-	void updateConstantBuffer();
 
 private:
 	LightingManager() = default;
@@ -39,7 +39,8 @@ private:
 	std::vector<Light*>					mpLights;
 	jh::graphics::GrapicsMaterial		mMaterial = { };
 	Camera*								mpCamera = nullptr;
-	bool								mbIsUseTexture = false;
+	bool								mbIsUseDiffseTexture = false;
+	bool								mbIsUseNormalTexture = false;
 };
 
 }

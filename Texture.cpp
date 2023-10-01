@@ -61,6 +61,9 @@ namespace jh::graphics
 		case eTextureType::AMBIENT:
 			gdc.PSSetShaderResources(2, 1, mcpSRV.GetAddressOf());
 			break;
+		case eTextureType::NORMAL:
+			gdc.PSSetShaderResources(3, 1, mcpSRV.GetAddressOf());
+			break;
 		default:
 			assert(false);
 			break;

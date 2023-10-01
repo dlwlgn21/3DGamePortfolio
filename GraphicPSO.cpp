@@ -8,7 +8,7 @@ namespace jh::graphics
 		mcpSampler.Reset();
 		mcpInputLayout.Reset();
 		mcpPixelShader.Reset();
-		mcpVertexShader.Reset();
+		mcpVertexShader.Reset();  
 	}
 	void GraphicsPSO::operator=(const GraphicsPSO& pso)
 	{

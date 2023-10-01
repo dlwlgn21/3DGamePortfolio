@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "GraphicDeviceDX11.h"
 #include "GraphicsPSOManager.h"
+#include "LightingManager.h"
 #include "D3DApp.h"
 
 using namespace jh::enums;
@@ -66,7 +67,7 @@ void Material::SetPipeline()
 			mpTextures[i]->PSSetSRV();
 		}
 	}
-
+	LightingManager::GetInstance().UpdateConstantBuffer();
 
 }
 

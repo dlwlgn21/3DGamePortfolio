@@ -4,6 +4,7 @@
 namespace jh::graphics::keys
 {
 	static const std::string BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY = "t1";
+	static const std::string BASIC_3D_NORMAL_TEXTURE_KEY = "normalT";
 	static const std::string MONKEY_DIFFUSE_TEXTURE_KEY = "monkeytex";
 
 	static const std::string ZELDA1_MATERIAL = "zma1";

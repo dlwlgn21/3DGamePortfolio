@@ -51,7 +51,10 @@ namespace jh::graphics
 	struct alignas(SIMD_ALIGN_SIZE) LighthingConstantCPUBuffer
 	{
 		DirectX::SimpleMath::Vector4	CBEyeWorld;
-		int								CBIsUseTexture;
+		int								CBIsUseDiffuseTexture;
+		int								CBIsUseAmbientTexture;
+		int								CBIsUseSpecularTexture;
+		int								CBIsUseNormalTexture;
 		GrapicsMaterial					CBMaterial;
 		GrapicsLight					CBLight[MAX_LIGHTS];
 	};
@@ -79,6 +82,7 @@ namespace jh::graphics
 		DIFFUSE,
 		AMBIENT,
 		SPECULAR,
+		NORMAL,
 		COUNT
 	};
 }

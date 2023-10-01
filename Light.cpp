@@ -49,7 +49,7 @@ void Light::InitLight(const eLightType eType)
 	{
 		mLightInfo.LightFallOffStart = 1.0f;
 		mLightInfo.LightFallOffEnd = 10.0f;
-		mLightInfo.LightSpotPower = 10.0f;
+		mLightInfo.LightSpotPower = 10.0f; 
 		break;
 	}
 	default:
