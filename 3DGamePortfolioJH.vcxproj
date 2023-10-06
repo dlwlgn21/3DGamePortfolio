@@ -138,6 +138,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightingManager.h" />
     <ClInclude Include="MeshData.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="MoveableGameObject.h" />
     <ClInclude Include="Camera.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="CubeMapManager.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightingManager.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="MoveableGameObject.cpp" />
     <ClCompile Include="Camera.cpp" />

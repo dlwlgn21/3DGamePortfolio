@@ -21,6 +21,20 @@ namespace jh::graphics
 		DirectX::SimpleMath::Vector2 UV;
 	};
 
+	struct SkinedVertex
+	{
+		DirectX::SimpleMath::Vector3 Pos;
+		DirectX::SimpleMath::Vector3 Normal;
+		DirectX::SimpleMath::Vector2 UV;
+		DirectX::SimpleMath::Vector3 TangentModel;
+
+		float BlendWeights[8] = { 0.0f, }; // 버텍스가 본의 움직임에 영향을 받는 가중치.
+		uint8_t BoneIndicies[8] = { 0, };  // 버텍스가 영향을 받는 본의 인덱스
+
+		// 캐릭터 하나를 표현하는 Bone의 수가 최대 256개라고 가정. 그래서 uint8_t. 보통 5~60개 정도임.
+		// fbx파일에는 이런 정보가 포함이 되어있어서 그걸 읽어들인 다음에 렌더링 해야함.
+	};
+
 
 	struct alignas(SIMD_ALIGN_SIZE) GrapicsMaterial
 	{

@@ -64,6 +64,7 @@ enum class eResourceType
 	SOUND,
 	PREFAB,
 	MESH_DATA,
+	MODEL,
 	GRAPHIC_SHADER,
 	COMPUTE_SHADER,
 	AUDIO_CLIP,

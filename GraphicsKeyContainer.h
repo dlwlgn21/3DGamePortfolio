@@ -24,6 +24,7 @@ namespace jh::graphics::keys
 	static const std::string ZELDA5_MESH = "zm5";
 	static const std::string ZELDA6_MESH = "zm6";
 	static const std::string ZELDA7_MESH = "zm7";
+	static const std::string ZELDA_MODEL = "zelModel";
 	static const std::string CUBE_MAP_MESH = "cubeMesh";
 
 	static const std::string ZELDA1_TEXTURE = "zt1";

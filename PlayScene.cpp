@@ -34,9 +34,9 @@ PlayScene::PlayScene()
 void PlayScene::Initialize()
 {
 	initCamera();
-	//initPlayer(); 
-	initBox();
-	initWorldCoord();
+	initPlayer(); 
+	//initBox();
+	//initWorldCoord();
 	initLight();
 	Scene::Initialize();
 }
@@ -66,70 +66,27 @@ void PlayScene::initPlayer()
 	{
 		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::ZELDA1_MESH));
-		renderer.SetMaterial(ResourcesManager::Find<Material>(keys::ZELDA1_MATERIAL));
-		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
-	}
-	{
-		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::ZELDA2_MESH));
-		renderer.SetMaterial(ResourcesManager::Find<Material>(keys::ZELDA2_MATERIAL));
-		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
-	}
-	{
-		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::ZELDA3_MESH));
-		renderer.SetMaterial(ResourcesManager::Find<Material>(keys::ZELDA3_MATERIAL));
-		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
-	}
-	{
-		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::ZELDA4_MESH));
-		renderer.SetMaterial(ResourcesManager::Find<Material>(keys::ZELDA4_MATERIAL));
-		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
-	}
-	{
-		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::ZELDA5_MESH));
-		renderer.SetMaterial(ResourcesManager::Find<Material>(keys::ZELDA5_MATERIAL));
-		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
-	}
-	{
-		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::ZELDA6_MESH));
-		renderer.SetMaterial(ResourcesManager::Find<Material>(keys::ZELDA6_MATERIAL));
-		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
-	}
-	{
-		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::ZELDA7_MESH));
-		renderer.SetMaterial(ResourcesManager::Find<Material>(keys::ZELDA7_MATERIAL));
+		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::ZELDA_MODEL));
 		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 	}
 }
 
 void PlayScene::initWorldCoord()
 {
-	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::WORLD_COORD_MESH_KEY));
-	renderer.SetMaterial(ResourcesManager::Find<Material>(keys::WORLD_COORD_MATERIAL));
-	AddGameObject(spSqureGameObject, eLayerType::PARTICLE);
+	//std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
+	//auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
+	//renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::WORLD_COORD_MESH_KEY));
+	//renderer.SetMaterial(ResourcesManager::Find<Material>(keys::WORLD_COORD_MATERIAL));
+	//AddGameObject(spSqureGameObject, eLayerType::PARTICLE);
 }
 
 void PlayScene::initBox()
 {
-	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::BOX_MESH_KEY));
-	renderer.SetMaterial(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
-	AddGameObject(spSqureGameObject, eLayerType::MONSTER);
+	//std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
+	//auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
+	//renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::BOX_MESH_KEY));
+	//renderer.SetMaterial(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
+	//AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 }
 
 void PlayScene::initLight()
@@ -140,9 +97,9 @@ void PlayScene::initLight()
 	transform.SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 	auto& light = static_cast<Light&>(spSqureGameObject->AddComponent(eComponentType::LIGHT, std::make_unique<Light>()));
 	light.InitLight(eLightType::POINT);
-	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-	renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::SPEHERE_MESH_KEY));
-	renderer.SetMaterial(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
+	//auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
+	//renderer.SetMesh(ResourcesManager::Find<jh::graphics::Mesh>(keys::SPEHERE_MESH_KEY));
+	//renderer.SetMaterial(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
 	AddGameObject(spSqureGameObject, eLayerType::LIGHT); 
 }
 

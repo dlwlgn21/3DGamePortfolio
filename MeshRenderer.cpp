@@ -2,7 +2,6 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "GraphicDeviceDX11.h"
-#include "D3DApp.h"
 
 
 using namespace jh::enums;
@@ -19,15 +18,9 @@ MeshRenderer::MeshRenderer()
 }
 void MeshRenderer::Render()
 {
-	assert(mpMesh != nullptr && mpMaterial != nullptr);
+	assert(mpModel != nullptr);
 	GetOwner().GetTransform().UpdateConstantBuffer();
-	mpMaterial->SetPipeline();
-	mpMesh->Render(); 
-	if (D3DApp::GetInstance().IsDrawNormal())
-	{
-		mpMesh->DebugNormalRender();
-	}
-	mpMaterial->ClearPipeline();
+	mpModel->Render();
 }
 
 
