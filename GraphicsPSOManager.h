@@ -37,6 +37,7 @@ private:
 	void initSamplers();
 	void initTextures();
 	void initMaterials();
+	void initModels();
 	void initPipelineStates();
 
 	void loadAndInsertTexture(const eTextureType, const std::string& key, const std::wstring& fileName);

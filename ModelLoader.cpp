@@ -40,7 +40,7 @@ void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, Matrix tr)
     for (int t = 0; t < 16; t++)
     {
         mTemp[t] = float(temp[t]);
-    }
+    } 
     m = m.Transpose() * tr;
 
     for (UINT i = 0; i < node->mNumMeshes; i++) 

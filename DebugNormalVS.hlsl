@@ -20,7 +20,7 @@ DebugVertexOutput main(VertexInput Input)
     
     pos = mul(pos, CBWorldMat);
     
-    float t = Input.UV.x;
+    float t = Input.UV.x * 0.01;
     
     pos.xyz += output.NormalWorld * t;
 

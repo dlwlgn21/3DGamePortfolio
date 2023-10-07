@@ -62,7 +62,7 @@ void LightingManager::UpdateConstantBuffer()
 		}
 
 		cpuBuffer.CBLight[1] = l->mLightInfo;
-		cpuBuffer.CBMaterial = mMaterial;
+		cpuBuffer.CBMaterial = mMaterial; 
 	}
 
 	gpuBuffer.UpdateBuffer(&cpuBuffer);
