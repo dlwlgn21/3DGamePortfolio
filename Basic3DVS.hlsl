@@ -15,5 +15,8 @@ VertexOutput main(VertexInput Input)
     float4 normal = float4(Input.Normal, 0.0f);
     output.NormalWorld = normalize(mul(normal, CBWorldInvTransposedMat).xyz);
     
+    float4 tangentWorld = mul(float4(Input.TangentModel, 0.0), CBWorldMat);
+    output.TangentWorld = tangentWorld.xyz;
+    
     return output;
 }

@@ -46,14 +46,16 @@ void GraphicsPSOManager::Release()
 
 void GraphicsPSOManager::initMesh()
 {
+	using namespace jh::graphics;
+
 	auto& geoGenerator = GeomatryGenerator::GetInstance();
-	Mesh* pBoxMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::BOX_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
+	Mesh* pBoxMesh = ResourcesManager::InsertOrNull<Mesh>(keys::BOX_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
 	std::vector<Vertex3D> boxVertices;
 	std::vector<UINT> indices;
 	geoGenerator.MakeBox(boxVertices, indices);
 	pBoxMesh->InitVertexIndexBuffer<Vertex3D>(boxVertices, indices);
 
-	Mesh* pSpehereMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::SPEHERE_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
+	Mesh* pSpehereMesh = ResourcesManager::InsertOrNull<Mesh>(keys::SPEHERE_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
 	std::vector<Vertex3D> sphereVertices;
 	indices.clear();
 	geoGenerator.MakeSphere(sphereVertices, indices, 0.2f, 10, 10);
@@ -62,7 +64,7 @@ void GraphicsPSOManager::initMesh()
 	{
 		std::vector<Vertex3D> wcVertices;
 		std::vector<UINT> wcIndices;
-		Mesh* pWcMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::WORLD_COORD_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
+		Mesh* pWcMesh = ResourcesManager::InsertOrNull<Mesh>(keys::WORLD_COORD_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
 		geoGenerator.MakeWorldCoordinate(wcVertices, wcIndices, 5.0f);
 		pWcMesh->InitVertexIndexBuffer<Vertex3D>(wcVertices, wcIndices); 
 
@@ -70,47 +72,68 @@ void GraphicsPSOManager::initMesh()
 
 
 	{
-		Mesh* pMonkeyMesh = ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::MONKEY_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
-		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "Monkey.obj");
-		pMonkeyMesh->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
+		//Mesh* pMonkeyMesh = ResourcesManager::InsertOrNull<Mesh>(keys::MONKEY_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
+		//std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "Monkey.obj");
+		//pMonkeyMesh->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
 	}
 
 
 #pragma region ZELDA_MODEL
 	{
-		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "zeldaPosed001.fbx");
+		//std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "zeldaPosed001.fbx");
 
-		std::vector<jh::graphics::Mesh*> pMeshs;
-		pMeshs.reserve(meshDatas.size());
-		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::ZELDA1_MESH, std::make_unique<jh::graphics::Mesh>())
-			->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA1_TEXTURE, meshDatas[0].TextureFileFullPath);
-		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::ZELDA2_MESH, std::make_unique<jh::graphics::Mesh>())
-			->InitVertexIndexBuffer(meshDatas[1].Vertices, meshDatas[1].Indices);
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA2_TEXTURE, meshDatas[1].TextureFileFullPath);
-		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-			keys::ZELDA3_MESH, std::make_unique<jh::graphics::Mesh>()
-			)->InitVertexIndexBuffer(meshDatas[2].Vertices, meshDatas[2].Indices);
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA3_TEXTURE, meshDatas[2].TextureFileFullPath);
-		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-			keys::ZELDA4_MESH, std::make_unique<jh::graphics::Mesh>()
-			)->InitVertexIndexBuffer(meshDatas[3].Vertices, meshDatas[3].Indices);
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA4_TEXTURE, meshDatas[3].TextureFileFullPath);
-		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-			keys::ZELDA5_MESH, std::make_unique<jh::graphics::Mesh>()
-			)->InitVertexIndexBuffer(meshDatas[4].Vertices, meshDatas[4].Indices);
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA5_TEXTURE, meshDatas[4].TextureFileFullPath);
-		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-			keys::ZELDA6_MESH, std::make_unique<jh::graphics::Mesh>()
-			)->InitVertexIndexBuffer(meshDatas[5].Vertices, meshDatas[5].Indices);
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA6_TEXTURE, meshDatas[5].TextureFileFullPath);
-		ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-			keys::ZELDA7_MESH, std::make_unique<jh::graphics::Mesh>()
-			)->InitVertexIndexBuffer(meshDatas[6].Vertices, meshDatas[6].Indices);
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA7_TEXTURE, meshDatas[6].TextureFileFullPath);
+		//std::vector<jh::graphics::Mesh*> pMeshs;
+		//pMeshs.reserve(meshDatas.size());
+		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::ZELDA1_MESH, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA1_TEXTURE, meshDatas[0].TextureFileFullPath);
+		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::ZELDA2_MESH, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer(meshDatas[1].Vertices, meshDatas[1].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA2_TEXTURE, meshDatas[1].TextureFileFullPath);
+		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+		//	keys::ZELDA3_MESH, std::make_unique<jh::graphics::Mesh>()
+		//	)->InitVertexIndexBuffer(meshDatas[2].Vertices, meshDatas[2].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA3_TEXTURE, meshDatas[2].TextureFileFullPath);
+		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+		//	keys::ZELDA4_MESH, std::make_unique<jh::graphics::Mesh>()
+		//	)->InitVertexIndexBuffer(meshDatas[3].Vertices, meshDatas[3].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA4_TEXTURE, meshDatas[3].TextureFileFullPath);
+		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+		//	keys::ZELDA5_MESH, std::make_unique<jh::graphics::Mesh>()
+		//	)->InitVertexIndexBuffer(meshDatas[4].Vertices, meshDatas[4].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA5_TEXTURE, meshDatas[4].TextureFileFullPath);
+		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+		//	keys::ZELDA6_MESH, std::make_unique<jh::graphics::Mesh>()
+		//	)->InitVertexIndexBuffer(meshDatas[5].Vertices, meshDatas[5].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA6_TEXTURE, meshDatas[5].TextureFileFullPath);
+		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
+		//	keys::ZELDA7_MESH, std::make_unique<jh::graphics::Mesh>()
+		//	)->InitVertexIndexBuffer(meshDatas[6].Vertices, meshDatas[6].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA7_TEXTURE, meshDatas[6].TextureFileFullPath);
 	}
 #pragma endregion
 
+#pragma region FEMALE_SOLDER
+	{
+		std::string relativePath = "Assets\\Characters\\armored-female-future-soldier\\";
+		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "angel_armor.fbx");
+		std::vector<jh::graphics::Mesh*> pMeshs;
+		pMeshs.reserve(meshDatas.size());
+
+		std::string diffuseFullPath = relativePath + "angel_armor_albedo.jpg";
+		std::string normalFullPath = relativePath + "angel_armor_normal.jpg";
+
+		meshDatas[0].DiffuseTextureFileFullPath = std::wstring(diffuseFullPath.begin(), diffuseFullPath.end());
+		meshDatas[0].NormalTextureFileFullPath = std::wstring(normalFullPath.begin(), normalFullPath.end());
+
+		ResourcesManager::InsertOrNull<Mesh>(keys::FEMALE_SOLDER_MESH, std::make_unique<jh::graphics::Mesh>())
+			->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
+		std::cout << diffuseFullPath << std::endl;
+		std::cout << normalFullPath << std::endl;
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::FEMALE_SOLDER_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
+		loadAndInsertTexture(eTextureType::NORMAL, keys::FEMALE_SOLDER_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
+	}
+#pragma endregion
 
 }
 void GraphicsPSOManager::initShaders()
@@ -123,6 +146,8 @@ void GraphicsPSOManager::initShaders()
 			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 4 * 3,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
 			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3 + 4 * 3,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"TANGENT", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3 + 4 * 3 + 4 * 2,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 
@@ -192,7 +217,7 @@ void GraphicsPSOManager::initShaders()
 			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3 + 4 * 3,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
-
+		  
 		D3D11Utils::CreateVertexShaderAndInputLayout(
 			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
 			L"DebugNormalVS.hlsl",
@@ -330,52 +355,70 @@ void GraphicsPSOManager::initMaterials()
 {
 	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY);
 	insertMaterial(keys::WORLD_COORD_MATERIAL, mDebugDrawWorldCoordPSO, "");
-	insertMaterial(keys::ZELDA1_MATERIAL, mBasicPSO, keys::ZELDA1_TEXTURE);
-	insertMaterial(keys::ZELDA2_MATERIAL, mBasicPSO, keys::ZELDA2_TEXTURE);
-	insertMaterial(keys::ZELDA3_MATERIAL, mBasicPSO, keys::ZELDA3_TEXTURE);
-	insertMaterial(keys::ZELDA4_MATERIAL, mBasicPSO, keys::ZELDA4_TEXTURE);
-	insertMaterial(keys::ZELDA5_MATERIAL, mBasicPSO, keys::ZELDA5_TEXTURE);
-	insertMaterial(keys::ZELDA6_MATERIAL, mBasicPSO, keys::ZELDA6_TEXTURE);
-	insertMaterial(keys::ZELDA7_MATERIAL, mBasicPSO, keys::ZELDA7_TEXTURE);
+
+#pragma region ZELDA
+	//insertMaterial(keys::ZELDA1_MATERIAL, mBasicPSO, keys::ZELDA1_TEXTURE);
+	//insertMaterial(keys::ZELDA2_MATERIAL, mBasicPSO, keys::ZELDA2_TEXTURE);
+	//insertMaterial(keys::ZELDA3_MATERIAL, mBasicPSO, keys::ZELDA3_TEXTURE);
+	//insertMaterial(keys::ZELDA4_MATERIAL, mBasicPSO, keys::ZELDA4_TEXTURE);
+	//insertMaterial(keys::ZELDA5_MATERIAL, mBasicPSO, keys::ZELDA5_TEXTURE);
+	//insertMaterial(keys::ZELDA6_MATERIAL, mBasicPSO, keys::ZELDA6_TEXTURE);
+	//insertMaterial(keys::ZELDA7_MATERIAL, mBasicPSO, keys::ZELDA7_TEXTURE);
+#pragma endregion
+
+#pragma region FEMALE_SOLDER
+	{
+		insertMaterial(keys::FEMALE_SOLDER_MATERIAL, mBasicPSO, "");
+		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_DIFFUSE_TEXTURE);
+		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_NORMAL_TEXTURE);
+		Material* pMat = ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL);
+		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
+		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
+	}
+#pragma endregion
+
+
 	insertMaterial(keys::CUBE_MAP_MATERIAL, mCubeMapPSO, keys::CUBE_MAP_TEXTURE);
 
 	// Normal
-	Texture* p3DBasicNormalTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_NORMAL_TEXTURE_KEY);
-	Material* pMat = ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY);
-	pMat->SetTexture(eTextureType::NORMAL, p3DBasicNormalTex);
+	{
+		Texture* p3DBasicNormalTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_NORMAL_TEXTURE_KEY);
+		Material* pMat = ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY);
+		pMat->SetTexture(eTextureType::NORMAL, p3DBasicNormalTex);
+	}
 }
 
 void GraphicsPSOManager::initModels()
 {
 #pragma region ZELDA_MODEL
 	{
-		Model* pZeldaModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::ZELDA_MODEL, std::make_unique<Model>());
-		std::vector<Material*> pMaterials;
-		std::vector<Mesh*> pMeshs;
-		pMeshs.reserve(7);
-		pMaterials.reserve(7);
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA1_MATERIAL));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA2_MATERIAL));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA3_MATERIAL));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA4_MATERIAL));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA5_MATERIAL));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA6_MATERIAL));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA7_MATERIAL));
-		ResourcesManager::Find<Model>(keys::ZELDA_MODEL)->InitMaterials(pMaterials);
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA1_MESH));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA2_MESH));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA3_MESH));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA4_MESH));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA5_MESH));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA6_MESH));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA7_MESH));
-		{
-			for (auto* pMesh : pMeshs)
-			{
-				assert(pMesh != nullptr);
-			}
-		}
-		pZeldaModel->InitMeshes(pMeshs);
+		//Model* pZeldaModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::ZELDA_MODEL, std::make_unique<Model>());
+		//std::vector<Material*> pMaterials;
+		//std::vector<Mesh*> pMeshs;
+		//pMeshs.reserve(7);
+		//pMaterials.reserve(7);
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA1_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA2_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA3_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA4_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA5_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA6_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA7_MATERIAL));
+		//ResourcesManager::Find<Model>(keys::ZELDA_MODEL)->InitMaterials(pMaterials);
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA1_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA2_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA3_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA4_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA5_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA6_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA7_MESH));
+		//{
+		//	for (auto* pMesh : pMeshs)
+		//	{
+		//		assert(pMesh != nullptr);
+		//	}
+		//}
+		//pZeldaModel->InitMeshes(pMeshs);
 	}
 #pragma endregion
 
@@ -412,6 +455,20 @@ void GraphicsPSOManager::initModels()
 		pMaterials.push_back(ResourcesManager::Find<Material>(keys::WORLD_COORD_MATERIAL));
 		pWorldCoordModel->InitMeshes(pMeshes);
 		pWorldCoordModel->InitMaterials(pMaterials);
+	}
+#pragma endregion
+
+#pragma region FEMALE_SOLDER
+	{
+		Model* pSolderModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::FEMALE_SOLDER_MODEL, std::make_unique<Model>());
+		std::vector<Material*> pMaterials;
+		std::vector<Mesh*> pMeshs;
+		pMeshs.reserve(1);
+		pMaterials.reserve(1);
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL));
+		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::FEMALE_SOLDER_MESH));
+		pSolderModel->InitMaterials(pMaterials);
+		pSolderModel->InitMeshes(pMeshs);
 	}
 #pragma endregion
 

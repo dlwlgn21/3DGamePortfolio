@@ -4,6 +4,7 @@ struct PixelInput
     float3 PositionWorld : POSITION;
     float3 NormalWorld : NORMAL;
     float2 UV : TEXCOORD0;
+    float3 TangentWorld : TANGENT0;
 };
 
 #define MAX_LIGHTS          (3)
@@ -114,6 +115,30 @@ float3 ComputeSpotLight(Light light, Material mateirial, float3 posVec, float3 n
     }
 }
 
+float3 GetNormal(PixelInput Input)
+{
+    float3 normalWorld = Input.NormalWorld;
+    
+    if (CBIsUseNormalTexture == 1) // NormalWorld를 교체
+    {
+        float3 normal = NormalTexture.Sample(PointSampler, Input.UV).rgb;
+        normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
+
+        // OpenGL 용 노멀맵일 경우에는 y 방향을 뒤집어줍니다.
+        // normal.y = invertNormalMapY ? -normal.y : normal.y;
+        
+        float3 N = normalWorld;
+        float3 T = normalize(Input.TangentWorld - dot(Input.TangentWorld, N) * N);
+        float3 B = cross(N, T);
+        
+        // matrix는 float4x4, 여기서는 벡터 변환용이라서 3x3 사용
+        float3x3 TBN = float3x3(T, B, N);
+        normalWorld = normalize(mul(normal, TBN));
+    }
+    
+    return normalWorld;
+}
+
 
 float4 main(PixelInput Input) : SV_TARGET
 {
@@ -123,17 +148,7 @@ float4 main(PixelInput Input) : SV_TARGET
     
     int i = 0;
     
-    float3 normalWorld = Input.NormalWorld;
-    if (CBIsUseNormalTexture == 1)
-    {
-        float3 normalTex = NormalTexture.Sample(PointSampler, Input.UV).rgb;
-        normalTex = 2.0 * normalTex - 1.0;
-        float3 T = float3(1.0, 0.0, 0.0);
-        float3 B = float3(0.0, -1.0, 0.0);
-        float3 N = float3(0.0, 0.0, -1.0);
-        float3x3 TBN = float3x3(T, B, N);
-        normalWorld = normalize(mul(normalTex, TBN));
-    }
+    float3 normalWorld = GetNormal(Input);
     
     //[unroll]
     //for (i = 0; i < NUM_DIR_LIGHTS; ++i)

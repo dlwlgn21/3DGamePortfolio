@@ -14,5 +14,6 @@ VertexOutput main(VertexInput Input)
     
     // Normal == Color
     output.NormalWorld = Input.Normal;
+    output.TangentWorld = float3(0.0, 0.0, 0.0);
     return output;
 }

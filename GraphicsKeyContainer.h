@@ -6,6 +6,7 @@ namespace jh::graphics::keys
 	static const std::string BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY = "t1";
 	static const std::string BASIC_3D_NORMAL_TEXTURE_KEY = "normalT";
 
+#pragma region ZELDA_MODEL
 	static const std::string ZELDA1_MATERIAL = "zma1";
 	static const std::string ZELDA2_MATERIAL = "zma2";
 	static const std::string ZELDA3_MATERIAL = "zma3";
@@ -28,6 +29,18 @@ namespace jh::graphics::keys
 	static const std::string ZELDA6_TEXTURE = "zt6";
 	static const std::string ZELDA7_TEXTURE = "zt7";
 	static const std::string ZELDA_MODEL = "zelModel";
+#pragma endregion
+
+
+
+#pragma region FEMALE_SOLDER
+	static const std::string FEMALE_SOLDER_MESH				= "FeMesh";
+	static const std::string FEMALE_SOLDER_DIFFUSE_TEXTURE	= "FeDtex";
+	static const std::string FEMALE_SOLDER_NORMAL_TEXTURE	= "FeNTex";
+	static const std::string FEMALE_SOLDER_MATERIAL			= "FeMaterial";
+	static const std::string FEMALE_SOLDER_MODEL			= "FeModel";
+#pragma endregion
+
 
 	static const std::string CUBE_MAP_TEXTURE = "cubetex";
 	static const std::string CUBE_MAP_MESH = "cubeMesh";

@@ -227,6 +227,17 @@ void GeomatryGenerator::MakeSphere(std::vector<Vertex3D>& outVertices, std::vect
             v.Normal = v.Pos; // 원점이 구의 중심
             v.Normal.Normalize();
             v.UV = Vector2(float(i) / numSlices, 1.0f - float(j) / numStacks);
+
+
+            Vector3 biTangent = Vector3(0.0f, 1.0f, 0.0f);
+
+            Vector3 normalOrth =
+                v.Normal - biTangent.Dot(v.Normal) * v.Normal;
+            normalOrth.Normalize();
+
+            v.TangentModel = biTangent.Cross(normalOrth);
+            v.TangentModel.Normalize();
+
             outVertices.push_back(v);
         }
     }

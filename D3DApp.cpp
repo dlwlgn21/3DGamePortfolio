@@ -46,7 +46,7 @@ const bool D3DApp::Initialize()
 	InputManager::Initialize();
 	Time::Initialize();
 	SceneManager::GetInstance().Initialize();
-	LightingManager::GetInstance().Initialize();
+   	LightingManager::GetInstance().Initialize();
 	CubeMapManager::GetInstance().Initialize();
 	if (!initGUI())
 	{

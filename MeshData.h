@@ -8,7 +8,8 @@ namespace jh::graphics
 	{
 		std::vector<Vertex3D>	Vertices;
 		std::vector<UINT>		Indices;
-		std::wstring			TextureFileFullPath;
+		std::wstring			DiffuseTextureFileFullPath;
+		std::wstring			NormalTextureFileFullPath;
 	};
 }
 

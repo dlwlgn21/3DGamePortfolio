@@ -20,6 +20,8 @@ public:
     void ProcessNode(aiNode* node, const aiScene* scene, DirectX::SimpleMath::Matrix tr);
     jh::graphics::MeshData ProcessMesh(aiMesh* mesh, const aiScene* scene);
 
+    std::string GetFullPathTextureFileNameOrEmptyString(aiMaterial* material, aiTextureType type);
+    void UpdateTangents();
 
 public:
     std::string BasePath;
