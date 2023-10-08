@@ -41,6 +41,14 @@ namespace jh::graphics::keys
 	static const std::string FEMALE_SOLDER_MODEL			= "FeModel";
 #pragma endregion
 
+#pragma region STONE
+	static const std::string STONE_MESH				= "Stoneesh";
+	static const std::string STONE_DIFFUSE_TEXTURE	= "StoneDTex";
+	static const std::string STONE_NORMAL_TEXTURE	= "StoneNTex";
+	static const std::string STONE_MATERIAL			= "Stoneaterial";
+	static const std::string STONE_MODEL			= "Stoneodel";
+#pragma endregion
+
 
 	static const std::string CUBE_MAP_TEXTURE = "cubetex";
 	static const std::string CUBE_MAP_MESH = "cubeMesh";

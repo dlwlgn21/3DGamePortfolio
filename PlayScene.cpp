@@ -66,7 +66,7 @@ void PlayScene::initPlayer()
 	{
 		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::FEMALE_SOLDER_MODEL));
+		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::STONE_MODEL));
 		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 	}
 }

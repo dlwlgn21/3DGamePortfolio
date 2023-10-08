@@ -106,18 +106,7 @@ jh::graphics::MeshData ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* sce
     newMesh.Indices = indices;
 
     // http://assimp.sourceforge.net/lib_html/materials.html
-    if (mesh->mMaterialIndex >= 0) 
-    {
-        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-        std::string diffuseTextureFullPath = GetFullPathTextureFileNameOrEmptyString(material, aiTextureType_BASE_COLOR);
-        //assert(!diffuseTextureFullPath.empty());
-        std::string normalTextureFullPath = GetFullPathTextureFileNameOrEmptyString(material, aiTextureType_NORMALS);
-        //assert(!normalTextureFullPath.empty());
-
-        newMesh.DiffuseTextureFileFullPath = std::wstring(diffuseTextureFullPath.begin(), diffuseTextureFullPath.end());
-        newMesh.NormalTextureFileFullPath = std::wstring(normalTextureFullPath.begin(), normalTextureFullPath.end());
-    }
-
+    assignTextureFileNames(mesh, scene, newMesh);
     return newMesh;
 }
 
@@ -175,4 +164,20 @@ void ModelLoader::UpdateTangents()
         }
     }
 }
+
+void ModelLoader::assignTextureFileNames(aiMesh* mesh, const aiScene* scene, jh::graphics::MeshData& meshData)
+{
+    if (mesh->mMaterialIndex >= 0)
+    {
+        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+        std::string diffuseTextureFullPath = GetFullPathTextureFileNameOrEmptyString(material, aiTextureType_DIFFUSE);
+        //assert(!diffuseTextureFullPath.empty());
+        std::string normalTextureFullPath = GetFullPathTextureFileNameOrEmptyString(material, aiTextureType_NORMALS);
+        //assert(!normalTextureFullPath.empty());
+
+        meshData.DiffuseTextureFileFullPath = std::wstring(diffuseTextureFullPath.begin(), diffuseTextureFullPath.end());
+        meshData.NormalTextureFileFullPath = std::wstring(normalTextureFullPath.begin(), normalTextureFullPath.end());
+    }
+}
+
 }

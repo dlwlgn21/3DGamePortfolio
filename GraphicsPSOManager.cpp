@@ -117,6 +117,7 @@ void GraphicsPSOManager::initMesh()
 	{
 		std::string relativePath = "Assets\\Characters\\armored-female-future-soldier\\";
 		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "angel_armor.fbx");
+		assert(meshDatas.size() == 1);
 		std::vector<jh::graphics::Mesh*> pMeshs;
 		pMeshs.reserve(meshDatas.size());
 
@@ -135,7 +136,186 @@ void GraphicsPSOManager::initMesh()
 	}
 #pragma endregion
 
+#pragma region STONE
+	{
+		std::string relativePath = "Assets\\Characters\\Mixamo\\";
+		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "character.fbx");
+		assert(meshDatas.size() == 1);
+		std::vector<jh::graphics::Mesh*> pMeshs;
+		pMeshs.reserve(meshDatas.size());
+		ResourcesManager::InsertOrNull<Mesh>(keys::STONE_MESH, std::make_unique<jh::graphics::Mesh>())
+			->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::STONE_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
+		loadAndInsertTexture(eTextureType::NORMAL, keys::STONE_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
+	}
+#pragma endregion
+
+#pragma region FINN
+	{
+		//std::string relativePath = "Assets\\Characters\\Finn\\";
+		//std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "finnFBX.fbx");
+		//assert(meshDatas.size() == 1);
+		//std::vector<jh::graphics::Mesh*> pMeshs;
+		//pMeshs.reserve(meshDatas.size());
+		//ResourcesManager::InsertOrNull<Mesh>(keys::STONE_MESH, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::STONE_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
+		//loadAndInsertTexture(eTextureType::NORMAL, keys::STONE_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
+	}
+#pragma endregion
+
+
 }
+void GraphicsPSOManager::initMaterials()
+{
+	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY);
+	insertMaterial(keys::WORLD_COORD_MATERIAL, mDebugDrawWorldCoordPSO, "");
+
+#pragma region ZELDA
+	//insertMaterial(keys::ZELDA1_MATERIAL, mBasicPSO, keys::ZELDA1_TEXTURE);
+	//insertMaterial(keys::ZELDA2_MATERIAL, mBasicPSO, keys::ZELDA2_TEXTURE);
+	//insertMaterial(keys::ZELDA3_MATERIAL, mBasicPSO, keys::ZELDA3_TEXTURE);
+	//insertMaterial(keys::ZELDA4_MATERIAL, mBasicPSO, keys::ZELDA4_TEXTURE);
+	//insertMaterial(keys::ZELDA5_MATERIAL, mBasicPSO, keys::ZELDA5_TEXTURE);
+	//insertMaterial(keys::ZELDA6_MATERIAL, mBasicPSO, keys::ZELDA6_TEXTURE);
+	//insertMaterial(keys::ZELDA7_MATERIAL, mBasicPSO, keys::ZELDA7_TEXTURE);
+#pragma endregion
+
+#pragma region FEMALE_SOLDER
+	{
+		insertMaterial(keys::FEMALE_SOLDER_MATERIAL, mBasicPSO, "");
+		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_DIFFUSE_TEXTURE);
+		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_NORMAL_TEXTURE);
+		Material* pMat = ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL);
+		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
+		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
+	}
+#pragma endregion
+
+
+#pragma region STONE
+	{
+		insertMaterial(keys::STONE_MATERIAL, mBasicPSO, "");
+		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::STONE_DIFFUSE_TEXTURE);
+		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::STONE_NORMAL_TEXTURE);
+		Material* pMat = ResourcesManager::Find<Material>(keys::STONE_MATERIAL);
+		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
+		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
+	}
+#pragma endregion
+
+
+	insertMaterial(keys::CUBE_MAP_MATERIAL, mCubeMapPSO, keys::CUBE_MAP_TEXTURE);
+
+	// Normal
+	{
+		Texture* p3DBasicNormalTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_NORMAL_TEXTURE_KEY);
+		Material* pMat = ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY);
+		pMat->SetTexture(eTextureType::NORMAL, p3DBasicNormalTex);
+	}
+}
+
+void GraphicsPSOManager::initModels()
+{
+#pragma region ZELDA_MODEL
+	{
+		//Model* pZeldaModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::ZELDA_MODEL, std::make_unique<Model>());
+		//std::vector<Material*> pMaterials;
+		//std::vector<Mesh*> pMeshs;
+		//pMeshs.reserve(7);
+		//pMaterials.reserve(7);
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA1_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA2_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA3_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA4_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA5_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA6_MATERIAL));
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA7_MATERIAL));
+		//ResourcesManager::Find<Model>(keys::ZELDA_MODEL)->InitMaterials(pMaterials);
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA1_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA2_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA3_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA4_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA5_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA6_MESH));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA7_MESH));
+		//{
+		//	for (auto* pMesh : pMeshs)
+		//	{
+		//		assert(pMesh != nullptr);
+		//	}
+		//}
+		//pZeldaModel->InitMeshes(pMeshs);
+	}
+#pragma endregion
+
+#pragma region DEBUG_BOX
+	{
+		Model* pBoxModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BOX_MODEL, std::make_unique<Model>());
+		std::vector<Mesh*> pMeshes;
+		std::vector<Material*> pMaterials;
+		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::BOX_MESH_KEY));
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
+		pBoxModel->InitMeshes(pMeshes);
+		pBoxModel->InitMaterials(pMaterials);
+	}
+#pragma endregion
+
+#pragma region DEBUG_SPEHRE
+	{
+		Model* pSpehereModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::SPEHERE_MODEL_KEY, std::make_unique<Model>());
+		std::vector<Mesh*> pMeshes;
+		std::vector<Material*> pMaterials;
+		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::SPEHERE_MESH_KEY));
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
+		pSpehereModel->InitMeshes(pMeshes);
+		pSpehereModel->InitMaterials(pMaterials);
+	}
+#pragma endregion
+
+#pragma region DEBUG_WORLD_COORD
+	{
+		Model* pWorldCoordModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::WORLD_COORD_MODEL, std::make_unique<Model>());
+		std::vector<Mesh*> pMeshes;
+		std::vector<Material*> pMaterials;
+		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::WORLD_COORD_MESH_KEY));
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::WORLD_COORD_MATERIAL));
+		pWorldCoordModel->InitMeshes(pMeshes);
+		pWorldCoordModel->InitMaterials(pMaterials);
+	}
+#pragma endregion
+
+#pragma region FEMALE_SOLDER
+	{
+		Model* pSolderModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::FEMALE_SOLDER_MODEL, std::make_unique<Model>());
+		std::vector<Material*> pMaterials;
+		std::vector<Mesh*> pMeshs;
+		pMeshs.reserve(1);
+		pMaterials.reserve(1);
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL));
+		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::FEMALE_SOLDER_MESH));
+		pSolderModel->InitMaterials(pMaterials);
+		pSolderModel->InitMeshes(pMeshs);
+	}
+#pragma endregion
+
+#pragma region STONE
+	{
+		Model* pStoneModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::STONE_MODEL, std::make_unique<Model>());
+		std::vector<Material*> pMaterials;
+		std::vector<Mesh*> pMeshs;
+		pMeshs.reserve(1);
+		pMaterials.reserve(1);
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::STONE_MATERIAL));
+		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::STONE_MESH));
+		pStoneModel->InitMaterials(pMaterials);
+		pStoneModel->InitMeshes(pMeshs);
+	}
+#pragma endregion
+
+}
+
+
 void GraphicsPSOManager::initShaders()
 {
 #pragma region BASIC_3D_PSO
@@ -351,128 +531,8 @@ void GraphicsPSOManager::initTextures()
 	pTex->SetTextureType(eTextureType::DIFFUSE);
 	pTex->InitSRV(mCubeMapping.cpCubeMapRSV);
 }
-void GraphicsPSOManager::initMaterials()
-{
-	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY);
-	insertMaterial(keys::WORLD_COORD_MATERIAL, mDebugDrawWorldCoordPSO, "");
-
-#pragma region ZELDA
-	//insertMaterial(keys::ZELDA1_MATERIAL, mBasicPSO, keys::ZELDA1_TEXTURE);
-	//insertMaterial(keys::ZELDA2_MATERIAL, mBasicPSO, keys::ZELDA2_TEXTURE);
-	//insertMaterial(keys::ZELDA3_MATERIAL, mBasicPSO, keys::ZELDA3_TEXTURE);
-	//insertMaterial(keys::ZELDA4_MATERIAL, mBasicPSO, keys::ZELDA4_TEXTURE);
-	//insertMaterial(keys::ZELDA5_MATERIAL, mBasicPSO, keys::ZELDA5_TEXTURE);
-	//insertMaterial(keys::ZELDA6_MATERIAL, mBasicPSO, keys::ZELDA6_TEXTURE);
-	//insertMaterial(keys::ZELDA7_MATERIAL, mBasicPSO, keys::ZELDA7_TEXTURE);
-#pragma endregion
-
-#pragma region FEMALE_SOLDER
-	{
-		insertMaterial(keys::FEMALE_SOLDER_MATERIAL, mBasicPSO, "");
-		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_DIFFUSE_TEXTURE);
-		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_NORMAL_TEXTURE);
-		Material* pMat = ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL);
-		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
-		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
-	}
-#pragma endregion
 
 
-	insertMaterial(keys::CUBE_MAP_MATERIAL, mCubeMapPSO, keys::CUBE_MAP_TEXTURE);
-
-	// Normal
-	{
-		Texture* p3DBasicNormalTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_NORMAL_TEXTURE_KEY);
-		Material* pMat = ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY);
-		pMat->SetTexture(eTextureType::NORMAL, p3DBasicNormalTex);
-	}
-}
-
-void GraphicsPSOManager::initModels()
-{
-#pragma region ZELDA_MODEL
-	{
-		//Model* pZeldaModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::ZELDA_MODEL, std::make_unique<Model>());
-		//std::vector<Material*> pMaterials;
-		//std::vector<Mesh*> pMeshs;
-		//pMeshs.reserve(7);
-		//pMaterials.reserve(7);
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA1_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA2_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA3_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA4_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA5_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA6_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA7_MATERIAL));
-		//ResourcesManager::Find<Model>(keys::ZELDA_MODEL)->InitMaterials(pMaterials);
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA1_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA2_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA3_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA4_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA5_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA6_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA7_MESH));
-		//{
-		//	for (auto* pMesh : pMeshs)
-		//	{
-		//		assert(pMesh != nullptr);
-		//	}
-		//}
-		//pZeldaModel->InitMeshes(pMeshs);
-	}
-#pragma endregion
-
-#pragma region DEBUG_BOX
-	{
-		Model* pBoxModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BOX_MODEL, std::make_unique<Model>());
-		std::vector<Mesh*> pMeshes;
-		std::vector<Material*> pMaterials;
-		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::BOX_MESH_KEY));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
-		pBoxModel->InitMeshes(pMeshes);
-		pBoxModel->InitMaterials(pMaterials);
-	}
-#pragma endregion
-
-#pragma region DEBUG_SPEHRE
-	{
-		Model* pSpehereModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::SPEHERE_MODEL_KEY, std::make_unique<Model>());
-		std::vector<Mesh*> pMeshes;
-		std::vector<Material*> pMaterials;
-		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::SPEHERE_MESH_KEY));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
-		pSpehereModel->InitMeshes(pMeshes);
-		pSpehereModel->InitMaterials(pMaterials);
-	}
-#pragma endregion
-
-#pragma region DEBUG_WORLD_COORD
-	{
-		Model* pWorldCoordModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::WORLD_COORD_MODEL, std::make_unique<Model>());
-		std::vector<Mesh*> pMeshes;
-		std::vector<Material*> pMaterials;
-		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::WORLD_COORD_MESH_KEY));
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::WORLD_COORD_MATERIAL));
-		pWorldCoordModel->InitMeshes(pMeshes);
-		pWorldCoordModel->InitMaterials(pMaterials);
-	}
-#pragma endregion
-
-#pragma region FEMALE_SOLDER
-	{
-		Model* pSolderModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::FEMALE_SOLDER_MODEL, std::make_unique<Model>());
-		std::vector<Material*> pMaterials;
-		std::vector<Mesh*> pMeshs;
-		pMeshs.reserve(1);
-		pMaterials.reserve(1);
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::FEMALE_SOLDER_MESH));
-		pSolderModel->InitMaterials(pMaterials);
-		pSolderModel->InitMeshes(pMeshs);
-	}
-#pragma endregion
-
-}
 
 void GraphicsPSOManager::loadAndInsertTexture(const eTextureType eType,const std::string& key, const std::wstring& fileName)
 {

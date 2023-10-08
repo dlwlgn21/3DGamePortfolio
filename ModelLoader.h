@@ -19,9 +19,11 @@ public:
     void Load(const std::string& basePath, const std::string& filename);
     void ProcessNode(aiNode* node, const aiScene* scene, DirectX::SimpleMath::Matrix tr);
     jh::graphics::MeshData ProcessMesh(aiMesh* mesh, const aiScene* scene);
-
     std::string GetFullPathTextureFileNameOrEmptyString(aiMaterial* material, aiTextureType type);
     void UpdateTangents();
+
+private:
+    void assignTextureFileNames(aiMesh* mesh, const aiScene* scene, jh::graphics::MeshData& meshData);
 
 public:
     std::string BasePath;
