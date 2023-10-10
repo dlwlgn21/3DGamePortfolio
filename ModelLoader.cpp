@@ -1,7 +1,9 @@
 #include <filesystem>
 #include <directxtk/SimpleMath.h>
 #include <DirectXMesh.h>
-
+#include <algorithm>
+#include <filesystem>
+#include <fstream>
 
 #include "ModelLoader.h"
 #include "Texture.h"
@@ -14,6 +16,14 @@ using namespace jh::graphics;
 
 namespace jh
 {
+
+std::string GetExtension(const std::string& filename)
+{
+    std::string ext(std::filesystem::path(filename).extension().string());
+    transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+    return ext;
+}
+
 
 void ModelLoader::Load(const std::string& basePath, const std::string& filename) 
 {
@@ -32,12 +42,120 @@ void ModelLoader::Load(const std::string& basePath, const std::string& filename)
     else
     {
         Matrix tr; // Initial transformation
-        ProcessNode(pScene->mRootNode, pScene, tr);
+        processNode(pScene->mRootNode, pScene, tr);
     }
-    UpdateTangents();
+    updateTangents();
 }
 
-void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, Matrix tr) 
+
+/*
+ * AnimationData 읽는 용도.
+ * 여러개의 Bone들이 있고 Tree 구조임
+ * 그 중에서 Vertex에 영향을 주는 Bone들은 일부임
+ * Vertex에 영향을 주는 Bone들과 Prarent들까지 포함해서 읽어와서 저장.
+ */
+void ModelLoader::LoadWithAnimatnionData(const std::string& basePath, const std::string& filename, const bool bIsRevertNormals)
+{
+    if (GetExtension(filename) == ".gltf")
+    {
+        assert(false);
+    }
+
+    BasePath = basePath; // 텍스춰 읽어들일 때 필요
+
+    Assimp::Importer importer;
+
+    const aiScene* pScene = importer.ReadFile(
+        BasePath + filename,
+        aiProcess_Triangulate | aiProcess_ConvertToLeftHanded
+    );
+    // ReadFile()에서 경우에 따라서 여러가지 옵션들 설정 가능
+    // aiProcess_JoinIdenticalVertices | aiProcess_PopulateArmatureData |
+    // aiProcess_SplitByBoneCount |
+    // aiProcess_Debone); // aiProcess_LimitBoneWeights
+
+    if (pScene != nullptr)
+    {
+        /*
+         * 1. 모든 메쉬에 대해서 버텍스에 영향을 주는 뼈들의 목록을 만든다.
+         *    BoneNameIndexMap의 Key들을 결정함.
+         */
+        findDeformingBonesForAssigningBoneNameKeyMapping(pScene);
+
+        int counter = 0;
+        /*
+         * 2. 트리 구조를 따라 업데이트 순서대로 뼈들의 인덱스를 결정한다.
+         *    부모의 인덱스가 자식의 인덱스보다 항상 작을 수 있도록 인덱싱함.
+         *    BoneNameIndexMap 완성.
+         */
+        updateBoneIndiceSequenceRecursiveForBoneNameIndexValueMapping(pScene->mRootNode, &counter);
+
+        // 3. 완성된 BoneNameIndexMap을 이용해서 업데이트 순서대로 뼈 이름 저장 (boneIndexToName) 즉, 부모에서 자식 순서로 저장함.
+        AnimData.BoneIndexToNameArray.resize(AnimData.BoneNameIndexMap.size());
+        for (auto& i : AnimData.BoneNameIndexMap)
+        {
+            AnimData.BoneIndexToNameArray[i.second] = i.first;
+        }
+
+#pragma region DEBUGGING_NAME_INDEX_MAP_OUPUT
+        // 디버깅용
+        std::cout << "-----------\nDebug AnimationDataInfo BoneNameIndexMap Output START\n-----------" << std::endl;
+        std::cout << "Nums Of BoneNameIndexMap : " << AnimData.BoneIndexToNameArray.size() << std::endl;
+        for (auto& i : AnimData.BoneNameIndexMap)
+        {
+            std::cout << "NameIndex pair : " << i.first << " " << i.second << std::endl;
+        }
+        std::cout << "Num BoneIndexToName : " << AnimData.BoneIndexToNameArray.size() << std::endl;
+        for (size_t i = 0; i < AnimData.BoneIndexToNameArray.size(); i++)
+        {
+            std::cout << "BoneIndex: " << i << " " << AnimData.BoneIndexToNameArray[i] << std::endl;
+        }
+        std::cout << "-----------\nDebug AnimationDataInfo BoneNameIndexMap Output END\n-----------" << std::endl;
+#pragma endregion
+
+        // 각 Bone의 Parent Index를 저장할 준비
+        AnimData.BoneParentIndexArray.resize(AnimData.BoneNameIndexMap.size(), -1);
+        Matrix tr; 
+        // 각 Bone들의 Parent들을 Traverse 하면서 Assign함.
+        processNodeRecursive(pScene->mRootNode, pScene, tr);
+
+#pragma region DEBUGGING_2_PARENT_OUPUT
+        // 디버깅용
+        std::cout << "-----------\nDebug AnimationDataInfo Parent Output START\n-----------" << std::endl;
+        std::cout << "Num boneIndexToName : " << AnimData.BoneIndexToNameArray.size() << std::endl; 
+        for (size_t i = 0; i < AnimData.BoneIndexToNameArray.size(); i++)
+        {
+            std::cout << "BoneIndex: " 
+                 << i 
+                 << " " 
+                 << AnimData.BoneIndexToNameArray[i] 
+                 << " , Parent: "
+                 << (AnimData.BoneParentIndexArray[i] == -1 ? "NONE" : AnimData.BoneIndexToNameArray[AnimData.BoneParentIndexArray[i]])
+                 << std::endl;
+        }
+        std::cout << "-----------\nDebug AnimationDataInfo Parent Output END\n-----------" << std::endl;
+#pragma endregion
+
+
+        // 여기까지 오면 AnimData의 BoneNameIndexMapping이 끝나고, Indexing 관련 작업들이 완료됨.
+        // 애니메이션 클립 정보 읽기
+        // 이곳이 정말 애니메이션 정보 읽는 부분
+        if (pScene->HasAnimations())
+        {
+            readAnimationClips(pScene);
+        }
+
+        // UpdateNormals(this->meshes); // Vertex Normal을 직접 계산 (참고용)
+        updateTangents();
+    }
+    else
+    {
+        assert(false);
+    }
+
+}
+
+void ModelLoader::processNode(aiNode* node, const aiScene* scene, Matrix tr) 
 {
     Matrix m;
     ai_real* temp = &node->mTransformation.a1;
@@ -51,7 +169,7 @@ void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, Matrix tr)
     for (UINT i = 0; i < node->mNumMeshes; i++) 
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        auto newMesh = this->ProcessMesh(mesh, scene);
+        auto newMesh = this->processMesh(mesh, scene);
         for (auto& v : newMesh.Vertices) 
         {
             v.Pos = DirectX::SimpleMath::Vector3::Transform(v.Pos, m);
@@ -61,11 +179,41 @@ void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, Matrix tr)
 
     for (UINT i = 0; i < node->mNumChildren; i++) 
     {
-        this->ProcessNode(node->mChildren[i], scene, m);
+        this->processNode(node->mChildren[i], scene, m);
     }
 }
 
-jh::graphics::MeshData ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
+void ModelLoader::processNodeRecursive(aiNode* pNode, const aiScene* pScene, DirectX::SimpleMath::Matrix tr)
+{
+    if (pNode->mParent &&
+        AnimData.BoneNameIndexMap.count(pNode->mName.C_Str()) &&
+        findParentRecursive(pNode->mParent))
+    {
+        const auto boneId = AnimData.BoneNameIndexMap[pNode->mName.C_Str()];
+        AnimData.BoneParentIndexArray[boneId] = AnimData.BoneNameIndexMap[findParentRecursive(pNode->mParent)->mName.C_Str()];
+    }
+
+    Matrix m(&pNode->mTransformation.a1);
+    m = m.Transpose() * tr;
+
+    for (UINT i = 0; i < pNode->mNumMeshes; i++)
+    {
+        aiMesh* mesh = pScene->mMeshes[pNode->mMeshes[i]];
+        auto newMesh = this->processMesh(mesh, pScene);
+        for (auto& v : newMesh.Vertices)
+        {
+            v.Pos = DirectX::SimpleMath::Vector3::Transform(v.Pos, m);
+        }
+        MeshDatas.push_back(newMesh);
+    }
+
+    for (UINT i = 0; i < pNode->mNumChildren; i++)
+    {
+        this->processNodeRecursive(pNode->mChildren[i], pScene, m);
+    }
+}
+
+jh::graphics::MeshData ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene) {
     // Data to fill
     std::vector<Vertex3D> vertices;
     std::vector<UINT> indices;
@@ -111,7 +259,7 @@ jh::graphics::MeshData ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* sce
 }
 
 
-std::string ModelLoader::GetFullPathTextureFileNameOrEmptyString(aiMaterial* material, aiTextureType type)
+std::string ModelLoader::getFullPathTextureFileNameOrEmptyString(aiMaterial* material, aiTextureType type)
 {
 
     if (material->GetTextureCount(type) > 0) 
@@ -127,7 +275,7 @@ std::string ModelLoader::GetFullPathTextureFileNameOrEmptyString(aiMaterial* mat
     }
 }
 
-void ModelLoader::UpdateTangents()
+void ModelLoader::updateTangents()
 {
     using namespace std;
     using namespace DirectX;
@@ -165,18 +313,113 @@ void ModelLoader::UpdateTangents()
     }
 }
 
+
+// 버텍스의 변형에 직접적으로 참여하는 Bone들의 목록을 만듦
+void ModelLoader::findDeformingBonesForAssigningBoneNameKeyMapping(const aiScene* pScene)
+{
+    for (uint32_t i = 0; i < pScene->mNumMeshes; i++)
+    {
+        const auto* pMesh = pScene->mMeshes[i];
+        if (pMesh->HasBones())
+        {
+            for (uint32_t i = 0; i < pMesh->mNumBones; i++)
+            {
+                const aiBone* pBone = pMesh->mBones[i];
+
+                // bone과 대응되는 node의 이름은 동일
+                // 뒤에서 node 이름으로 부모를 찾을 수 있음
+                // 실제로 렌더링 할 때에는 BoneName을 사용하진 않음. 하지만 파일을 읽어들일 떄에는 사용함.
+                AnimData.BoneNameIndexMap[pBone->mName.C_Str()] = -1;
+                // 주의: 뼈의 순서가 업데이트 순서는 아님
+                // 기타: bone->mWeights == 0일 경우에도 포함시켰음
+                // 기타: bone->mNode = 0이라서 사용 불가
+            }
+        }
+    }
+}
+
+void ModelLoader::updateBoneIndiceSequenceRecursiveForBoneNameIndexValueMapping(aiNode* pNode, int* counter)
+{
+    static int id = 0;
+    if (pNode)
+    {
+        if (AnimData.BoneNameIndexMap.count(pNode->mName.C_Str()))
+        {
+            AnimData.BoneNameIndexMap[pNode->mName.C_Str()] = *counter;
+            *counter += 1;
+        }
+        for (UINT i = 0; i < pNode->mNumChildren; i++)
+        {
+            updateBoneIndiceSequenceRecursiveForBoneNameIndexValueMapping(pNode->mChildren[i], counter);
+        }
+    }
+}
+
 void ModelLoader::assignTextureFileNames(aiMesh* mesh, const aiScene* scene, jh::graphics::MeshData& meshData)
 {
     if (mesh->mMaterialIndex >= 0)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-        std::string diffuseTextureFullPath = GetFullPathTextureFileNameOrEmptyString(material, aiTextureType_DIFFUSE);
+        std::string diffuseTextureFullPath = getFullPathTextureFileNameOrEmptyString(material, aiTextureType_DIFFUSE);
         //assert(!diffuseTextureFullPath.empty());
-        std::string normalTextureFullPath = GetFullPathTextureFileNameOrEmptyString(material, aiTextureType_NORMALS);
+        std::string normalTextureFullPath = getFullPathTextureFileNameOrEmptyString(material, aiTextureType_NORMALS);
         //assert(!normalTextureFullPath.empty());
 
         meshData.DiffuseTextureFileFullPath = std::wstring(diffuseTextureFullPath.begin(), diffuseTextureFullPath.end());
         meshData.NormalTextureFileFullPath = std::wstring(normalTextureFullPath.begin(), normalTextureFullPath.end());
+    }
+}
+const aiNode* ModelLoader::findParentRecursive(const aiNode* pNode)
+{
+    if (!pNode)
+    {
+        return nullptr;
+    }
+    if (AnimData.BoneNameIndexMap.count(pNode->mName.C_Str()) > 0)
+    {
+        return pNode;
+    }
+    return findParentRecursive(pNode->mParent);
+}
+
+void ModelLoader::readAnimationClips(const aiScene* pScene)
+{
+    AnimData.ClipArray.resize(pScene->mNumAnimations);
+
+    for (uint32_t i = 0; i < pScene->mNumAnimations; i++)
+    {
+        AnimationClip& clip = AnimData.ClipArray[i];
+
+        const aiAnimation* pAnimation = pScene->mAnimations[i];
+
+        clip.Duration = pAnimation->mDuration;
+        clip.TicksPerSec = pAnimation->mTicksPerSecond;
+        clip.KeyBoneAndFrame2DArrays.resize(AnimData.BoneNameIndexMap.size());
+        clip.NumChannelsActuallyNumsBones = pAnimation->mNumChannels;
+
+        /*
+        * 왜 채널이란 이름이 사용되냐고? 각 본들의 움직임이 각각의 채널로 제공이 되기 떄문임.
+        * 각 본들의 움직임이 시간에 따른 변화 곡선임.
+        * 하나의 변화 곡선을 하나의 채널에다가 데이터를 쏴준다.
+        */
+        for (uint32_t c = 0; c < pAnimation->mNumChannels; c++)
+        {
+            const aiNodeAnim* nodeAnim = pAnimation->mChannels[c];
+            const int boneIndex = AnimData.BoneNameIndexMap[nodeAnim->mNodeName.C_Str()];
+            clip.KeyBoneAndFrame2DArrays[boneIndex].resize(nodeAnim->mNumPositionKeys);
+
+            // 요기서 시간에 따라 본들이 어떻게 변하는지, Assign 함.
+            for (uint32_t frame = 0; frame < nodeAnim->mNumPositionKeys; frame++)
+            {
+                const auto pos = nodeAnim->mPositionKeys[frame].mValue;
+                const auto rot = nodeAnim->mRotationKeys[frame].mValue;
+                const auto scale = nodeAnim->mScalingKeys[frame].mValue;
+                AnimationClip::Key& key = clip.KeyBoneAndFrame2DArrays[boneIndex][frame];
+                key.Pos = { pos.x, pos.y, pos.z };
+                key.Rot = Quaternion(rot.x, rot.y, rot.z, rot.w);
+                key.Scale = { scale.x, scale.y, scale.z };
+            }
+        }
     }
 }
 

@@ -179,6 +179,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="AnimationData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp" />
