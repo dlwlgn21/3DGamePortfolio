@@ -28,17 +28,17 @@ struct AnimationClip
 
     std::string                             NameOfAnimationClip;                    // Name of this animation clip
     std::vector<std::vector<Key>>           KeyBoneAndFrame2DArrays;                // m_key[boneIdx][frameIdx]
-    int                                     NumChannelsActuallyNumsBones = 0;                        // Number of bones
-    int                                     NumKeysActuallyNumsFrames = 0;                            // Number of frames of this animation clip
+    int                                     NumChannelsActuallyNumsBones = 0;       // Number of bones
+    int                                     NumKeysActuallyNumsFrames = 0;          // Number of frames of this animation clip
     double                                  Duration = 0.0;                         // Duration of animation in ticks
     double                                  TicksPerSec = 0.0;                      // Frames per second
 };
 
 struct AnimationData
 {
-    std::unordered_map<std::string, int32_t>        BoneNameIndexMap;       // 뼈 이름과 인덱스 정수
-    std::vector<std::string>                        BoneIndexToNameArray;   // boneNameToId의 Id 순서대로 뼈 이름 저장
-    std::vector<int32_t>                            BoneParentIndexArray;   // 부모 뼈의 인덱스
+    std::unordered_map<std::string, int32_t>        BoneNameIndexMap;               // 뼈 이름과 인덱스 정수
+    std::vector<std::string>                        BoneIndexToNameArray;           // boneNameToId의 Id 순서대로 뼈 이름 저장
+    std::vector<int32_t>                            BoneParentIndexArray;           // 부모 뼈의 인덱스
     std::vector<Matrix>                             OffsetMatrixArray;
     std::vector<Matrix>                             BoneTransformMatrixArray;
     std::vector<AnimationClip>                      ClipArray;
@@ -58,7 +58,7 @@ struct AnimationData
         // 여기는 교육용 예제라서 좌표계 변환 사례로 참고하시라고 남겨놓았다고 함.
     }
 
-    void Update(int clipId, int frame)
+    void UpdateBoneTransformMatrices(int clipId, int frame)
     {
         auto& clip = ClipArray[clipId];
 

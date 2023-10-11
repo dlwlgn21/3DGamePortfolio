@@ -18,6 +18,7 @@
 #include "Camera.h"
 #include "CameraScript.h"
 #include "MeshRenderer.h"
+#include "SkinnedMeshRenderer.h"
 #include "Light.h"
 
 using namespace jh::enums;
@@ -65,8 +66,8 @@ void PlayScene::initPlayer()
 {
 	{
 		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::STONE_MODEL));
+		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<SkinnedMeshRenderer>()));
+		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL));
 		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 	}
 }

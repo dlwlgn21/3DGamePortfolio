@@ -147,6 +147,15 @@
     <Filter Include="소스 파일\Graphics\Resources\Mesh\Model">
       <UniqueIdentifier>{0b349368-741a-4c4c-a25f-48d1f90e48ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Graphics\StructuredBuffer">
+      <UniqueIdentifier>{e6680308-a3ed-4941-9e73-8eeb63dc659c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Resources\Mesh\BaseMesh">
+      <UniqueIdentifier>{17d6d37a-9e98-4db5-99f0-c53f7fbd4b7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers\AnimationDataManager">
+      <UniqueIdentifier>{2ce43610-bb2e-4add-801c-957f8de703f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h">
@@ -227,9 +236,6 @@
     <ClInclude Include="PlayScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>소스 파일\Graphics\Resources\Texture</Filter>
     </ClInclude>
@@ -295,6 +301,21 @@
     </ClInclude>
     <ClInclude Include="Common.h">
       <Filter>소스 파일\Common\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicStructuredBuffer.h">
+      <Filter>소스 파일\Graphics\StructuredBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMeshModel.h">
+      <Filter>소스 파일\Graphics\Resources\Mesh\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>소스 파일\Graphics\Resources\Mesh\BaseMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMeshRenderer.h">
+      <Filter>소스 파일\Component\Renderer\MeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationDataManager.h">
+      <Filter>소스 파일\Managers\AnimationDataManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -364,9 +385,6 @@
     <ClCompile Include="PlayScene.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>소스 파일\Graphics\Resources\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>소스 파일\Graphics\Resources\Texture</Filter>
     </ClCompile>
@@ -402,6 +420,21 @@
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>소스 파일\Graphics\Resources\Mesh\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicStructuredBuffer.cpp">
+      <Filter>소스 파일\Graphics\StructuredBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMeshModel.cpp">
+      <Filter>소스 파일\Graphics\Resources\Mesh\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>소스 파일\Graphics\Resources\Mesh\BaseMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMeshRenderer.cpp">
+      <Filter>소스 파일\Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationDataManager.cpp">
+      <Filter>소스 파일\Managers\AnimationDataManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -446,6 +479,9 @@
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="DebugWorldCoordinatePS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="BasicAnimation3DVS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

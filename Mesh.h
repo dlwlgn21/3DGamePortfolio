@@ -46,7 +46,7 @@ void Mesh::InitVertexIndexBuffer(std::vector<T>& vetices, std::vector<UINT>& ind
 	ibDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
 	ibDesc.StructureByteStride = static_cast<UINT>(sizeof(UINT));
 	mIndexCount = static_cast<UINT>(indicies.size());
-	mStride = static_cast<UINT>(sizeof(T));
+	mStride = vbDesc.StructureByteStride;
 
 	auto& gd = GraphicDeviceDX11::GetInstance().GetDeivce();
 	{

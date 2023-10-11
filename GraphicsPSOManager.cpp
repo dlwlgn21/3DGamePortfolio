@@ -1,13 +1,17 @@
 #include <directxtk/SimpleMath.h>
 #include <directxtk/DDSTextureLoader.h> 
 #include <directxtk/WICTextureLoader.h>
+
 #include "GraphicsPSOManager.h"
 #include "GraphicDeviceDX11.h"
+#include "GeomatryGenerator.h"
+#include "AnimationDataManager.h"
+
 #include "GraphicsDatas.h"
 #include "D3DUtills.h"
-#include "GeomatryGenerator.h"
 
 #include "Model.h"
+#include "SkinnedMeshModel.h"
 #include "MeshData.h"
 #include "Texture.h"
 #include "Material.h"
@@ -77,42 +81,6 @@ void GraphicsPSOManager::initMesh()
 		//pMonkeyMesh->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
 	}
 
-
-#pragma region ZELDA_MODEL
-	{
-		//std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile("D:\\3DGamePortfolioJH\\Assets\\", "zeldaPosed001.fbx");
-
-		//std::vector<jh::graphics::Mesh*> pMeshs;
-		//pMeshs.reserve(meshDatas.size());
-		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::ZELDA1_MESH, std::make_unique<jh::graphics::Mesh>())
-		//	->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA1_TEXTURE, meshDatas[0].TextureFileFullPath);
-		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(keys::ZELDA2_MESH, std::make_unique<jh::graphics::Mesh>())
-		//	->InitVertexIndexBuffer(meshDatas[1].Vertices, meshDatas[1].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA2_TEXTURE, meshDatas[1].TextureFileFullPath);
-		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-		//	keys::ZELDA3_MESH, std::make_unique<jh::graphics::Mesh>()
-		//	)->InitVertexIndexBuffer(meshDatas[2].Vertices, meshDatas[2].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA3_TEXTURE, meshDatas[2].TextureFileFullPath);
-		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-		//	keys::ZELDA4_MESH, std::make_unique<jh::graphics::Mesh>()
-		//	)->InitVertexIndexBuffer(meshDatas[3].Vertices, meshDatas[3].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA4_TEXTURE, meshDatas[3].TextureFileFullPath);
-		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-		//	keys::ZELDA5_MESH, std::make_unique<jh::graphics::Mesh>()
-		//	)->InitVertexIndexBuffer(meshDatas[4].Vertices, meshDatas[4].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA5_TEXTURE, meshDatas[4].TextureFileFullPath);
-		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-		//	keys::ZELDA6_MESH, std::make_unique<jh::graphics::Mesh>()
-		//	)->InitVertexIndexBuffer(meshDatas[5].Vertices, meshDatas[5].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA6_TEXTURE, meshDatas[5].TextureFileFullPath);
-		//ResourcesManager::InsertOrNull<jh::graphics::Mesh>(
-		//	keys::ZELDA7_MESH, std::make_unique<jh::graphics::Mesh>()
-		//	)->InitVertexIndexBuffer(meshDatas[6].Vertices, meshDatas[6].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::ZELDA7_TEXTURE, meshDatas[6].TextureFileFullPath);
-	}
-#pragma endregion
-
 #pragma region FEMALE_SOLDER
 	{
 		std::string relativePath = "Assets\\Characters\\armored-female-future-soldier\\";
@@ -136,31 +104,39 @@ void GraphicsPSOManager::initMesh()
 	}
 #pragma endregion
 
-#pragma region STONE
+#pragma region BARNY
 	{
-		std::string relativePath = "Assets\\Characters\\Mixamo\\";
-		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "character.fbx");
-		assert(meshDatas.size() == 1);
-		std::vector<jh::graphics::Mesh*> pMeshs;
-		pMeshs.reserve(meshDatas.size());
-		ResourcesManager::InsertOrNull<Mesh>(keys::STONE_MESH, std::make_unique<jh::graphics::Mesh>())
-			->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::STONE_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
-		loadAndInsertTexture(eTextureType::NORMAL, keys::STONE_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
-	}
-#pragma endregion
+		//std::string relativePath = "Assets\\Characters\\Mixamo\\";
+		//std::vector<std::string> animClipNames =
+		//{
+		//	"CatwalkIdle.fbx",
+		//	"CatwalkIdleToWalkForward.fbx",
+		//	"CatwalkWalkForward.fbx",
+		//	"CatwalkWalkStop.fbx",
+		//};
 
-#pragma region FINN
-	{
-		//std::string relativePath = "Assets\\Characters\\Finn\\";
-		//std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "finnFBX.fbx");
+		//std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "character.fbx");
 		//assert(meshDatas.size() == 1);
 		//std::vector<jh::graphics::Mesh*> pMeshs;
 		//pMeshs.reserve(meshDatas.size());
-		//ResourcesManager::InsertOrNull<Mesh>(keys::STONE_MESH, std::make_unique<jh::graphics::Mesh>())
+		//ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
 		//	->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::STONE_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
-		//loadAndInsertTexture(eTextureType::NORMAL, keys::STONE_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
+		//loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
+
+
+
+		//AnimationData animData;
+
+		//// characterMesh 읽음.
+		//auto[meshes, _] = geoGenerator.ReadAnimationFromFile(relativePath, "character.fbx");
+
+		//assert(meshes.size() == 1);
+		//ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer(meshes[0].SkinnedVertices, meshes[0].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshes[0].DiffuseTextureFileFullPath);
+		//loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshes[0].NormalTextureFileFullPath);
+
 	}
 #pragma endregion
 
@@ -170,16 +146,6 @@ void GraphicsPSOManager::initMaterials()
 {
 	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY);
 	insertMaterial(keys::WORLD_COORD_MATERIAL, mDebugDrawWorldCoordPSO, "");
-
-#pragma region ZELDA
-	//insertMaterial(keys::ZELDA1_MATERIAL, mBasicPSO, keys::ZELDA1_TEXTURE);
-	//insertMaterial(keys::ZELDA2_MATERIAL, mBasicPSO, keys::ZELDA2_TEXTURE);
-	//insertMaterial(keys::ZELDA3_MATERIAL, mBasicPSO, keys::ZELDA3_TEXTURE);
-	//insertMaterial(keys::ZELDA4_MATERIAL, mBasicPSO, keys::ZELDA4_TEXTURE);
-	//insertMaterial(keys::ZELDA5_MATERIAL, mBasicPSO, keys::ZELDA5_TEXTURE);
-	//insertMaterial(keys::ZELDA6_MATERIAL, mBasicPSO, keys::ZELDA6_TEXTURE);
-	//insertMaterial(keys::ZELDA7_MATERIAL, mBasicPSO, keys::ZELDA7_TEXTURE);
-#pragma endregion
 
 #pragma region FEMALE_SOLDER
 	{
@@ -193,12 +159,12 @@ void GraphicsPSOManager::initMaterials()
 #pragma endregion
 
 
-#pragma region STONE
+#pragma region BARNY
 	{
-		insertMaterial(keys::STONE_MATERIAL, mBasicPSO, "");
-		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::STONE_DIFFUSE_TEXTURE);
-		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::STONE_NORMAL_TEXTURE);
-		Material* pMat = ResourcesManager::Find<Material>(keys::STONE_MATERIAL);
+		insertMaterial(keys::BARNY_SKINNNED_MATERIAL, mSkinnedBasicPSO, "");
+		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::BARNY_DIFFUSE_TEXTURE);
+		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::BARNY_NORMAL_TEXTURE);
+		Material* pMat = ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL);
 		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
 		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
 	}
@@ -217,38 +183,6 @@ void GraphicsPSOManager::initMaterials()
 
 void GraphicsPSOManager::initModels()
 {
-#pragma region ZELDA_MODEL
-	{
-		//Model* pZeldaModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::ZELDA_MODEL, std::make_unique<Model>());
-		//std::vector<Material*> pMaterials;
-		//std::vector<Mesh*> pMeshs;
-		//pMeshs.reserve(7);
-		//pMaterials.reserve(7);
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA1_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA2_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA3_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA4_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA5_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA6_MATERIAL));
-		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::ZELDA7_MATERIAL));
-		//ResourcesManager::Find<Model>(keys::ZELDA_MODEL)->InitMaterials(pMaterials);
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA1_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA2_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA3_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA4_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA5_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA6_MESH));
-		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::ZELDA7_MESH));
-		//{
-		//	for (auto* pMesh : pMeshs)
-		//	{
-		//		assert(pMesh != nullptr);
-		//	}
-		//}
-		//pZeldaModel->InitMeshes(pMeshs);
-	}
-#pragma endregion
-
 #pragma region DEBUG_BOX
 	{
 		Model* pBoxModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BOX_MODEL, std::make_unique<Model>());
@@ -299,35 +233,88 @@ void GraphicsPSOManager::initModels()
 	}
 #pragma endregion
 
-#pragma region STONE
+#pragma region NON_SKINNED_BARNY
 	{
-		Model* pStoneModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::STONE_MODEL, std::make_unique<Model>());
+		//Model* pBarnyModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BARNY_MODEL, std::make_unique<Model>());
+		//std::vector<Material*> pMaterials;
+		//std::vector<Mesh*> pMeshs;
+		//pMeshs.reserve(1);
+		//pMaterials.reserve(1);
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::BARNY_MATERIAL));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH));
+		//pBarnyModel->InitMaterials(pMaterials);
+		//pBarnyModel->InitMeshes(pMeshs);
+	}
+#pragma endregion
+
+#pragma region SKINNED_BARNY
+	{
+		auto& geoGenerator = GeomatryGenerator::GetInstance();
+		std::string relativePath = "Assets\\Characters\\Mixamo\\";
+		std::vector<std::string> animClipNames =
+		{
+			"CatwalkIdle.fbx",
+			"CatwalkIdleToWalkForward.fbx",
+			"CatwalkWalkForward.fbx",
+			"CatwalkWalkStop.fbx",
+		};
+
+		AnimationData animData;
+		// characterMesh 읽음.
+		auto [meshes, _] = geoGenerator.ReadAnimationFromFile(relativePath, "character.fbx");
+
+		assert(meshes.size() == 1);
+		ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
+			->InitVertexIndexBuffer(meshes[0].SkinnedVertices, meshes[0].Indices);
+		loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshes[0].DiffuseTextureFileFullPath);
+		loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshes[0].NormalTextureFileFullPath);
+
+		for (auto& name : animClipNames)
+		{
+			auto [_, ani] = geoGenerator.ReadAnimationFromFile(relativePath, name);
+
+			if (animData.ClipArray.empty())
+			{
+				animData = ani;
+			}
+			else
+			{
+				animData.ClipArray.push_back(ani.ClipArray.front());
+			}
+		}
+
 		std::vector<Material*> pMaterials;
 		std::vector<Mesh*> pMeshs;
 		pMeshs.reserve(1);
 		pMaterials.reserve(1);
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::STONE_MATERIAL));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::STONE_MESH));
-		pStoneModel->InitMaterials(pMaterials);
-		pStoneModel->InitMeshes(pMeshs);
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL));
+		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH));
+
+		SkinnedMeshModel* pBarnySkinnedModel = static_cast<SkinnedMeshModel*>(ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL, std::make_unique<SkinnedMeshModel>()));
+		pBarnySkinnedModel->InitMeshes(pMeshs);
+		pBarnySkinnedModel->InitMaterials(pMaterials);
+		pBarnySkinnedModel->InitAnimationDataAndStructuredBuffer(animData);
 	}
 #pragma endregion
-
 }
 
 
 void GraphicsPSOManager::initShaders()
 {
+	const int FLOAT4_BYTE = 16;
+	const int FLOAT3_BYTE = 12;
+	const int FLOAT2_BYTE = 8;
+
 #pragma region BASIC_3D_PSO
 	{
 		vector<D3D11_INPUT_ELEMENT_DESC> basicIEs = {
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 4 * 3,
+			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, FLOAT3_BYTE,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3 + 4 * 3,
+			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, FLOAT3_BYTE + FLOAT3_BYTE,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"TANGENT", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3 + 4 * 3 + 4 * 2,
+			{"TANGENT", 0, DXGI_FORMAT_R32G32_FLOAT, 0, FLOAT3_BYTE + FLOAT3_BYTE + FLOAT2_BYTE,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 
@@ -363,6 +350,42 @@ void GraphicsPSOManager::initShaders()
 #pragma endregion
 
 
+#pragma region SKINNED_PSO
+	{
+		vector<D3D11_INPUT_ELEMENT_DESC> skinnedIEs = 
+		{
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, FLOAT3_BYTE,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, FLOAT3_BYTE + FLOAT3_BYTE,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, FLOAT3_BYTE + FLOAT3_BYTE + FLOAT2_BYTE,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"BLENDWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, FLOAT3_BYTE + FLOAT3_BYTE + FLOAT2_BYTE + FLOAT3_BYTE,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"BLENDWEIGHT", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, FLOAT3_BYTE + FLOAT3_BYTE + FLOAT2_BYTE + FLOAT3_BYTE + FLOAT4_BYTE,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"BLENDINDICES", 0, DXGI_FORMAT_R8G8B8A8_UINT, 0, FLOAT3_BYTE + FLOAT3_BYTE + FLOAT2_BYTE + FLOAT3_BYTE + FLOAT4_BYTE + FLOAT4_BYTE,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"BLENDINDICES", 1, DXGI_FORMAT_R8G8B8A8_UINT, 0,  FLOAT3_BYTE + FLOAT3_BYTE + FLOAT2_BYTE + FLOAT3_BYTE + FLOAT4_BYTE + FLOAT4_BYTE + FLOAT3_BYTE,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
+
+		D3D11Utils::CreateVertexShaderAndInputLayout(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"BasicAnimation3DVS.hlsl",
+			skinnedIEs,
+			mSkinnedBasicPSO.mcpVertexShader,
+			mSkinnedBasicPSO.mcpInputLayout
+		);
+		// TODO : 문제일어날 수 있음. 그냥 포인터만 공유하는 것이기 때문에.
+		mSkinnedBasicPSO.mcpPixelShader = mBasicPSO.mcpPixelShader;
+	}
+
+#pragma endregion
+
+
 #pragma region CUBE_MAPPING
 	{
 		vector<D3D11_INPUT_ELEMENT_DESC> cubeMappingIEs = {
@@ -392,9 +415,11 @@ void GraphicsPSOManager::initShaders()
 		vector<D3D11_INPUT_ELEMENT_DESC> basicIEs = {
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 4 * 3,
+			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, FLOAT3_BYTE,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 3 + 4 * 3,
+			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, FLOAT3_BYTE + FLOAT3_BYTE,
+			 D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"TANGENT", 0, DXGI_FORMAT_R32G32_FLOAT, 0, FLOAT3_BYTE + FLOAT3_BYTE + FLOAT2_BYTE,
 			 D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 		  
@@ -555,6 +580,9 @@ void GraphicsPSOManager::initPipelineStates()
 	mBasicPSO.mcpRS = mcpSolidRS;
 	mBasicPSO.mcpSampler = mcpPointBorderSampler;
 
+	mSkinnedBasicPSO.mcpRS = mcpSolidRS;
+	mSkinnedBasicPSO.mcpSampler = mcpPointBorderSampler;
+
 	mDebugDrawNormalPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 	mDebugDrawNormalPSO.mcpRS = mcpSolidRS;
 
@@ -568,6 +596,10 @@ void GraphicsPSOManager::initPipelineStates()
 	mDebugDrawWorldCoordPSO.mcpRS = mcpSolidRS;
 	mDebugDrawWorldCoordPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 	mDebugDrawWorldCoordPSO.mcpSampler = mcpPointWrapSampler;
+}
+
+void GraphicsPSOManager::initAnimations()
+{
 }
 
 void GraphicsPSOManager::initCubeMap()

@@ -67,19 +67,26 @@ namespace jh
 
         CheckResult(hr, errorBlob.Get());
 
-        device->CreateVertexShader(
+        hr = device->CreateVertexShader(
             shaderBlob->GetBufferPointer(),
             shaderBlob->GetBufferSize(), 
             NULL,
             &m_vertexShader
         );
-
-        device->CreateInputLayout(
+        if (FAILED(hr))
+        {
+            assert(false);
+        }
+        hr = device->CreateInputLayout(
             inputElements.data(), 
             UINT(inputElements.size()),
             shaderBlob->GetBufferPointer(),
             shaderBlob->GetBufferSize(), 
             &m_inputLayout);
+        if (FAILED(hr))
+        {
+            assert(false);
+        }
     }
 
     void D3D11Utils::CreateHullShader(ComPtr<ID3D11Device>& device,
@@ -602,6 +609,38 @@ namespace jh
             desc.Width * 4);
 
         cout << filename << endl;
+    }
+
+    void D3D11Utils::CreateDynamicStructuredBuffer(ComPtr<ID3D11Device>& device, const UINT numElements, const UINT sizeElement, const void* initData, ComPtr<ID3D11Buffer>& buffer, ComPtr<ID3D11ShaderResourceView>& srv)
+    {
+        D3D11_BUFFER_DESC bufferDesc;
+        ZeroMemory(&bufferDesc, sizeof(bufferDesc));
+        bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+        bufferDesc.ByteWidth = numElements * sizeElement;
+        bufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+        bufferDesc.StructureByteStride = sizeElement; // 인덱싱을 하기 위해서, 각각의 element 크기를 알게 하는 것.
+        bufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+        // 참고: Structured는 D3D11_BIND_VERTEX_BUFFER로 사용 불가
+        if (initData) {
+            D3D11_SUBRESOURCE_DATA bufferData;
+            ZeroMemory(&bufferData, sizeof(bufferData));
+            bufferData.pSysMem = initData;
+            ThrowIfFailed(device->CreateBuffer(&bufferDesc, &bufferData,
+                buffer.GetAddressOf()));
+        }
+        else {
+            ThrowIfFailed(
+                device->CreateBuffer(&bufferDesc, NULL, buffer.GetAddressOf()));
+        }
+
+
+        D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+        ZeroMemory(&srvDesc, sizeof(srvDesc));
+        srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+        srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+        srvDesc.BufferEx.NumElements = numElements;
+        device->CreateShaderResourceView(buffer.Get(), &srvDesc, srv.GetAddressOf());
     }
 
 }

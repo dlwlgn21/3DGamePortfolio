@@ -1,6 +1,8 @@
 #include "GeomatryGenerator.h"
 #include "ModelLoader.h"
+#include "AnimationData.h"
 
+using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
 namespace jh::graphics
@@ -295,6 +297,52 @@ std::vector<MeshData> GeomatryGenerator::ReadFromFile(const std::string& basePat
     }
 
     return meshDatas;
+}
+std::tuple<std::vector<MeshData>, AnimationData> GeomatryGenerator::ReadAnimationFromFile(const std::string& basePath, const std::string& filename, const bool bIsRevertNormals)
+{
+    ModelLoader modelLoader;
+    modelLoader.LoadWithAnimatnionData(basePath, filename, bIsRevertNormals);
+    GeomatryGenerator::GetInstance().normalize(Vector3(0.0f), 1.0f, modelLoader.MeshDatas, modelLoader.AnimData);
+    return { modelLoader.MeshDatas, modelLoader.AnimData };
+}
+
+void GeomatryGenerator::normalize(const Vector3 center, const float longestLength, std::vector<MeshData>& meshes, AnimationData& animData)
+{
+    // Normalize vertices
+    Vector3 vmin(1000, 1000, 1000);
+    Vector3 vmax(-1000, -1000, -1000);
+    for (auto& mesh : meshes) 
+    {
+        for (auto& v : mesh.Vertices) 
+        {
+            vmin.x = XMMin(vmin.x, v.Pos.x);
+            vmin.y = XMMin(vmin.y, v.Pos.y);
+            vmin.z = XMMin(vmin.z, v.Pos.z);
+            vmax.x = XMMax(vmax.x, v.Pos.x);
+            vmax.y = XMMax(vmax.y, v.Pos.y);
+            vmax.z = XMMax(vmax.z, v.Pos.z);
+        }
+    }
+
+    float dx = vmax.x - vmin.x, dy = vmax.y - vmin.y, dz = vmax.z - vmin.z;
+    float scale = longestLength / XMMax(XMMax(dx, dy), dz);
+    Vector3 translation = -(vmin + vmax) * 0.5f + center;
+
+    for (auto& mesh : meshes) 
+    {
+        for (auto& v : mesh.Vertices) 
+        {
+            v.Pos = (v.Pos + translation) * scale;
+        }
+
+        for (auto& v : mesh.SkinnedVertices) 
+        {
+            v.Pos = (v.Pos + translation) * scale;
+        }
+    }
+
+    // 애니메이션 데이터 보정에 사용
+    animData.DefaultTransformMatrix = Matrix::CreateTranslation(translation) * Matrix::CreateScale(scale);
 }
 
 }

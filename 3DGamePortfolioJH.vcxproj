@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h" />
+    <ClInclude Include="AnimationDataManager.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CubeMapManager.h" />
     <ClInclude Include="CubeMapping.h" />
@@ -173,8 +174,11 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Script.h" />
+    <ClInclude Include="SkinnedMeshModel.h" />
+    <ClInclude Include="SkinnedMeshRenderer.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="DynamicStructuredBuffer.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
@@ -183,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp" />
+    <ClCompile Include="AnimationDataManager.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CubeMapManager.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -214,6 +219,9 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="SkinnedMeshModel.cpp" />
+    <ClCompile Include="DynamicStructuredBuffer.cpp" />
+    <ClCompile Include="SkinnedMeshRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -237,6 +245,16 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Basic3DVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="BasicAnimation3DVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

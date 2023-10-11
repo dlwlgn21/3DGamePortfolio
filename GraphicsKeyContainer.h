@@ -41,12 +41,14 @@ namespace jh::graphics::keys
 	static const std::string FEMALE_SOLDER_MODEL			= "FeModel";
 #pragma endregion
 
-#pragma region STONE
-	static const std::string STONE_MESH				= "Stoneesh";
-	static const std::string STONE_DIFFUSE_TEXTURE	= "StoneDTex";
-	static const std::string STONE_NORMAL_TEXTURE	= "StoneNTex";
-	static const std::string STONE_MATERIAL			= "Stoneaterial";
-	static const std::string STONE_MODEL			= "Stoneodel";
+#pragma region BARNY
+	static const std::string BARNY_MESH				 = "barnyMesh";
+	static const std::string BARNY_SKINNED_MESH		 = "barnySMesh";
+	static const std::string BARNY_DIFFUSE_TEXTURE	 = "barnyDTex";
+	static const std::string BARNY_NORMAL_TEXTURE	 = "barnyNTex";
+	static const std::string BARNY_SKINNNED_MATERIAL = "barnyMate";
+	static const std::string BARNY_MODEL			 = "barnyModel";
+	static const std::string BARNY_SKINNED_MODEL	 = "barnySkinnedModel";
 #pragma endregion
 
 

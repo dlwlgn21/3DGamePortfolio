@@ -213,48 +213,114 @@ void ModelLoader::processNodeRecursive(aiNode* pNode, const aiScene* pScene, Dir
     }
 }
 
-jh::graphics::MeshData ModelLoader::processMesh(aiMesh* mesh, const aiScene* scene) {
+jh::graphics::MeshData ModelLoader::processMesh(aiMesh* pMesh, const aiScene* pScene) 
+{
     // Data to fill
-    std::vector<Vertex3D> vertices;
-    std::vector<UINT> indices;
+    MeshData newMesh;
+    auto& vertices = newMesh.Vertices;
+    auto& indices = newMesh.Indices;
+    vertices.reserve(pMesh->mNumVertices);
 
     // Walk through each of the mesh's vertices
-    for (UINT i = 0; i < mesh->mNumVertices; i++) 
+    for (UINT i = 0; i < pMesh->mNumVertices; i++)
     {
         Vertex3D vertex;
 
-        vertex.Pos.x = mesh->mVertices[i].x;
-        vertex.Pos.y = mesh->mVertices[i].y;
-        vertex.Pos.z = mesh->mVertices[i].z;
+        vertex.Pos.x = pMesh->mVertices[i].x;
+        vertex.Pos.y = pMesh->mVertices[i].y;
+        vertex.Pos.z = pMesh->mVertices[i].z;
 
-        vertex.Normal.x = mesh->mNormals[i].x;
-        vertex.Normal.y = mesh->mNormals[i].y;
-        vertex.Normal.z = mesh->mNormals[i].z;
+        vertex.Normal.x = pMesh->mNormals[i].x;
+        vertex.Normal.y = pMesh->mNormals[i].y;
+        vertex.Normal.z = pMesh->mNormals[i].z;
         vertex.Normal.Normalize();
 
-        if (mesh->mTextureCoords[0]) 
+        if (pMesh->mTextureCoords[0])
         {
-            vertex.UV.x = (float)mesh->mTextureCoords[0][i].x;
-            vertex.UV.y = (float)mesh->mTextureCoords[0][i].y;
+            vertex.UV.x = (float)pMesh->mTextureCoords[0][i].x;
+            vertex.UV.y = (float)pMesh->mTextureCoords[0][i].y;
         }
 
         vertices.push_back(vertex);
     }
 
-    for (UINT i = 0; i < mesh->mNumFaces; i++) 
+    for (UINT i = 0; i < pMesh->mNumFaces; i++)
     {
-        aiFace face = mesh->mFaces[i];
+        aiFace face = pMesh->mFaces[i];
         for (UINT j = 0; j < face.mNumIndices; j++)
         {
             indices.push_back(face.mIndices[j]);
         }
     }
-    MeshData newMesh;
-    newMesh.Vertices = vertices;
-    newMesh.Indices = indices;
+    
+    if (pMesh->HasBones())
+    {
+        if (AnimData.BoneNameIndexMap.size() == 0)
+        {
+            assignTextureFileNames(pMesh, pScene, newMesh);
+            return newMesh;
+        }
+        auto& skinnedVertices = newMesh.SkinnedVertices;
+        std::vector<std::vector<float>> boneWeights(vertices.size());
+        std::vector<std::vector<uint8_t>> boneIndices(vertices.size());
+        AnimData.OffsetMatrixArray.resize(AnimData.BoneNameIndexMap.size());
+        AnimData.BoneTransformMatrixArray.resize(AnimData.BoneNameIndexMap.size());
 
+
+
+        int count = 0;
+        for (uint32_t i = 0; i < pMesh->mNumBones; ++i)
+        {
+            const aiBone* bone = pMesh->mBones[i];
+
+            // 디버깅
+            // cout << "BoneMap " << count++ << " : " << bone->mName.C_Str()
+            //     << " NumBoneWeights = " << bone->mNumWeights << endl;
+
+            const uint32_t boneId = AnimData.BoneNameIndexMap[bone->mName.C_Str()];
+
+            AnimData.OffsetMatrixArray[boneId] = Matrix((float*)&bone->mOffsetMatrix).Transpose();
+
+            // 이 뼈가 영향을 주는 Vertex의 개수
+            for (uint32_t j = 0; j < bone->mNumWeights; j++)
+            {
+                aiVertexWeight weight = bone->mWeights[j];
+                assert(weight.mVertexId < boneIndices.size());
+                boneIndices[weight.mVertexId].push_back(boneId);
+                boneWeights[weight.mVertexId].push_back(weight.mWeight);
+            }
+        }
+
+        // 예전에는 Vertex 하나에 영향을 주는 Bone은 최대 4개
+        // 요즘은 더 많을 수도 있는데 모델링 소프트웨어에서 조정하거나
+        // 읽어들이면서 weight가 너무 작은 것들은 뺄 수도 있음
+
+        int maxBones = 0;
+        for (int i = 0; i < boneWeights.size(); i++)
+        {
+            maxBones = std::max(maxBones, int(boneWeights[i].size()));
+        }
+
+        std::cout << "Max number of influencing bones per vertex = " << maxBones << std::endl;
+        skinnedVertices.reserve(vertices.size());
+        skinnedVertices.resize(vertices.size());
+
+        for (int i = 0; i < vertices.size(); i++)
+        {
+            skinnedVertices[i].Pos = vertices[i].Pos;
+            skinnedVertices[i].Normal = vertices[i].Normal;
+            skinnedVertices[i].UV = vertices[i].UV;
+
+            for (int j = 0; j < boneWeights[i].size(); j++)
+            {
+                skinnedVertices[i].BlendWeights[j] = boneWeights[i][j];
+                skinnedVertices[i].BoneIndicies[j] = boneIndices[i][j];
+            }
+        }
+    }
+    
     // http://assimp.sourceforge.net/lib_html/materials.html
-    assignTextureFileNames(mesh, scene, newMesh);
+    assignTextureFileNames(pMesh, pScene, newMesh);
     return newMesh;
 }
 
@@ -306,9 +372,20 @@ void ModelLoader::updateTangents()
             bitangents.data()
         );
 
-        for (size_t i = 0; i < mesh.Vertices.size(); i++) 
+        if (mesh.SkinnedVertices.size() != 0)
         {
-            mesh.Vertices[i].TangentModel = tangents[i];
+            for (size_t i = 0; i < mesh.Vertices.size(); i++)
+            {
+                mesh.Vertices[i].TangentModel = tangents[i];
+                mesh.SkinnedVertices[i].TangentModel = tangents[i];
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < mesh.Vertices.size(); i++) 
+            {
+                mesh.Vertices[i].TangentModel = tangents[i];
+            }
         }
     }
 }

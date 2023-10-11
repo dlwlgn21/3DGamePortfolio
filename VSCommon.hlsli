@@ -15,6 +15,8 @@ struct VertexOutput
     float3 TangentWorld : TANGENT0;
 };
 
+
+
 cbuffer TransformBuffer : register(b0)
 {
     matrix CBWorldMat;

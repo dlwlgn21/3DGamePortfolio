@@ -39,7 +39,7 @@ private:
 	void initMaterials();
 	void initModels();
 	void initPipelineStates();
-
+	void initAnimations();
 	void loadAndInsertTexture(const eTextureType, const std::string& key, const std::wstring& fileName);
 	void insertMaterial(const std::string& materialKey, GraphicsPSO& pso, const std::string& textureKeyOrNull);
 
@@ -49,6 +49,7 @@ private:
 
 public:
 	GraphicsPSO											mBasicPSO;
+	GraphicsPSO											mSkinnedBasicPSO;
 	GraphicsPSO											mDebugDrawNormalPSO;
 	GraphicsPSO											mDebugDrawWorldCoordPSO;
 	GraphicsPSO											mCubeMapPSO;

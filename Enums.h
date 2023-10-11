@@ -53,6 +53,7 @@ enum class eRenererComponentType
 {
 	MESH_RENDERER,
 	SPRITE_RENDERER,
+	SKINNED_MESH_RENDERER,
 	COUNT
 };
 

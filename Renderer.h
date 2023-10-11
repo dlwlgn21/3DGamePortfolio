@@ -16,7 +16,7 @@ public:
 
 protected:
 	const jh::enums::eRenererComponentType		meRendererType;
-	jh::graphics::Model*						mpModel;
+	jh::graphics::Model*						mpModel = nullptr;
 };
 
 

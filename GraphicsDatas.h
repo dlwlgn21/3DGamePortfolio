@@ -22,7 +22,7 @@ namespace jh::graphics
 		DirectX::SimpleMath::Vector3 TangentModel;
 	};
 
-	struct SkinedVertex
+	struct SkinnedVertex
 	{
 		DirectX::SimpleMath::Vector3 Pos;
 		DirectX::SimpleMath::Vector3 Normal;

@@ -12,5 +12,4 @@ Renderer::Renderer(const jh::enums::eRenererComponentType eRendererType)
 {
 }
 
-
 }

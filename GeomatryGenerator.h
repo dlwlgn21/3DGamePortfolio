@@ -2,6 +2,7 @@
 #include "Common.h"
 #include "GraphicsDatas.h"
 #include "MeshData.h"
+#include "AnimationData.h"
 
 namespace jh::graphics
 {
@@ -25,6 +26,10 @@ namespace jh::graphics
 
 		std::vector<MeshData> ReadFromFile(const std::string& basePath, const std::string& fileName);
 
+		std::tuple<std::vector<MeshData>, AnimationData> ReadAnimationFromFile(const std::string& basePath, const std::string& filename, const bool bIsRevertNormals = false);
+
+	private:
+		void normalize(const Vector3 center, const float longestLength, std::vector<MeshData>& meshes, AnimationData& animData);
 
 	private:
 		GeomatryGenerator() = default;
