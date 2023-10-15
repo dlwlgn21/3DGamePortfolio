@@ -14,8 +14,8 @@ struct PixelInput
 
 SamplerState PointSampler : register(s0);
 Texture2D DiffuseTexture : register(t0);
-Texture2D AmbientTexture : register(t1);
-Texture2D SpecularTexture : register(t2);
+Texture2D SpecualrTexture : register(t1);
+Texture2D AmbientTexture : register(t2);
 Texture2D NormalTexture : register(t3);
 
 struct Material

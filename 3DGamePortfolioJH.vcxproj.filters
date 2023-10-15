@@ -156,6 +156,9 @@
     <Filter Include="소스 파일\Managers\AnimationDataManager">
       <UniqueIdentifier>{2ce43610-bb2e-4add-801c-957f8de703f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Component\BoneAnimator">
+      <UniqueIdentifier>{b7d625bf-7ee6-43e5-befa-ba6ec662eaca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h">
@@ -317,6 +320,12 @@
     <ClInclude Include="AnimationDataManager.h">
       <Filter>소스 파일\Managers\AnimationDataManager</Filter>
     </ClInclude>
+    <ClInclude Include="DebugHelper.h">
+      <Filter>소스 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneAnimator.h">
+      <Filter>소스 파일\Component\BoneAnimator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -435,6 +444,15 @@
     </ClCompile>
     <ClCompile Include="AnimationDataManager.cpp">
       <Filter>소스 파일\Managers\AnimationDataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugHelper.cpp">
+      <Filter>소스 파일\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="BoneAnimator.cpp">
+      <Filter>소스 파일\Component\BoneAnimator</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationData.cpp">
+      <Filter>소스 파일\Graphics\Include</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

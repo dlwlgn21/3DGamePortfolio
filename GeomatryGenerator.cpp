@@ -298,12 +298,12 @@ std::vector<MeshData> GeomatryGenerator::ReadFromFile(const std::string& basePat
 
     return meshDatas;
 }
-std::tuple<std::vector<MeshData>, AnimationData> GeomatryGenerator::ReadAnimationFromFile(const std::string& basePath, const std::string& filename, const bool bIsRevertNormals)
+std::tuple<std::vector<MeshData>, AnimationData*> GeomatryGenerator::ReadAnimationFromFile(const std::string& basePath, const std::string& filename, const std::string& animKey, const bool bIsRevertNormals)
 {
     ModelLoader modelLoader;
-    modelLoader.LoadWithAnimatnionData(basePath, filename, bIsRevertNormals);
-    GeomatryGenerator::GetInstance().normalize(Vector3(0.0f), 1.0f, modelLoader.MeshDatas, modelLoader.AnimData);
-    return { modelLoader.MeshDatas, modelLoader.AnimData };
+    modelLoader.LoadWithAnimatnionData(basePath, filename, animKey, bIsRevertNormals); 
+    GeomatryGenerator::GetInstance().normalize(Vector3(0.0f), 1.0f, modelLoader.MeshDatas, *modelLoader.pAnimData);
+    return { modelLoader.MeshDatas, modelLoader.pAnimData };
 }
 
 void GeomatryGenerator::normalize(const Vector3 center, const float longestLength, std::vector<MeshData>& meshes, AnimationData& animData)
@@ -326,23 +326,22 @@ void GeomatryGenerator::normalize(const Vector3 center, const float longestLengt
 
     float dx = vmax.x - vmin.x, dy = vmax.y - vmin.y, dz = vmax.z - vmin.z;
     float scale = longestLength / XMMax(XMMax(dx, dy), dz);
-    Vector3 translation = -(vmin + vmax) * 0.5f + center;
-
+    //Vector3 translation = -(vmin + vmax) * 0.5f + center;
+    Vector3 translation(0.0f, 0.0f, 0.0f);
     for (auto& mesh : meshes) 
     {
-        for (auto& v : mesh.Vertices) 
-        {
-            v.Pos = (v.Pos + translation) * scale;
-        }
+        auto& vertices = mesh.Vertices;
+        auto& skinnedVertices = mesh.SkinnedVertices;
 
-        for (auto& v : mesh.SkinnedVertices) 
+        for (uint32_t i = 0; i < skinnedVertices.size(); ++i)
         {
-            v.Pos = (v.Pos + translation) * scale;
+            vertices[i].Pos = (vertices[i].Pos) * scale;
+            skinnedVertices[i].Pos = (skinnedVertices[i].Pos) * scale;
         }
     }
 
     // 애니메이션 데이터 보정에 사용
-    animData.DefaultTransformMatrix = Matrix::CreateTranslation(translation) * Matrix::CreateScale(scale);
+   animData.DefaultTransformMatrix = Matrix::CreateScale(scale);
 }
 
 }

@@ -45,9 +45,9 @@ namespace jh
 		//mViewMatRow = Matrix::CreateRotationY(DirectX::XMConvertToRadians(rot.y)) *
 		//			  Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.x)) *
 		//			  Matrix::CreateTranslation(-transform.GetPositionRef());
-		mViewMatRow = Matrix::CreateTranslation(-transform.GetPosition()) *
-					  Matrix::CreateRotationY(DirectX::XMConvertToRadians(-rot.YawDeg)) *
-					  Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.PitchDeg));
+		mViewMatRow =	Matrix::CreateTranslation(-transform.GetPosition()) *
+						Matrix::CreateRotationY(DirectX::XMConvertToRadians(-rot.YawDeg)) *
+						Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.PitchDeg));
 	}
 
 	void Camera::createProjectionMatrix()

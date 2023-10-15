@@ -23,6 +23,9 @@ namespace jh
 		__forceinline void SetYaw(const float yawDeg)							{ mRotation.YawDeg = yawDeg; }
 		__forceinline void SetRoll(const float rollDeg)							{ mRotation.RollDeg = rollDeg; }
 		__forceinline void SetPitch(const float pitchDeg)						{ mRotation.PitchDeg = pitchDeg; }
+		__forceinline void AccumulateYaw(const float yawDeg)					{ mRotation.YawDeg += yawDeg; }
+		__forceinline void AccumulateRoll(const float rollDeg)					{ mRotation.RollDeg += rollDeg; }
+		__forceinline void AccumulatePitch(const float pitchDeg)				{ mRotation.PitchDeg += pitchDeg; }
 		__forceinline void SetScale(const DirectX::SimpleMath::Vector3 scale)	{ mScale = scale; }
 
 		

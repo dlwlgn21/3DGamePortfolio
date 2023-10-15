@@ -37,9 +37,9 @@ void Transform::FixedUpdate()
 		
 	mWolrdMatRow = Matrix::CreateScale(mScale) * rotationMat * Matrix::CreateTranslation(mPosition);
 		 
-	//mForwardVector = Vector3::TransformNormal(S_FORWARD, rotationMat);
-	//mRightVector = Vector3::TransformNormal(S_RIGHT, rotationMat);
-	//mUpVector = Vector3::TransformNormal(S_UP, rotationMat);
+	mForwardVector	= Vector3::TransformNormal(S_FORWARD,	rotationMat);
+	mRightVector	= Vector3::TransformNormal(S_RIGHT,		rotationMat);
+	mUpVector		= Vector3::TransformNormal(S_UP,		rotationMat);
 }
 
 void Transform::UpdateConstantBuffer()

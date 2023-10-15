@@ -15,7 +15,7 @@ Model::Model()
 {
 	mpMeshes.reserve(MESH_MAX_COUNT);
 }
-void Model::InitMeshes(std::vector<Mesh*>& pMeshes)
+void Model::SetMeshes(std::vector<Mesh*>& pMeshes)
 {
 	for (auto* pMesh : pMeshes)
 	{
@@ -23,7 +23,7 @@ void Model::InitMeshes(std::vector<Mesh*>& pMeshes)
 	}
 	mpMeshes = pMeshes;
 }
-void Model::InitMaterials(std::vector<Material*>& pMaterials)
+void Model::SetMaterials(std::vector<Material*>& pMaterials)
 {
 	for (auto* pMaterial : pMaterials)
 	{

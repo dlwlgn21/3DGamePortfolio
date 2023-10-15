@@ -83,24 +83,24 @@ void GraphicsPSOManager::initMesh()
 
 #pragma region FEMALE_SOLDER
 	{
-		std::string relativePath = "Assets\\Characters\\armored-female-future-soldier\\";
-		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "angel_armor.fbx");
-		assert(meshDatas.size() == 1);
-		std::vector<jh::graphics::Mesh*> pMeshs;
-		pMeshs.reserve(meshDatas.size());
+		//std::string relativePath = "Assets\\Characters\\armored-female-future-soldier\\";
+		//std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "angel_armor.fbx");
+		//assert(meshDatas.size() == 1);
+		//std::vector<jh::graphics::Mesh*> pMeshs;
+		//pMeshs.reserve(meshDatas.size());
 
-		std::string diffuseFullPath = relativePath + "angel_armor_albedo.jpg";
-		std::string normalFullPath = relativePath + "angel_armor_normal.jpg";
+		//std::string diffuseFullPath = relativePath + "angel_armor_albedo.jpg";
+		//std::string normalFullPath = relativePath + "angel_armor_normal.jpg";
 
-		meshDatas[0].DiffuseTextureFileFullPath = std::wstring(diffuseFullPath.begin(), diffuseFullPath.end());
-		meshDatas[0].NormalTextureFileFullPath = std::wstring(normalFullPath.begin(), normalFullPath.end());
+		//meshDatas[0].DiffuseTextureFileFullPath = std::wstring(diffuseFullPath.begin(), diffuseFullPath.end());
+		//meshDatas[0].NormalTextureFileFullPath = std::wstring(normalFullPath.begin(), normalFullPath.end());
 
-		ResourcesManager::InsertOrNull<Mesh>(keys::FEMALE_SOLDER_MESH, std::make_unique<jh::graphics::Mesh>())
-			->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
-		std::cout << diffuseFullPath << std::endl;
-		std::cout << normalFullPath << std::endl;
-		loadAndInsertTexture(eTextureType::DIFFUSE, keys::FEMALE_SOLDER_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
-		loadAndInsertTexture(eTextureType::NORMAL, keys::FEMALE_SOLDER_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
+		//ResourcesManager::InsertOrNull<Mesh>(keys::FEMALE_SOLDER_MESH, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
+		//std::cout << diffuseFullPath << std::endl;
+		//std::cout << normalFullPath << std::endl;
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::FEMALE_SOLDER_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
+		//loadAndInsertTexture(eTextureType::NORMAL, keys::FEMALE_SOLDER_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
 	}
 #pragma endregion
 
@@ -149,25 +149,18 @@ void GraphicsPSOManager::initMaterials()
 
 #pragma region FEMALE_SOLDER
 	{
-		insertMaterial(keys::FEMALE_SOLDER_MATERIAL, mBasicPSO, "");
-		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_DIFFUSE_TEXTURE);
-		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_NORMAL_TEXTURE);
-		Material* pMat = ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL);
-		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
-		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
+		//insertMaterial(keys::FEMALE_SOLDER_MATERIAL, mBasicPSO, "");
+		//Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_DIFFUSE_TEXTURE);
+		//Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::FEMALE_SOLDER_NORMAL_TEXTURE);
+		//Material* pMat = ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL);
+		//pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
+		//pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
 	}
 #pragma endregion
 
 
 #pragma region BARNY
-	{
-		insertMaterial(keys::BARNY_SKINNNED_MATERIAL, mSkinnedBasicPSO, "");
-		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::BARNY_DIFFUSE_TEXTURE);
-		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::BARNY_NORMAL_TEXTURE);
-		Material* pMat = ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL);
-		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
-		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
-	}
+
 #pragma endregion
 
 
@@ -190,8 +183,8 @@ void GraphicsPSOManager::initModels()
 		std::vector<Material*> pMaterials;
 		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::BOX_MESH_KEY));
 		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
-		pBoxModel->InitMeshes(pMeshes);
-		pBoxModel->InitMaterials(pMaterials);
+		pBoxModel->SetMeshes(pMeshes);
+		pBoxModel->SetMaterials(pMaterials);
 	}
 #pragma endregion
 
@@ -202,8 +195,8 @@ void GraphicsPSOManager::initModels()
 		std::vector<Material*> pMaterials;
 		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::SPEHERE_MESH_KEY));
 		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
-		pSpehereModel->InitMeshes(pMeshes);
-		pSpehereModel->InitMaterials(pMaterials);
+		pSpehereModel->SetMeshes(pMeshes);
+		pSpehereModel->SetMaterials(pMaterials);
 	}
 #pragma endregion
 
@@ -214,22 +207,22 @@ void GraphicsPSOManager::initModels()
 		std::vector<Material*> pMaterials;
 		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::WORLD_COORD_MESH_KEY));
 		pMaterials.push_back(ResourcesManager::Find<Material>(keys::WORLD_COORD_MATERIAL));
-		pWorldCoordModel->InitMeshes(pMeshes);
-		pWorldCoordModel->InitMaterials(pMaterials);
+		pWorldCoordModel->SetMeshes(pMeshes);
+		pWorldCoordModel->SetMaterials(pMaterials);
 	}
 #pragma endregion
 
 #pragma region FEMALE_SOLDER
 	{
-		Model* pSolderModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::FEMALE_SOLDER_MODEL, std::make_unique<Model>());
-		std::vector<Material*> pMaterials;
-		std::vector<Mesh*> pMeshs;
-		pMeshs.reserve(1);
-		pMaterials.reserve(1);
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::FEMALE_SOLDER_MESH));
-		pSolderModel->InitMaterials(pMaterials);
-		pSolderModel->InitMeshes(pMeshs);
+		//Model* pSolderModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::FEMALE_SOLDER_MODEL, std::make_unique<Model>());
+		//std::vector<Material*> pMaterials;
+		//std::vector<Mesh*> pMeshs;
+		//pMeshs.reserve(1);
+		//pMaterials.reserve(1);
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::FEMALE_SOLDER_MATERIAL));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::FEMALE_SOLDER_MESH));
+		//pSolderModel->SetMaterials(pMaterials);
+		//pSolderModel->SetMeshes(pMeshs);
 	}
 #pragma endregion
 
@@ -250,6 +243,7 @@ void GraphicsPSOManager::initModels()
 #pragma region SKINNED_BARNY
 	{
 		auto& geoGenerator = GeomatryGenerator::GetInstance();
+		auto& animDataManager = AnimationDataManager::GetInstance();
 		std::string relativePath = "Assets\\Characters\\Mixamo\\";
 		std::vector<std::string> animClipNames =
 		{
@@ -259,41 +253,41 @@ void GraphicsPSOManager::initModels()
 			"CatwalkWalkStop.fbx",
 		};
 
-		AnimationData animData;
+		// Ely By K.Atienza.fbx
+		// character.fbx
 		// characterMesh ÀÐÀ½.
-		auto [meshes, _] = geoGenerator.ReadAnimationFromFile(relativePath, "character.fbx");
-
+		auto [meshes, pAnim] = geoGenerator.ReadAnimationFromFile(relativePath, "character.fbx", AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
 		assert(meshes.size() == 1);
 		ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
-			->InitVertexIndexBuffer(meshes[0].SkinnedVertices, meshes[0].Indices);
+			->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[0].SkinnedVertices, meshes[0].Indices);
 		loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshes[0].DiffuseTextureFileFullPath);
 		loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshes[0].NormalTextureFileFullPath);
+		pAnim->ClipArray.reserve(animClipNames.size());
 
 		for (auto& name : animClipNames)
 		{
-			auto [_, ani] = geoGenerator.ReadAnimationFromFile(relativePath, name);
-
-			if (animData.ClipArray.empty())
-			{
-				animData = ani;
-			}
-			else
-			{
-				animData.ClipArray.push_back(ani.ClipArray.front());
-			}
+			geoGenerator.ReadAnimationFromFile(relativePath, name, AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
 		}
-
 		std::vector<Material*> pMaterials;
 		std::vector<Mesh*> pMeshs;
 		pMeshs.reserve(1);
 		pMaterials.reserve(1);
+		insertMaterial(keys::BARNY_SKINNNED_MATERIAL, mSkinnedBasicPSO, "");
+		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::BARNY_DIFFUSE_TEXTURE);
+		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::BARNY_NORMAL_TEXTURE);
+		Material* pMat = ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL);
+		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
+		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
+
 		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL));
 		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH));
 
+		// For Debugging
+		AnimationData* pReadingData = animDataManager.GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
 		SkinnedMeshModel* pBarnySkinnedModel = static_cast<SkinnedMeshModel*>(ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL, std::make_unique<SkinnedMeshModel>()));
-		pBarnySkinnedModel->InitMeshes(pMeshs);
-		pBarnySkinnedModel->InitMaterials(pMaterials);
-		pBarnySkinnedModel->InitAnimationDataAndStructuredBuffer(animData);
+		pBarnySkinnedModel->SetMeshes(pMeshs);
+		pBarnySkinnedModel->SetMaterials(pMaterials);
+		pBarnySkinnedModel->InitAnimationDataAndStructuredBuffer(animDataManager.GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY));
 	}
 #pragma endregion
 }

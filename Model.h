@@ -22,8 +22,8 @@ public:
 	void SetModelType(const eModelType eType) { meType = eType; }
 	const eModelType GetType() const		  {return meType;}
 
-	void InitMeshes(std::vector<Mesh*>& pMeshes);
-	void InitMaterials(std::vector<Material*>& pMaterials);
+	void SetMeshes(std::vector<Mesh*>& pMeshes);
+	void SetMaterials(std::vector<Material*>& pMaterials);
 
 	void Render();
 private:

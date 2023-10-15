@@ -133,9 +133,11 @@
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h" />
     <ClInclude Include="AnimationDataManager.h" />
+    <ClInclude Include="BoneAnimator.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CubeMapManager.h" />
     <ClInclude Include="CubeMapping.h" />
+    <ClInclude Include="DebugHelper.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightingManager.h" />
     <ClInclude Include="MeshData.h" />
@@ -187,9 +189,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp" />
+    <ClCompile Include="AnimationData.cpp" />
     <ClCompile Include="AnimationDataManager.cpp" />
+    <ClCompile Include="BoneAnimator.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CubeMapManager.cpp" />
+    <ClCompile Include="DebugHelper.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightingManager.cpp" />
     <ClCompile Include="Model.cpp" />

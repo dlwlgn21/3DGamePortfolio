@@ -13,17 +13,17 @@ public:
 	SkinnedMeshModel();
 	virtual ~SkinnedMeshModel() = default;
 
-	void InitAnimationDataAndStructuredBuffer(jh::graphics::AnimationData& animData);
+	void InitAnimationDataAndStructuredBuffer(jh::graphics::AnimationData* pAnimData);
 
 
 	void Render(const int clipIndex, const int frame);
 
-	jh::graphics::AnimationData& GetAnimData() { return mAnimData; }
+	jh::graphics::AnimationData& GetAnimData() { return *mpAnimData; }
 
 private:
-	void updateBoneTransfromMatrices(const int clipIndex, const int frame);
+	void prepareBoneTransfromMatrices(const int clipIndex, const int frame);
 private:
-	jh::graphics::AnimationData mAnimData;
+	jh::graphics::AnimationData* mpAnimData = nullptr;
 	jh::graphics::DynamicStructuredBuffer<DirectX::SimpleMath::Matrix> mBoneTransformMatrices;
 };
 

@@ -22,6 +22,9 @@ public:
 
 	jh::graphics::AnimationData* GetAnimDataOrNull(const std::string& animDataKey);
 
+public:
+	static const std::string BASIC_CHARACTER_MORTION_ANIM_DATA_KEY;
+
 private:
 	AnimationDataManager() = default;
 	~AnimationDataManager()

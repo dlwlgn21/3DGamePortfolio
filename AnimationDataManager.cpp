@@ -2,7 +2,7 @@
 
 namespace jh
 {
-
+	const std::string AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY = "BasicMotionKey";
 
 
 bool AnimationDataManager::InsertAnimationData(const std::string& key, std::unique_ptr<jh::graphics::AnimationData> animDataUniquePtr)
@@ -22,11 +22,10 @@ jh::graphics::AnimationData* AnimationDataManager::GetAnimDataOrNull(const std::
 
 	if (iter != mAnimationDataMap.end())  
 	{ 
-		return iter->second.get(); 
+		return iter->second.get();  
 	}
 	else 
 	{ 
-		assert(false);
 		return nullptr; 
 	}
 }

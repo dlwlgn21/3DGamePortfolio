@@ -19,27 +19,29 @@ class ModelLoader final
 {
 public:
     void Load(const std::string& basePath, const std::string& filename);
-    void LoadWithAnimatnionData(const std::string& basePath, const std::string& filename, const bool bIsRevertNormals);
+    void LoadWithAnimatnionData(const std::string& basePath, const std::string& filename, const std::string& animKey, const bool bIsRevertNormals);
 
 private:
     void processNode(aiNode* node, const aiScene* scene, DirectX::SimpleMath::Matrix tr);
-    void processNodeRecursive(aiNode* pNode, const aiScene* pScene, DirectX::SimpleMath::Matrix tr);
+    void processNodeRecursiveForParentBoneIndexing(aiNode* pNode, const aiScene* pScene, DirectX::SimpleMath::Matrix tr);
     const aiNode* findParentRecursive(const aiNode* pNode);
 
-    jh::graphics::MeshData processMesh(aiMesh* mesh, const aiScene* scene);
-    std::string getFullPathTextureFileNameOrEmptyString(aiMaterial* material, aiTextureType type);
+    jh::graphics::MeshData parseVerticesAndIndicesAndTexture(aiMesh* pMesh, const aiScene* pScene);
+    std::string getFullPathTextureFileNameOrEmptyString(aiMaterial* pMaterial, const aiScene* pScene, aiTextureType type);
     void updateTangents();
 
     void findDeformingBonesForAssigningBoneNameKeyMapping(const aiScene* pScene);
     void updateBoneIndiceSequenceRecursiveForBoneNameIndexValueMapping(aiNode* pNode, int* counter);
-    void readAnimationClips(const aiScene* pScene);
+    void parseAnimationClips(const aiScene* pScene);
     void assignTextureFileNames(aiMesh* mesh, const aiScene* scene, jh::graphics::MeshData& meshData);
-
+    
+    void printNameIndexMap();
+    void printParentIndices();
 public:
     std::string                         BasePath;
     std::vector<jh::graphics::MeshData> MeshDatas;
 
-    jh::graphics::AnimationData         AnimData;
+    jh::graphics::AnimationData*        pAnimData = nullptr;
 };
 }
 

@@ -26,7 +26,7 @@ namespace jh::graphics
 
 		std::vector<MeshData> ReadFromFile(const std::string& basePath, const std::string& fileName);
 
-		std::tuple<std::vector<MeshData>, AnimationData> ReadAnimationFromFile(const std::string& basePath, const std::string& filename, const bool bIsRevertNormals = false);
+		std::tuple<std::vector<MeshData>, AnimationData*> ReadAnimationFromFile(const std::string& basePath, const std::string& filename, const std::string& animKey, const bool bIsRevertNormals = false);
 
 	private:
 		void normalize(const Vector3 center, const float longestLength, std::vector<MeshData>& meshes, AnimationData& animData);

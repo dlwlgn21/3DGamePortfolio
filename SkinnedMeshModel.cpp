@@ -8,39 +8,39 @@ namespace jh::graphics
 SkinnedMeshModel::SkinnedMeshModel()
 	: Model()
 {
-	ZeroMemory(&mAnimData, sizeof(jh::graphics::AnimationData));
 }
 
-void SkinnedMeshModel::InitAnimationDataAndStructuredBuffer(jh::graphics::AnimationData& animData)
+void SkinnedMeshModel::InitAnimationDataAndStructuredBuffer(jh::graphics::AnimationData* pAnimData)
 {
-	if (animData.ClipArray.empty())
+	assert(pAnimData != nullptr);
+	if (pAnimData->ClipArray.empty())
 	{
 		assert(false);
 	}
-	mAnimData = animData;
-	auto& cpuBuffer = mBoneTransformMatrices.GetCPUBuffer();
-	cpuBuffer.resize(mAnimData.ClipArray.front().KeyBoneAndFrame2DArrays.size());
-	for (UINT i = 0; i < mAnimData.ClipArray.front().KeyBoneAndFrame2DArrays.size(); ++i)
+	mpAnimData = pAnimData;
+	auto& matricices = mBoneTransformMatrices.GetCPUBuffer();
+	matricices.resize(mpAnimData->BoneTransformMatrixArray.size());
+	for (UINT i = 0; i < mpAnimData->BoneTransformMatrixArray.size(); ++i)
 	{
-		cpuBuffer[i] = Matrix();
+		matricices[i] = Matrix();
 	}
-	mBoneTransformMatrices.Create(static_cast<UINT>(cpuBuffer.size()));
+	mBoneTransformMatrices.CreateStructuredBuffer(static_cast<UINT>(matricices.size()));
 }
 
 
-void SkinnedMeshModel::updateBoneTransfromMatrices(const int clipIndex, const int frame)
+void SkinnedMeshModel::prepareBoneTransfromMatrices(const int clipIndex, const int frame)
 {
-	mAnimData.UpdateBoneTransformMatrices(clipIndex, frame);
+	mpAnimData->PrepareAllBoneTransformMatrices(clipIndex, frame);
 	auto& matricices = mBoneTransformMatrices.GetCPUBuffer();
 	for (int boneIndex = 0; boneIndex < matricices.size(); ++boneIndex)
 	{
-		matricices[boneIndex] = mAnimData.GetFinalTransformMatrix(clipIndex, boneIndex, frame).Transpose();
+		matricices[boneIndex] = mpAnimData->GetFinalTransformMatrixRow(boneIndex, frame).Transpose();
 	}
-	mBoneTransformMatrices.UpdateGPUBuffer(0);
 }
 void SkinnedMeshModel::Render(const int clipIndex, const int frame)
 {
-	updateBoneTransfromMatrices(clipIndex, frame);
+	prepareBoneTransfromMatrices(clipIndex, frame);
+	mBoneTransformMatrices.UploadGPUBuffer(0); 
 	Model::Render();
 }
 

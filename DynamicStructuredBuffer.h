@@ -15,11 +15,11 @@ public:
         mcpGPUBuffer.Reset();
     }
 
-    void Create(const UINT numElements)
+    void CreateStructuredBuffer(const UINT numElements)
     {
         createBuffer();
     }
-    void UpdateGPUBuffer(const UINT textureSlotNumber)
+    void UploadGPUBuffer(const UINT textureSlotNumber)
     {
 		D3D11_MAPPED_SUBRESOURCE mappedSrc;
 		ZeroMemory(&mappedSrc, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -57,7 +57,7 @@ private:
         mDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
         mDesc.StructureByteStride = static_cast<UINT>(sizeof(T)); // 인덱싱을 하기 위해서, 각각의 element 크기를 알게 하는 것.
         mDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-
+        mDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         HRESULT hr = device.CreateBuffer(&mDesc, NULL, mcpGPUBuffer.GetAddressOf());
 
         if (FAILED(hr)) { assert(false); }

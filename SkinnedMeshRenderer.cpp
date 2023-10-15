@@ -2,9 +2,9 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-
 #include "InputManager.h"
 #include "Time.h"
+#include "DebugHelper.h"
 
 #include "GraphicDeviceDX11.h"
 #include "SkinnedMeshModel.h"
@@ -36,7 +36,7 @@ void SkinnedMeshRenderer::Update()
 			meState = eCharacterAnimState::IDLE_TO_WALK;
 			frameCount = 0;
 		}
-		else if (frameCount == animData.ClipArray[static_cast<UINT>(meState)].KeyBoneAndFrame2DArrays[0].size())
+		else if (animData.ClipArray[static_cast<UINT>(meState)].IsLastFrame(frameCount))
 		{
 			frameCount = 0;
 		}
@@ -44,7 +44,7 @@ void SkinnedMeshRenderer::Update()
 	}
 	case eCharacterAnimState::IDLE_TO_WALK:
 	{
-		if (frameCount == animData.ClipArray[static_cast<UINT>(meState)].KeyBoneAndFrame2DArrays[0].size())
+		if (animData.ClipArray[static_cast<UINT>(meState)].IsLastFrame(frameCount))
 		{
 			meState = eCharacterAnimState::WALK_FORWARD;
 			frameCount = 0;
@@ -53,19 +53,27 @@ void SkinnedMeshRenderer::Update()
 	}
 	case eCharacterAnimState::WALK_FORWARD:
 	{
+		auto& transform = GetOwner().GetTransform();
+		Vector3 moveVector = transform.GetPosition();
 		if (InputManager::GetKeyState(eKeyCode::RIGHT) == eKeyState::PRESSED)
 		{
-			animData.AccumulatedRootTransformMatrix =
-				Matrix::CreateRotationY(DirectX::XMConvertToRadians(60.0f) * Time::DeltaTime()) *
-				animData.AccumulatedRootTransformMatrix;
+			transform.AccumulateYaw(120.0f * Time::DeltaTime());
+			//animData.AccumulatedRootTransformMatrix =
+			//	Matrix::CreateRotationY(DirectX::XMConvertToRadians(60.0f) * Time::DeltaTime()) *
+			//	animData.AccumulatedRootTransformMatrix;
+
 		}
 		if (InputManager::GetKeyState(eKeyCode::LEFT) == eKeyState::PRESSED)
 		{
-			animData.AccumulatedRootTransformMatrix =
-				Matrix::CreateRotationY(-DirectX::XMConvertToRadians(60.0f) * Time::DeltaTime()) *
-				animData.AccumulatedRootTransformMatrix;
+			transform.AccumulateYaw(-120.0f * Time::DeltaTime());
+			//animData.AccumulatedRootTransformMatrix =
+			//	Matrix::CreateRotationY(-DirectX::XMConvertToRadians(60.0f) * Time::DeltaTime()) *
+			//	animData.AccumulatedRootTransformMatrix;
 		}
-		if (frameCount == animData.ClipArray[static_cast<UINT>(meState)].KeyBoneAndFrame2DArrays[0].size())
+
+		moveVector += -transform.GetForwardRef() * 4.0f * Time::DeltaTime();
+		transform.SetPosition(moveVector);
+		if (animData.ClipArray[static_cast<UINT>(meState)].IsLastFrame(frameCount))
 		{
 			if (InputManager::GetKeyState(eKeyCode::UP) != eKeyState::PRESSED)
 			{
@@ -77,7 +85,7 @@ void SkinnedMeshRenderer::Update()
 	}
 	case eCharacterAnimState::WALK_TO_IDLE:
 	{
-		if (frameCount == animData.ClipArray[static_cast<UINT>(meState)].KeyBoneAndFrame2DArrays[0].size())
+		if (animData.ClipArray[static_cast<UINT>(meState)].IsLastFrame(frameCount))
 		{
 			meState = eCharacterAnimState::IDLE;
 			frameCount = 0;
@@ -94,7 +102,7 @@ void SkinnedMeshRenderer::Update()
 void SkinnedMeshRenderer::Render()
 {
 	assert(mpModel != nullptr);
-	GetOwner().GetTransform().UpdateConstantBuffer();
+	GetOwner().GetTransform().UpdateConstantBuffer(); 
 	static_cast<SkinnedMeshModel*>(mpModel)->Render(static_cast<UINT>(meState), frameCount);
 }
 

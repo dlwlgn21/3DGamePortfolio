@@ -1,7 +1,7 @@
 struct SkinnedVertexInput
 {
-    float3 Position : POSITION;
-    float3 Normal : NORMAL;
+    float3 PositionModel : POSITION;
+    float3 NormalModel : NORMAL;
     float2 UV : TEXCOORD0;
     float3 TangentModel : TANGENT0;
     
@@ -60,17 +60,13 @@ SkinnedVertexOutput main(SkinnedVertexInput Input)
     
     for (int i = 0; i < 8; ++i)
     {
-        PositionModel += weights[i] * mul(float4(Input.Position, 1.0f), BoneTransforms[indices[i]]).xyz;
-        NormalModel += weights[i] * mul(Input.Normal, (float3x3) BoneTransforms[indices[i]]);
-        TangentModel += weights[i] * mul(Input.TangentModel, (float3x3) BoneTransforms[indices[i]]);
+        PositionModel +=    weights[i] * mul(float4(Input.PositionModel, 1.0f), BoneTransforms[indices[i]]).xyz;
+        NormalModel +=      weights[i] * mul(Input.NormalModel, (float3x3) BoneTransforms[indices[i]]);
+        TangentModel +=     weights[i] * mul(Input.TangentModel, (float3x3) BoneTransforms[indices[i]]);
     }
-    
-    Input.Position = PositionModel;
-    Input.Normal = NormalModel;
-    Input.TangentModel = TangentModel;
     // Animation Part END
     
-    float4 worldPos = mul(float4(Input.Position, 1.0), CBWorldMat);
+    float4 worldPos = mul(float4(PositionModel, 1.0), CBWorldMat);
     output.PositionWorld = worldPos.xyz;
     
     float4 viewPos = mul(worldPos, CBViewMat);
@@ -79,10 +75,10 @@ SkinnedVertexOutput main(SkinnedVertexInput Input)
     
     output.UV = Input.UV;
     
-    float4 normal = float4(Input.Normal, 0.0f);
+    float4 normal = float4(NormalModel, 0.0f);
     output.NormalWorld = normalize(mul(normal, CBWorldInvTransposedMat).xyz);
     
-    float4 tangentWorld = mul(float4(Input.TangentModel, 0.0), CBWorldMat);
+    float3 tangentWorld = mul(float4(TangentModel, 0.0), CBWorldMat).xyz;
     output.TangentWorld = tangentWorld.xyz;
     return output;
 }
