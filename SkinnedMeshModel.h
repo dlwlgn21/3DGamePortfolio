@@ -16,12 +16,12 @@ public:
 	void InitAnimationDataAndStructuredBuffer(jh::graphics::AnimationData* pAnimData);
 
 
-	void Render(const int clipIndex, const int frame);
+	void Render(const std::string& clipKey, const int frame);
 
 	jh::graphics::AnimationData& GetAnimData() { return *mpAnimData; }
 
 private:
-	void prepareBoneTransfromMatrices(const int clipIndex, const int frame);
+	void prepareBoneTransfromMatrices(const std::string& clipKey, const int frame);
 private:
 	jh::graphics::AnimationData* mpAnimData = nullptr;
 	jh::graphics::DynamicStructuredBuffer<DirectX::SimpleMath::Matrix> mBoneTransformMatrices;

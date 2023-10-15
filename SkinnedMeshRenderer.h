@@ -24,6 +24,7 @@ public:
 
 private:
 	eCharacterAnimState meState = eCharacterAnimState::IDLE;
+	std::vector<std::string> mClipKeys;
 };
 
 

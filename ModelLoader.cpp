@@ -94,13 +94,74 @@ void ModelLoader::LoadWithAnimatnionData(const std::string& basePath, const std:
     Matrix tr = Matrix::Identity;
     // 각 Bone들의 Parent들을 Traverse 하면서 Assign함.
     processNodeRecursiveForParentBoneIndexing(pScene->mRootNode, pScene, tr);
+    updateTangents();
+}
 
-    if (pScene->HasAnimations())
+void ModelLoader::ParseAnimationClips(const std::string& basePath, const std::string& filename, const std::string& animKey, const std::string& clipKey)
+{
+    if (GetExtension(filename) == ".gltf")
     {
-        parseAnimationClips(pScene);
+        assert(false);
     }
 
-    updateTangents();
+    BasePath = basePath; // 텍스춰 읽어들일 때 필요
+
+    Assimp::Importer importer;
+
+    const aiScene* pScene = importer.ReadFile(
+        BasePath + filename,
+        aiProcess_Triangulate | aiProcess_ConvertToLeftHanded
+    );
+    assert(pScene != nullptr);
+    auto& AnimDataManager = AnimationDataManager::GetInstance();
+    pAnimData = nullptr;
+    if (AnimDataManager.GetAnimDataOrNull(animKey) == nullptr)
+    {
+        assert(false);
+    }
+    else
+    {
+        pAnimData = AnimDataManager.GetAnimDataOrNull(animKey);
+    }
+    assert(pScene->HasAnimations());
+    auto iter = pAnimData->ClipMap.insert(std::make_pair(clipKey, AnimationClip()));
+    if (iter.second == false)
+    {
+        assert(false);
+    }
+    for (uint32_t i = 0; i < pScene->mNumAnimations; i++)
+    {
+        AnimationClip& clip = iter.first->second;
+        const aiAnimation* pAnimation = pScene->mAnimations[i];
+        clip.Duration = pAnimation->mDuration;
+        clip.TicksPerSec = pAnimation->mTicksPerSecond;
+        clip.KeyBoneAndFrame2DArrays.resize(pAnimData->BoneNameIndexMap.size());
+        clip.NumChannelsActuallyNumsBones = pAnimation->mNumChannels;
+
+        /*
+        * 왜 채널이란 이름이 사용되냐고? 각 본들의 움직임이 각각의 채널로 제공이 되기 떄문임.
+        * 각 본들의 움직임이 시간에 따른 변화 곡선임.
+        * 하나의 변화 곡선을 하나의 채널에다가 데이터를 쏴준다.
+        */
+        for (uint32_t c = 0; c < pAnimation->mNumChannels; c++)
+        {
+            const aiNodeAnim* pNodeAnim = pAnimation->mChannels[c];
+            const int32_t boneIndex = pAnimData->BoneNameIndexMap[pNodeAnim->mNodeName.C_Str()];
+            clip.KeyBoneAndFrame2DArrays[boneIndex].resize(pNodeAnim->mNumPositionKeys);
+
+            // 요기서 시간에 따라 본들이 어떻게 변하는지, Assign 함.
+            for (uint32_t frame = 0; frame < pNodeAnim->mNumPositionKeys; frame++)
+            {
+                const auto pos = pNodeAnim->mPositionKeys[frame].mValue;
+                const auto rot = pNodeAnim->mRotationKeys[frame].mValue;
+                const auto scale = pNodeAnim->mScalingKeys[frame].mValue;
+                AnimationClip::Key& key = clip.KeyBoneAndFrame2DArrays[boneIndex][frame];
+                key.Pos = { pos.x, pos.y, pos.z };
+                key.Rot = Quaternion(rot.x, rot.y, rot.z, rot.w);
+                key.Scale = { scale.x, scale.y, scale.z };
+            }
+        }
+    }
 }
 
 void ModelLoader::processNode(aiNode* node, const aiScene* scene, Matrix tr) 
@@ -164,13 +225,6 @@ void ModelLoader::processNodeRecursiveForParentBoneIndexing(aiNode* pNode, const
 
 jh::graphics::MeshData ModelLoader::parseVerticesAndIndicesAndTexture(aiMesh* pMesh, const aiScene* pScene)
 {
-    // DUBUGING
-    static int sCallCount = 0;
-    ++sCallCount;
-
-    std::ofstream fOut;
-    fOut.open("SkinedVertices X Postion.txt");
-
     MeshData newMesh;
     auto& vertices = newMesh.Vertices;
     auto& indices = newMesh.Indices;
@@ -251,12 +305,6 @@ jh::graphics::MeshData ModelLoader::parseVerticesAndIndicesAndTexture(aiMesh* pM
         {
             char buffer[32];
             skinnedVertices[i].Pos = vertices[i].Pos;
-            sprintf(buffer, "%d's, x : %.7f\n", i, skinnedVertices[i].Pos.x);
-            fOut << buffer;
-            if (maxNum < skinnedVertices[i].Pos.x)
-            {
-                maxNum = skinnedVertices[i].Pos.x;
-            }
             skinnedVertices[i].Normal = vertices[i].Normal;
             skinnedVertices[i].UV = vertices[i].UV;
 
@@ -266,10 +314,6 @@ jh::graphics::MeshData ModelLoader::parseVerticesAndIndicesAndTexture(aiMesh* pM
                 skinnedVertices[i].BoneIndicies[j] = boneIndices[i][j];
             }
         }
-        fOut << std::endl;
-        fOut.flush();
-        fOut.close();
-        std::cout << "Max Number " << maxNum << std::endl;
     }
     return newMesh;
 }
@@ -460,42 +504,7 @@ const aiNode* ModelLoader::findParentRecursive(const aiNode* pNode)
 
 void ModelLoader::parseAnimationClips(const aiScene* pScene)
 {
-    pAnimData->ClipArray.push_back(AnimationClip());
-    for (uint32_t i = 0; i < pScene->mNumAnimations; i++)
-    {
-        AnimationClip& clip = pAnimData->ClipArray.back();
 
-        const aiAnimation* pAnimation = pScene->mAnimations[i];
-
-        clip.Duration = pAnimation->mDuration;
-        clip.TicksPerSec = pAnimation->mTicksPerSecond;
-        clip.KeyBoneAndFrame2DArrays.resize(pAnimData->BoneNameIndexMap.size());
-        clip.NumChannelsActuallyNumsBones = pAnimation->mNumChannels;
-        
-        /*
-        * 왜 채널이란 이름이 사용되냐고? 각 본들의 움직임이 각각의 채널로 제공이 되기 떄문임.
-        * 각 본들의 움직임이 시간에 따른 변화 곡선임.
-        * 하나의 변화 곡선을 하나의 채널에다가 데이터를 쏴준다.
-        */
-        for (uint32_t c = 0; c < pAnimation->mNumChannels; c++)
-        {
-            const aiNodeAnim* pNodeAnim = pAnimation->mChannels[c];
-            const int32_t boneIndex = pAnimData->BoneNameIndexMap[pNodeAnim->mNodeName.C_Str()];
-            clip.KeyBoneAndFrame2DArrays[boneIndex].resize(pNodeAnim->mNumPositionKeys);
-
-            // 요기서 시간에 따라 본들이 어떻게 변하는지, Assign 함.
-            for (uint32_t frame = 0; frame < pNodeAnim->mNumPositionKeys; frame++)
-            {
-                const auto pos = pNodeAnim->mPositionKeys[frame].mValue;
-                const auto rot = pNodeAnim->mRotationKeys[frame].mValue;
-                const auto scale = pNodeAnim->mScalingKeys[frame].mValue;
-                AnimationClip::Key& key = clip.KeyBoneAndFrame2DArrays[boneIndex][frame];
-                key.Pos = { pos.x, pos.y, pos.z };
-                key.Rot = Quaternion(rot.x, rot.y, rot.z, rot.w);
-                key.Scale = { scale.x, scale.y, scale.z };
-            }
-        }
-    }
 }
 
 }

@@ -8,6 +8,7 @@
 
 #include "GraphicDeviceDX11.h"
 #include "SkinnedMeshModel.h"
+#include "AnimationDataManager.h"
 
 
 using namespace jh::enums;
@@ -20,13 +21,21 @@ static int frameCount = 0;
 SkinnedMeshRenderer::SkinnedMeshRenderer()
 	: Renderer(eRenererComponentType::SKINNED_MESH_RENDERER)
 {
-
+	mClipKeys.reserve(static_cast<UINT>(eCharacterAnimState::COUNT));
+	auto& clipKeys = AnimationDataManager::GetInstance().GetAnimationCilpKeys(eAnimClipKeyContainerType::PLAYER);
+	for (const auto& key : clipKeys)
+	{
+		mClipKeys.push_back(key);
+	}
 }
+
+
 
 void SkinnedMeshRenderer::Update()
 {
 	SkinnedMeshModel* pModel = static_cast<SkinnedMeshModel*>(mpModel);
 	jh::graphics::AnimationData& animData = pModel->GetAnimData();
+	UINT clipIndex = static_cast<UINT>(meState);
 	switch (meState)
 	{
 	case eCharacterAnimState::IDLE:
@@ -36,7 +45,7 @@ void SkinnedMeshRenderer::Update()
 			meState = eCharacterAnimState::IDLE_TO_WALK;
 			frameCount = 0;
 		}
-		else if (animData.ClipArray[static_cast<UINT>(meState)].IsLastFrame(frameCount))
+		else if (animData.ClipMap[mClipKeys[clipIndex]].IsLastFrame(frameCount))
 		{
 			frameCount = 0;
 		}
@@ -44,7 +53,7 @@ void SkinnedMeshRenderer::Update()
 	}
 	case eCharacterAnimState::IDLE_TO_WALK:
 	{
-		if (animData.ClipArray[static_cast<UINT>(meState)].IsLastFrame(frameCount))
+		if (animData.ClipMap[mClipKeys[clipIndex]].IsLastFrame(frameCount))
 		{
 			meState = eCharacterAnimState::WALK_FORWARD;
 			frameCount = 0;
@@ -73,7 +82,7 @@ void SkinnedMeshRenderer::Update()
 
 		moveVector += -transform.GetForwardRef() * 4.0f * Time::DeltaTime();
 		transform.SetPosition(moveVector);
-		if (animData.ClipArray[static_cast<UINT>(meState)].IsLastFrame(frameCount))
+		if (animData.ClipMap[mClipKeys[clipIndex]].IsLastFrame(frameCount))
 		{
 			if (InputManager::GetKeyState(eKeyCode::UP) != eKeyState::PRESSED)
 			{
@@ -85,7 +94,7 @@ void SkinnedMeshRenderer::Update()
 	}
 	case eCharacterAnimState::WALK_TO_IDLE:
 	{
-		if (animData.ClipArray[static_cast<UINT>(meState)].IsLastFrame(frameCount))
+		if (animData.ClipMap[mClipKeys[clipIndex]].IsLastFrame(frameCount))
 		{
 			meState = eCharacterAnimState::IDLE;
 			frameCount = 0;
@@ -101,9 +110,10 @@ void SkinnedMeshRenderer::Update()
 
 void SkinnedMeshRenderer::Render()
 {
+	UINT clipIndex = static_cast<UINT>(meState);
 	assert(mpModel != nullptr);
 	GetOwner().GetTransform().UpdateConstantBuffer(); 
-	static_cast<SkinnedMeshModel*>(mpModel)->Render(static_cast<UINT>(meState), frameCount);
+	static_cast<SkinnedMeshModel*>(mpModel)->Render(mClipKeys[clipIndex], frameCount);
 }
 
 

@@ -46,14 +46,14 @@ struct AnimationData
     std::vector<int32_t>                            BoneParentIndexArray;           // ºÎ¸ð »ÀÀÇ ÀÎµ¦½º
     std::vector<Matrix>                             OffsetMatrixArray;
     std::vector<Matrix>                             BoneTransformMatrixArray;
-    std::vector<AnimationClip>                      ClipArray;
+    std::unordered_map<std::string, AnimationClip>  ClipMap;
     Matrix                                          DefaultTransformMatrix;
     Matrix                                          RootTransformMatrix = Matrix();
     Matrix                                          AccumulatedRootTransformMatrix = Matrix();
     Vector3                                         PrevPos = Vector3(0.0f);
 
     Matrix GetFinalTransformMatrixRow(const int boneId, const int frame);
-    void PrepareAllBoneTransformMatrices(const int clipId, const int frame);
+    void PrepareAllBoneTransformMatrices(const std::string& clipName, const int frame);
 };
 
 }

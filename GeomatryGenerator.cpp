@@ -298,12 +298,18 @@ std::vector<MeshData> GeomatryGenerator::ReadFromFile(const std::string& basePat
 
     return meshDatas;
 }
-std::tuple<std::vector<MeshData>, AnimationData*> GeomatryGenerator::ReadAnimationFromFile(const std::string& basePath, const std::string& filename, const std::string& animKey, const bool bIsRevertNormals)
+std::tuple<std::vector<MeshData>, AnimationData*> GeomatryGenerator::ReadFBXFile(const std::string& basePath, const std::string& filename, const std::string& animKey, const bool bIsRevertNormals)
 {
     ModelLoader modelLoader;
     modelLoader.LoadWithAnimatnionData(basePath, filename, animKey, bIsRevertNormals); 
     GeomatryGenerator::GetInstance().normalize(Vector3(0.0f), 1.0f, modelLoader.MeshDatas, *modelLoader.pAnimData);
     return { modelLoader.MeshDatas, modelLoader.pAnimData };
+}
+
+void GeomatryGenerator::ParseAnimationClip(const std::string& basePath, const std::string& filename, const std::string& animKey, const std::string& clipKey)
+{
+    ModelLoader modelLoader;
+    modelLoader.ParseAnimationClips(basePath, filename, animKey, clipKey);
 }
 
 void GeomatryGenerator::normalize(const Vector3 center, const float longestLength, std::vector<MeshData>& meshes, AnimationData& animData)

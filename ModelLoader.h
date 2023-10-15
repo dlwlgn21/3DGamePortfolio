@@ -20,6 +20,7 @@ class ModelLoader final
 public:
     void Load(const std::string& basePath, const std::string& filename);
     void LoadWithAnimatnionData(const std::string& basePath, const std::string& filename, const std::string& animKey, const bool bIsRevertNormals);
+    void ParseAnimationClips(const std::string& basePath, const std::string& filename, const std::string& animKey, const std::string& clipKey);
 
 private:
     void processNode(aiNode* node, const aiScene* scene, DirectX::SimpleMath::Matrix tr);

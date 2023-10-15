@@ -3,23 +3,24 @@ using namespace DirectX::SimpleMath;
 
 namespace jh::graphics
 {
-    Matrix AnimationData::GetFinalTransformMatrixRow(const int boneId, const int frame)
+
+Matrix AnimationData::GetFinalTransformMatrixRow(const int boneId, const int frame)
+{
+    return DefaultTransformMatrix.Invert() * OffsetMatrixArray[boneId] * BoneTransformMatrixArray[boneId] * DefaultTransformMatrix;
+
+    // defaultTransform은 모델을 읽어들일때 GeometryGenerator::Normalize() 에서 계산 
+    // DefaultTransformMatrix.Invert() * offsetMatrices[boneId]를 미리 계산해서 합치고 
+    // DefaultTransformMatrix * rootTransform을 미리 계산해놓을 수도 있습니다. 
+    // 여기는 교육용 예제라서 좌표계 변환 사례로 참고하시라고 남겨놓았다고 함.
+}
+
+void AnimationData::PrepareAllBoneTransformMatrices(const std::string& clipNameKey, const int frame)
+{
+    assert(clipNameKey != "");
+    auto iter = ClipMap.find(clipNameKey);
+    if (iter != ClipMap.end())
     {
-        return DefaultTransformMatrix.Invert() * OffsetMatrixArray[boneId] * BoneTransformMatrixArray[boneId] * DefaultTransformMatrix;
-
-        // defaultTransform은 모델을 읽어들일때 GeometryGenerator::Normalize() 에서 계산 
-        // DefaultTransformMatrix.Invert() * offsetMatrices[boneId]를 미리 계산해서 합치고 
-        // DefaultTransformMatrix * rootTransform을 미리 계산해놓을 수도 있습니다. 
-        // 여기는 교육용 예제라서 좌표계 변환 사례로 참고하시라고 남겨놓았다고 함.
-    }
-
-    void AnimationData::PrepareAllBoneTransformMatrices(const int clipId, const int frame)
-    {
-        auto& clip = ClipArray[clipId];
-
-        // Matrix를 구하는 과정임.
-        // 즉, M i = M i * M i-1 ... M 1 * M 0 까지 과정을 반복하는 것.
-        // clip가져오고, 각각의 bone에 대해서 반복문을 쫘아악 돎.
+        auto& clip = iter->second;
         for (int boneIndex = 0; boneIndex < BoneTransformMatrixArray.size(); boneIndex++)
         {
             // keys의 boneID를 인덱싱 하면, 프레임을 인덱싱 할 수 있음.
@@ -51,4 +52,9 @@ namespace jh::graphics
             BoneTransformMatrixArray[boneIndex] = key.GetTransform() * parentMatrix;
         }
     }
+    else
+    {
+        assert(false);
+    }
+}
 }

@@ -13,7 +13,7 @@ SkinnedMeshModel::SkinnedMeshModel()
 void SkinnedMeshModel::InitAnimationDataAndStructuredBuffer(jh::graphics::AnimationData* pAnimData)
 {
 	assert(pAnimData != nullptr);
-	if (pAnimData->ClipArray.empty())
+	if (pAnimData->ClipMap.size() == 0)
 	{
 		assert(false);
 	}
@@ -28,18 +28,18 @@ void SkinnedMeshModel::InitAnimationDataAndStructuredBuffer(jh::graphics::Animat
 }
 
 
-void SkinnedMeshModel::prepareBoneTransfromMatrices(const int clipIndex, const int frame)
+void SkinnedMeshModel::prepareBoneTransfromMatrices(const std::string& clipKey, const int frame)
 {
-	mpAnimData->PrepareAllBoneTransformMatrices(clipIndex, frame);
+	mpAnimData->PrepareAllBoneTransformMatrices(clipKey, frame);
 	auto& matricices = mBoneTransformMatrices.GetCPUBuffer();
 	for (int boneIndex = 0; boneIndex < matricices.size(); ++boneIndex)
 	{
 		matricices[boneIndex] = mpAnimData->GetFinalTransformMatrixRow(boneIndex, frame).Transpose();
 	}
 }
-void SkinnedMeshModel::Render(const int clipIndex, const int frame)
+void SkinnedMeshModel::Render(const std::string& clipKey, const int frame)
 {
-	prepareBoneTransfromMatrices(clipIndex, frame);
+	prepareBoneTransfromMatrices(clipKey, frame);
 	mBoneTransformMatrices.UploadGPUBuffer(0); 
 	Model::Render();
 }

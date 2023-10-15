@@ -256,18 +256,19 @@ void GraphicsPSOManager::initModels()
 		// Ely By K.Atienza.fbx
 		// character.fbx
 		// characterMesh ÀÐÀ½.
-		auto [meshes, pAnim] = geoGenerator.ReadAnimationFromFile(relativePath, "character.fbx", AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
+		auto [meshes, pAnim] = geoGenerator.ReadFBXFile(relativePath, "character.fbx", AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
 		assert(meshes.size() == 1);
 		ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
 			->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[0].SkinnedVertices, meshes[0].Indices);
 		loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshes[0].DiffuseTextureFileFullPath);
 		loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshes[0].NormalTextureFileFullPath);
-		pAnim->ClipArray.reserve(animClipNames.size());
-
+		pAnim->ClipMap.reserve(animClipNames.size());
+		animDataManager.GetInstance().InsertAnimationClips(eAnimClipKeyContainerType::PLAYER, animClipNames);
 		for (auto& name : animClipNames)
 		{
-			geoGenerator.ReadAnimationFromFile(relativePath, name, AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
+			geoGenerator.ParseAnimationClip(relativePath, name, AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY, name);
 		}
+
 		std::vector<Material*> pMaterials;
 		std::vector<Mesh*> pMeshs;
 		pMeshs.reserve(1);
