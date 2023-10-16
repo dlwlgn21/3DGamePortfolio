@@ -9,6 +9,7 @@
 #include "GraphicsKeyContainer.h"
 #include "LightingManager.h"
 #include "CameraManager.h"
+#include "AnimationDataManager.h"
 
 #include "Mesh.h"
 #include "GameObject.h"
@@ -19,6 +20,8 @@
 #include "CameraScript.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
+#include "BoneAnimator.h"
+#include "PlayerScript.h"
 #include "Light.h"
 
 using namespace jh::enums;
@@ -65,10 +68,21 @@ void PlayScene::initCamera()
 void PlayScene::initPlayer()
 {
 	{
+		auto* pAnimData = AnimationDataManager::GetInstance().GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
+		assert(pAnimData != nullptr);
 		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<SkinnedMeshRenderer>()));
 		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL));
+		
+		auto& animator = static_cast<BoneAnimator&>(spSqureGameObject->AddComponent(eComponentType::ANIMATOR, std::make_unique<BoneAnimator>()));
+		animator.InitAnimationData(pAnimData, eAnimClipKeyContainerType::PLAYER);
+		
+		spSqureGameObject->AddScript(eScriptType::HEAD, std::make_unique<PlayerScript>());
+		auto& script = static_cast<PlayerScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
+		script.SetBoneAnimator(&animator);
 		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
+
+
 	}
 }
 

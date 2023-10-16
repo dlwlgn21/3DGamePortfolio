@@ -159,6 +159,9 @@
     <Filter Include="소스 파일\Component\BoneAnimator">
       <UniqueIdentifier>{b7d625bf-7ee6-43e5-befa-ba6ec662eaca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Component\Script\Player">
+      <UniqueIdentifier>{18637f1c-07ff-4dbb-8e2a-8a43abaa140c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h">
@@ -326,6 +329,9 @@
     <ClInclude Include="BoneAnimator.h">
       <Filter>소스 파일\Component\BoneAnimator</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerScript.h">
+      <Filter>소스 파일\Component\Script\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -453,6 +459,9 @@
     </ClCompile>
     <ClCompile Include="AnimationData.cpp">
       <Filter>소스 파일\Graphics\Include</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerScript.cpp">
+      <Filter>소스 파일\Component\Script\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

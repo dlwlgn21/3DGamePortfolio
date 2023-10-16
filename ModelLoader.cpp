@@ -303,7 +303,6 @@ jh::graphics::MeshData ModelLoader::parseVerticesAndIndicesAndTexture(aiMesh* pM
         skinnedVertices.resize(vertices.size());
         for (int i = 0; i < vertices.size(); ++i)
         {
-            char buffer[32];
             skinnedVertices[i].Pos = vertices[i].Pos;
             skinnedVertices[i].Normal = vertices[i].Normal;
             skinnedVertices[i].UV = vertices[i].UV;

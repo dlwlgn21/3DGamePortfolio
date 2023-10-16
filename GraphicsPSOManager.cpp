@@ -288,7 +288,7 @@ void GraphicsPSOManager::initModels()
 		SkinnedMeshModel* pBarnySkinnedModel = static_cast<SkinnedMeshModel*>(ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL, std::make_unique<SkinnedMeshModel>()));
 		pBarnySkinnedModel->SetMeshes(pMeshs);
 		pBarnySkinnedModel->SetMaterials(pMaterials);
-		pBarnySkinnedModel->InitAnimationDataAndStructuredBuffer(animDataManager.GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY));
+		//pBarnySkinnedModel->InitAnimationDataAndStructuredBuffer(animDataManager.GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY));
 	}
 #pragma endregion
 }

@@ -1,17 +1,9 @@
 #pragma once
 #include "Renderer.h"
+#include "BoneAnimator.h"
 
 namespace jh
 {
-
-enum class eCharacterAnimState
-{
-	IDLE,
-	IDLE_TO_WALK,
-	WALK_FORWARD,
-	WALK_TO_IDLE,
-	COUNT
-};
 
 class SkinnedMeshRenderer final : public Renderer
 {
@@ -19,12 +11,12 @@ public:
 	SkinnedMeshRenderer();
 	virtual ~SkinnedMeshRenderer() = default;
 
-	void Update() override;
+	//void Update() override;
 	void Render() override;
 
-private:
-	eCharacterAnimState meState = eCharacterAnimState::IDLE;
-	std::vector<std::string> mClipKeys;
+//private:
+//	BoneAnimator::eCharacterAnimState meState = BoneAnimator::eCharacterAnimState::IDLE;
+//	std::vector<std::string> mClipKeys;
 };
 
 
