@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
+#include "PlayerState.h"
 #include "AnimationDataManager.h"
 #include "InputManager.h"
 #include "Time.h"
@@ -12,9 +13,25 @@ namespace jh
 
 PlayerScript::PlayerScript()
 	: Script()
+	, mFSM()
 	, mpAnimator(nullptr)
 	, meAnimState(BoneAnimator::eCharacterAnimState::IDLE)
+	, mePlayerState(ePlayerState::IDLE)
 {
+	mpStates[static_cast<UINT>(ePlayerState::IDLE)] = new jh::fsm::PlayerIdleState(this);
+	mpStates[static_cast<UINT>(ePlayerState::WALK)] = new jh::fsm::PlayerWalkingState(this);
+	mFSM.Init(*mpStates[static_cast<UINT>(ePlayerState::IDLE)]);
+}
+PlayerScript::~PlayerScript()
+{
+	for (auto* pState : mpStates)
+	{
+		if (pState != nullptr)
+		{
+			delete pState;
+			pState = nullptr;
+		}
+	}
 }
 
 void PlayerScript::Initialize()
@@ -23,62 +40,9 @@ void PlayerScript::Initialize()
 }
 void PlayerScript::Update()
 {
-	UINT clipIndex = static_cast<UINT>(meAnimState);
-	switch (meAnimState)
-	{
-	case BoneAnimator::eCharacterAnimState::IDLE:
-	{
-		if (InputManager::GetKeyState(eKeyCode::UP) == eKeyState::PRESSED)
-		{
-			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE_TO_WALK);
-		}
-		break;
-	}
-	case BoneAnimator::eCharacterAnimState::IDLE_TO_WALK:
-	{
-		if (mpAnimator->IsCurrentAnimClipLastFrame())
-		{
-			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::WALK_FORWARD);
-		}
-		break;
-	}
-	case BoneAnimator::eCharacterAnimState::WALK_FORWARD:
-	{
-		auto& transform = GetOwner().GetTransform();
-		Vector3 moveVector = transform.GetPosition();
-		if (InputManager::GetKeyState(eKeyCode::RIGHT) == eKeyState::PRESSED)
-		{
-			transform.AccumulateYaw(120.0f * Time::DeltaTime());
-		}
-		if (InputManager::GetKeyState(eKeyCode::LEFT) == eKeyState::PRESSED)
-		{
-			transform.AccumulateYaw(-120.0f * Time::DeltaTime());
-		}
-
-		moveVector += -transform.GetForwardRef() * 4.0f * Time::DeltaTime();
-		transform.SetPosition(moveVector);
-		if (mpAnimator->IsCurrentAnimClipLastFrame())
-		{
-			if (InputManager::GetKeyState(eKeyCode::UP) != eKeyState::PRESSED)
-			{
-				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::WALK_TO_IDLE);
-			}
-		}
-		break;
-	}
-	case BoneAnimator::eCharacterAnimState::WALK_TO_IDLE:
-	{
-		if (mpAnimator->IsCurrentAnimClipLastFrame())
-		{
-			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE);
-		}
-		break;
-	}
-	default:
-		assert(false);
-		break;
-	}
+	mFSM.Excute();
 }
+
 void PlayerScript::ChangeAnimationClip(const BoneAnimator::eCharacterAnimState eAnimState)
 {
 	auto& clipNames = AnimationDataManager::GetInstance().GetAnimationCilpKeys(eAnimClipKeyContainerType::PLAYER);
@@ -86,6 +50,13 @@ void PlayerScript::ChangeAnimationClip(const BoneAnimator::eCharacterAnimState e
 	const UINT INDEX = static_cast<UINT>(eAnimState);
 	meAnimState = eAnimState;
 	mpAnimator->ChangeCurrentAnimationClip(&clipNames[INDEX]);
+}
+
+void PlayerScript::ChangePlayerState(const ePlayerState eState)
+{
+	assert(eState != mePlayerState);
+	mePlayerState = eState;
+	mFSM.ChangeState(*mpStates[static_cast<UINT>(eState)]);
 }
 
 }

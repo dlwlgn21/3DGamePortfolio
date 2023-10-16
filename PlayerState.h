@@ -1,181 +1,149 @@
-//#pragma once
-//#include "State.h"
-//#include "Player.h"
-//
-//#include "InputManager.h"
-//#include "Time.h"
-//
-//#include "Animator.h"
-//#include "PlayerScript.h"
-//
-//namespace jh::fsm
-//{
-//class PlayerState : public State<PlayerScript>
-//{
-//public:
-//	PlayerState(PlayerScript* pPlayerScript)
-//		: State(pPlayerScript)
-//	{
-//	}
-//	virtual ~PlayerState() = default;
-//	virtual void Enter() override
-//	{
-//		assert(false);
-//	}
-//	virtual void Excute() override
-//	{
-//		assert(false);
-//	}
-//	virtual void Exit() override
-//	{
-//		assert(false);
-//	}
-//	void ChangeAnimation(const std::string& key)
-//	{
-//		mpOwnerScript->ChangeAnimation(key);
-//	}
-//	void ChangeState(const ePlayerState eState)
-//	{
-//		mpOwnerScript->ChangeState(eState);
-//	}
-//
-//	void DodgeAnimationCompletedCallBack()
-//	{
-//		mpOwnerScript->ChangeState(ePlayerState::IDLE);
-//	}
-//
-//	void HittedAnimationStartCallBack()
-//	{
-//		// TODO : HittedAnim Start Preprocess
-//	}
-//	void HittedAnimationCompletedCallBack()
-//	{
-//		mpOwnerScript->ChangeState(ePlayerState::IDLE);
-//	}
-//
-//	const bool IsChangeIdleState()
-//	{
-//		if (!InputManager::IsAnyKeyPressed())
-//		{
-//			ChangeState(ePlayerState::IDLE);
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//	const bool IsChangeRunningState()
-//	{
-//		if (InputManager::GetKeyState(eKeyCode::LEFT) == eKeyState::PRESSED || 
-//			InputManager::GetKeyState(eKeyCode::RIGHT) == eKeyState::PRESSED)
-//		{
-//			ChangeState(ePlayerState::RUNNING);
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//	const bool IsChangeRollingState()
-//	{
-//		if (InputManager::GetKeyState(eKeyCode::C) == eKeyState::DOWN)
-//		{
-//			ChangeState(ePlayerState::ROLLING);
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//	const bool IsChangeDashState()
-//	{
-//		if (InputManager::GetKeyState(eKeyCode::V) == eKeyState::DOWN)
-//		{
-//			ChangeState(ePlayerState::DASH);
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//	const bool IsChangeComboAttackState()
-//	{
-//		if (InputManager::GetKeyState(eKeyCode::Z) == eKeyState::DOWN)
-//		{
-//			ChangeState(ePlayerState::ATTACK_1);
-//			return true;
-//		}
-//		return false;
-//	}
-//	
-//	const bool IsChangePushAttackState()
-//	{
-//		if (InputManager::GetKeyState(eKeyCode::X) == eKeyState::DOWN)
-//		{
-//			ChangeState(ePlayerState::ATTACK_PUSH);
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//};
-//
-//
-//class PlayerIdleState : public PlayerState
-//{
-//public:
-//	PlayerIdleState(PlayerScript* pPlayerScript)
-//		: PlayerState(pPlayerScript)
-//	{
-//
-//	}
-//	virtual ~PlayerIdleState() = default;
-//	void Enter() override
-//	{
-//		ChangeAnimation(Player::IDLE_ANIM_KEY);
-//	}
-//
-//	void Excute() override
-//	{
-//		if (IsChangeRunningState())	return;
-//		if (IsChangeComboAttackState()) return;
-//		if (IsChangePushAttackState()) return;
-//		if (IsChangeRollingState()) return;
-//		if (IsChangeDashState()) return;
-//	}
-//
-//	void Exit() override
-//	{
-//
-//	}
-//
-//};
-//
-//
-//class PlayerRunningState : public PlayerState
-//{
-//public:
-//	PlayerRunningState(PlayerScript* pPlayerScript)
-//		: PlayerState(pPlayerScript)
-//	{
-//	}
-//	virtual ~PlayerRunningState() = default;
-//
-//	void Enter() override
-//	{
-//		ChangeAnimation(Player::RUN_ANIM_KEY);
-//	}
-//
-//	void Excute() override
-//	{
-//		if (IsChangeIdleState()) return;
-//		if (IsChangeComboAttackState()) return;
-//		if (IsChangePushAttackState()) return;
-//		if (IsChangeRollingState()) return;
-//		if (IsChangeDashState()) return;
-//	}
-//
-//	void Exit() override
-//	{
-//	}
-//};
-//
+#pragma once
+#include "State.h"
+
+#include "InputManager.h"
+#include "Time.h"
+
+#include "GameObject.h"
+#include "Transform.h"
+#include "PlayerScript.h"
+#include "BoneAnimator.h"
+
+namespace jh::fsm
+{
+class PlayerState : public State<PlayerScript>
+{
+public:
+	PlayerState(PlayerScript* pPlayerScript)
+		: State(pPlayerScript)
+	{
+	}
+	virtual ~PlayerState() = default;
+	virtual void Enter() override
+	{
+		assert(false);
+	}
+	virtual void Excute() override
+	{
+		assert(false);
+	}
+	virtual void Exit() override
+	{
+		assert(false);
+	}
+	void ChangeAnimationClip(const BoneAnimator::eCharacterAnimState eAnimState)
+	{
+		mpOwnerScript->ChangeAnimationClip(eAnimState);
+	}
+	void ChangePlayerState(const ePlayerState eState)
+	{
+		mpOwnerScript->ChangePlayerState(eState);
+	}
+};
+
+
+class PlayerIdleState : public PlayerState
+{
+public:
+	PlayerIdleState(PlayerScript* pPlayerScript)
+		: PlayerState(pPlayerScript)
+	{
+
+	}
+	virtual ~PlayerIdleState() = default;
+	void Enter() override
+	{
+	}
+
+	void Excute() override
+	{
+		switch (mpOwnerScript->GetCurrAnimState())
+		{
+		case BoneAnimator::eCharacterAnimState::IDLE:
+		{
+			if (InputManager::GetKeyState(eKeyCode::UP) == eKeyState::PRESSED)
+			{
+				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE_TO_WALK);
+			}
+			break;
+		}
+		case BoneAnimator::eCharacterAnimState::IDLE_TO_WALK:
+		{
+			if (mpOwnerScript->GetAnimator().IsCurrentAnimClipLastFrame())
+			{
+				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::WALK_FORWARD);
+				ChangePlayerState(ePlayerState::WALK);
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+	void Exit() override
+	{
+	}
+
+};
+
+
+class PlayerWalkingState : public PlayerState
+{
+public:
+	PlayerWalkingState(PlayerScript* pPlayerScript)
+		: PlayerState(pPlayerScript)
+	{
+	}
+	virtual ~PlayerWalkingState() = default;
+
+	void Enter() override
+	{
+	}
+
+	void Excute() override
+	{
+		switch (mpOwnerScript->GetCurrAnimState())
+		{
+		case BoneAnimator::eCharacterAnimState::WALK_FORWARD:
+		{
+			auto& transform = mpOwnerScript->GetOwner().GetTransform();
+			Vector3 moveVector = transform.GetPosition();
+			if (InputManager::GetKeyState(eKeyCode::RIGHT) == eKeyState::PRESSED)
+			{
+				transform.AccumulateYaw(120.0f * Time::DeltaTime());
+			}
+			if (InputManager::GetKeyState(eKeyCode::LEFT) == eKeyState::PRESSED)
+			{
+				transform.AccumulateYaw(-120.0f * Time::DeltaTime());
+			}
+			moveVector += -transform.GetForwardRef() * 4.0f * Time::DeltaTime();
+			transform.SetPosition(moveVector);
+			if (mpOwnerScript->GetAnimator().IsCurrentAnimClipLastFrame())
+			{
+				if (InputManager::GetKeyState(eKeyCode::UP) != eKeyState::PRESSED)
+				{
+					ChangeAnimationClip(BoneAnimator::eCharacterAnimState::WALK_TO_IDLE);
+				}
+			}
+			break;
+		}
+		case BoneAnimator::eCharacterAnimState::WALK_TO_IDLE:
+		{
+			if (mpOwnerScript->GetAnimator().IsCurrentAnimClipLastFrame())
+			{
+				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE);
+				ChangePlayerState(ePlayerState::IDLE);
+			}
+			break;
+		}
+		}
+	}
+	void Exit() override
+	{
+	}
+};
+
 //
 //class PlayerRollingState : public PlayerState
 //{
@@ -381,6 +349,6 @@
 //		// NONE
 //	}
 //};
-//#pragma endregion
-//
-//}
+#pragma endregion
+
+}
