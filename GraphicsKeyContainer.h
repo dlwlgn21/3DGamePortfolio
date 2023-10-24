@@ -71,4 +71,9 @@ namespace jh::graphics::keys
 	static const std::string MONKEY_DIFFUSE_TEXTURE_KEY = "monkeytex";
 
 
+	static const std::string DEBUG_COLLIDER_BOX_MESH_KEY = "ColliderBoxMesh";
+	static const std::string DEBUG_COLLIDER_BOX_MATERIAL_KEY = "ColliderBoxMaterial";
+	static const std::string DEBUG_COLLIDER_BOX_MODEL_KEY = "ColliderBoxModel";
+
+
 }

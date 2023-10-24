@@ -47,9 +47,8 @@ void PlayerScript::ChangeAnimationClip(const BoneAnimator::eCharacterAnimState e
 {
 	auto& clipNames = AnimationDataManager::GetInstance().GetAnimationCilpKeys(eAnimClipKeyContainerType::PLAYER);
 	assert(clipNames.size() != 0);
-	const UINT INDEX = static_cast<UINT>(eAnimState);
 	meAnimState = eAnimState;
-	mpAnimator->ChangeCurrentAnimationClip(&clipNames[INDEX]);
+	mpAnimator->ChangeCurrentAnimationClip(&clipNames[static_cast<UINT>(eAnimState)]);
 }
 
 void PlayerScript::ChangePlayerState(const ePlayerState eState)

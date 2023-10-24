@@ -162,6 +162,9 @@
     <Filter Include="소스 파일\Component\Script\Player">
       <UniqueIdentifier>{18637f1c-07ff-4dbb-8e2a-8a43abaa140c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Component\BoxCollider3D">
+      <UniqueIdentifier>{abc06ca9-6914-4dd7-b440-0200e39c28a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h">
@@ -332,6 +335,9 @@
     <ClInclude Include="PlayerScript.h">
       <Filter>소스 파일\Component\Script\Player</Filter>
     </ClInclude>
+    <ClInclude Include="BoxCollider3D.h">
+      <Filter>소스 파일\Component\BoxCollider3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -463,6 +469,9 @@
     <ClCompile Include="PlayerScript.cpp">
       <Filter>소스 파일\Component\Script\Player</Filter>
     </ClCompile>
+    <ClCompile Include="BoxCollider3D.cpp">
+      <Filter>소스 파일\Component\BoxCollider3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2DGamePortfolio.rc">
@@ -509,6 +518,12 @@
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="BasicAnimation3DVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugColliderVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugColliderPS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

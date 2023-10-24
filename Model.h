@@ -8,6 +8,7 @@ enum class eModelType
 {
 	NON_SKINNED_MESH_MODEL,
 	SKINNED_MESH_MODEL,
+	DEBUG_COLLIDER_MODEL,
 	COUNT
 };
 
@@ -27,10 +28,10 @@ public:
 
 	void Render();
 private:
-	std::vector<jh::graphics::Mesh*> mpMeshes;
-	std::vector<jh::graphics::Material*> mpMaterials;
+	std::vector<jh::graphics::Mesh*>		mpMeshes;
+	std::vector<jh::graphics::Material*>	mpMaterials;
 	eModelType meType = eModelType::NON_SKINNED_MESH_MODEL;
-};
+};	
 
 }
 

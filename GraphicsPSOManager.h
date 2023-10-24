@@ -52,6 +52,7 @@ public:
 	GraphicsPSO											mSkinnedBasicPSO;
 	GraphicsPSO											mDebugDrawNormalPSO;
 	GraphicsPSO											mDebugDrawWorldCoordPSO;
+	GraphicsPSO											mDebugDrawColliderPSO;
 	GraphicsPSO											mCubeMapPSO;
 	CubeMapping											mCubeMapping;
 

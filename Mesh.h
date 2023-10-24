@@ -12,8 +12,11 @@ public:
 	~Mesh();
 	void Render();
 	void DebugNormalRender();
+
 	template<class T>
 	void InitVertexIndexBuffer(std::vector<T>& vetices, std::vector<UINT>& indicies);
+	template<class T>
+	void InitVertexIndexBufferWithoutNormal(std::vector<T>& vetices, std::vector<UINT>& indicies);
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> mcpVertexBuffer = nullptr;
@@ -75,7 +78,6 @@ void Mesh::InitVertexIndexBuffer(std::vector<T>& vetices, std::vector<UINT>& ind
 			return;
 		}
 	}
-
 	std::vector<T> normalVertices;
 	std::vector<UINT> normalIndices;
 	for (UINT i = 0; i < vetices.size(); i++) {
@@ -121,6 +123,56 @@ void Mesh::InitVertexIndexBuffer(std::vector<T>& vetices, std::vector<UINT>& ind
 		}
 	}
 
+}
+
+template<class T>
+void Mesh::InitVertexIndexBufferWithoutNormal(std::vector<T>& vetices, std::vector<UINT>& indicies)
+{
+	D3D11_BUFFER_DESC vbDesc;
+	ZeroMemory(&vbDesc, sizeof(D3D11_BUFFER_DESC));
+	vbDesc.ByteWidth = static_cast<UINT>(sizeof(T) * vetices.size());
+	vbDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vbDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
+	vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
+	vbDesc.StructureByteStride = static_cast<UINT>(sizeof(T));
+
+	D3D11_BUFFER_DESC ibDesc;
+	ZeroMemory(&ibDesc, sizeof(D3D11_BUFFER_DESC));
+	ibDesc.ByteWidth = static_cast<UINT>(sizeof(UINT) * indicies.size());
+	ibDesc.Usage = D3D11_USAGE_DYNAMIC;
+	ibDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
+	ibDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
+	ibDesc.StructureByteStride = static_cast<UINT>(sizeof(UINT));
+	mIndexCount = static_cast<UINT>(indicies.size());
+	mStride = vbDesc.StructureByteStride;
+
+	auto& gd = GraphicDeviceDX11::GetInstance().GetDeivce();
+	{
+		D3D11_SUBRESOURCE_DATA subData = {};
+		subData.pSysMem = vetices.data();
+		HRESULT hr = gd.CreateBuffer(
+			&vbDesc,
+			&subData,
+			mcpVertexBuffer.ReleaseAndGetAddressOf()
+		);
+		if (FAILED(hr))
+		{
+			assert(false);
+			return;
+		}
+		ZeroMemory(&subData, sizeof(D3D11_SUBRESOURCE_DATA));
+		subData.pSysMem = indicies.data();
+		hr = gd.CreateBuffer(
+			&ibDesc,
+			&subData,
+			mcpIndexBuffer.ReleaseAndGetAddressOf()
+		);
+		if (FAILED(hr))
+		{
+			assert(false);
+			return;
+		}
+	}
 }
 
 }

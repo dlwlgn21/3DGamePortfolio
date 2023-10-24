@@ -11,12 +11,7 @@ public:
 	SkinnedMeshRenderer();
 	virtual ~SkinnedMeshRenderer() = default;
 
-	//void Update() override;
 	void Render() override;
-
-//private:
-//	BoneAnimator::eCharacterAnimState meState = BoneAnimator::eCharacterAnimState::IDLE;
-//	std::vector<std::string> mClipKeys;
 };
 
 

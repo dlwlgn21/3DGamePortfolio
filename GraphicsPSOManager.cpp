@@ -74,6 +74,16 @@ void GraphicsPSOManager::initMesh()
 
 	}
 
+	// ColliderBox
+	{
+		std::vector<Vertex3DCollider> colliderVertices;
+		std::vector<UINT> colliderIndices;
+		geoGenerator.MakeDebugDrawingColliderBox(colliderVertices, colliderIndices);
+		
+		Mesh* pColliderBoxMesh = ResourcesManager::InsertOrNull<Mesh>(keys::DEBUG_COLLIDER_BOX_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
+		pColliderBoxMesh->InitVertexIndexBufferWithoutNormal(colliderVertices, colliderIndices);
+	}
+
 
 	{
 		//Mesh* pMonkeyMesh = ResourcesManager::InsertOrNull<Mesh>(keys::MONKEY_MESH_KEY, std::make_unique<jh::graphics::Mesh>());
@@ -104,41 +114,7 @@ void GraphicsPSOManager::initMesh()
 	}
 #pragma endregion
 
-#pragma region BARNY
-	{
-		//std::string relativePath = "Assets\\Characters\\Mixamo\\";
-		//std::vector<std::string> animClipNames =
-		//{
-		//	"CatwalkIdle.fbx",
-		//	"CatwalkIdleToWalkForward.fbx",
-		//	"CatwalkWalkForward.fbx",
-		//	"CatwalkWalkStop.fbx",
-		//};
 
-		//std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "character.fbx");
-		//assert(meshDatas.size() == 1);
-		//std::vector<jh::graphics::Mesh*> pMeshs;
-		//pMeshs.reserve(meshDatas.size());
-		//ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
-		//	->InitVertexIndexBuffer(meshDatas[0].Vertices, meshDatas[0].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshDatas[0].DiffuseTextureFileFullPath);
-		//loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshDatas[0].NormalTextureFileFullPath);
-
-
-
-		//AnimationData animData;
-
-		//// characterMesh 읽음.
-		//auto[meshes, _] = geoGenerator.ReadAnimationFromFile(relativePath, "character.fbx");
-
-		//assert(meshes.size() == 1);
-		//ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
-		//	->InitVertexIndexBuffer(meshes[0].SkinnedVertices, meshes[0].Indices);
-		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshes[0].DiffuseTextureFileFullPath);
-		//loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshes[0].NormalTextureFileFullPath);
-
-	}
-#pragma endregion
 
 
 }
@@ -146,7 +122,7 @@ void GraphicsPSOManager::initMaterials()
 {
 	insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO, keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY);
 	insertMaterial(keys::WORLD_COORD_MATERIAL, mDebugDrawWorldCoordPSO, "");
-
+	insertMaterial(keys::DEBUG_COLLIDER_BOX_MATERIAL_KEY, mDebugDrawColliderPSO, "");
 #pragma region FEMALE_SOLDER
 	{
 		//insertMaterial(keys::FEMALE_SOLDER_MATERIAL, mBasicPSO, "");
@@ -183,6 +159,18 @@ void GraphicsPSOManager::initModels()
 		std::vector<Material*> pMaterials;
 		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::BOX_MESH_KEY));
 		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
+		pBoxModel->SetMeshes(pMeshes);
+		pBoxModel->SetMaterials(pMaterials);
+	}
+#pragma endregion
+
+#pragma region DEBUG_COLLIDER_BOX
+	{
+		Model* pBoxModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::DEBUG_COLLIDER_BOX_MODEL_KEY, std::make_unique<Model>());
+		std::vector<Mesh*> pMeshes;
+		std::vector<Material*> pMaterials;
+		pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::DEBUG_COLLIDER_BOX_MESH_KEY));
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::DEBUG_COLLIDER_BOX_MATERIAL_KEY));
 		pBoxModel->SetMeshes(pMeshes);
 		pBoxModel->SetMaterials(pMaterials);
 	}
@@ -244,19 +232,17 @@ void GraphicsPSOManager::initModels()
 	{
 		auto& geoGenerator = GeomatryGenerator::GetInstance();
 		auto& animDataManager = AnimationDataManager::GetInstance();
-		std::string relativePath = "Assets\\Characters\\Mixamo\\";
+		std::string relativePath = "Assets\\Characters\\Dwarf\\";
 		std::vector<std::string> animClipNames =
 		{
-			"CatwalkIdle.fbx",
-			"CatwalkIdleToWalkForward.fbx",
-			"CatwalkWalkForward.fbx",
-			"CatwalkWalkStop.fbx",
+			"Idle.fbx",
+			"Walking.fbx"
 		};
 
 		// Ely By K.Atienza.fbx
 		// character.fbx
 		// characterMesh 읽음.
-		auto [meshes, pAnim] = geoGenerator.ReadFBXFile(relativePath, "character.fbx", AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
+		auto [meshes, pAnim] = geoGenerator.ReadFBXFile(relativePath, "Dwarf.fbx", AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
 		assert(meshes.size() == 1);
 		ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
 			->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[0].SkinnedVertices, meshes[0].Indices);
@@ -436,6 +422,29 @@ void GraphicsPSOManager::initShaders()
 	}
 #pragma endregion
 
+#pragma region DEBUG_DRAW_COLLIDER_BOX_PSO
+	{
+		vector<D3D11_INPUT_ELEMENT_DESC> basicIEs = {
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		};
+
+		D3D11Utils::CreateVertexShaderAndInputLayout(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"DebugColliderVS.hlsl",
+			basicIEs,
+			mDebugDrawColliderPSO.mcpVertexShader,
+			mDebugDrawColliderPSO.mcpInputLayout
+		);
+
+		D3D11Utils::CreatePixelShader(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"DebugColliderPS.hlsl",
+			mDebugDrawColliderPSO.mcpPixelShader
+		);
+
+
+	}
+#pragma endregion
 
 }
 
@@ -591,6 +600,9 @@ void GraphicsPSOManager::initPipelineStates()
 	mDebugDrawWorldCoordPSO.mcpRS = mcpSolidRS;
 	mDebugDrawWorldCoordPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 	mDebugDrawWorldCoordPSO.mcpSampler = mcpPointWrapSampler;
+
+	mDebugDrawColliderPSO.mcpRS = mcpWireRS;
+	mDebugDrawColliderPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 }
 
 void GraphicsPSOManager::initAnimations()

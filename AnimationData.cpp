@@ -48,6 +48,8 @@ void AnimationData::PrepareAllBoneTransformMatrices(const std::string& clipNameK
                     temp.y = key.Pos.y; // 높이 방향만 첫 프레임으로 보정
                     AccumulatedRootTransformMatrix.Translation(temp);
                 }
+                //PrevPos = key.Pos;
+                //key.Pos = Vector3(0.0f);
             }
             BoneTransformMatrixArray[boneIndex] = key.GetTransform() * parentMatrix;
         }

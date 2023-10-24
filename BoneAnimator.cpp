@@ -9,8 +9,7 @@ BoneAnimator::BoneAnimator()
 	: Component(jh::enums::eComponentType::ANIMATOR)
 	, mpAnimData(nullptr)
 	, mBoneTransformMatrices()
-	, mCurrentClipKey(nullptr)
-	, mPrevClipKey(nullptr)
+	, mpCurrentClipKey(nullptr)
 	, mFrameCount(0)
 {
 }
@@ -24,17 +23,16 @@ void BoneAnimator::Update()
 }
 void BoneAnimator::FixedUpdate()
 {
-	assert(mCurrentClipKey != nullptr);
+	assert(mpCurrentClipKey != nullptr);
 	prepareBoneTransfromMatrices(mFrameCount);
 	mBoneTransformMatrices.UploadGPUBuffer(0);
 }
 
 void BoneAnimator::ChangeCurrentAnimationClip(const std::string* pKey)
 {
-	assert(mCurrentClipKey != nullptr && pKey != nullptr);
+	assert(mpCurrentClipKey != nullptr && pKey != nullptr);
 	mFrameCount = 0;
-	mPrevClipKey = mCurrentClipKey;
-	mCurrentClipKey = pKey;
+	mpCurrentClipKey = pKey;
 }
 void BoneAnimator::InitAnimationData(jh::graphics::AnimationData* pAnimData, const eAnimClipKeyContainerType eKeyContainerType)
 {
@@ -44,21 +42,20 @@ void BoneAnimator::InitAnimationData(jh::graphics::AnimationData* pAnimData, con
 	matricices.resize(mpAnimData->BoneTransformMatrixArray.size());
 	for (UINT i = 0; i < mpAnimData->BoneTransformMatrixArray.size(); ++i)
 	{
-		matricices[i] = Matrix();
+		matricices[i] = Matrix::Identity;
 	}
 	mBoneTransformMatrices.CreateStructuredBuffer(static_cast<UINT>(matricices.size()));
-	mCurrentClipKey = &AnimationDataManager::GetInstance().GetAnimationCilpKeys(eKeyContainerType)[0];
-	mPrevClipKey = mCurrentClipKey;
+	mpCurrentClipKey = &AnimationDataManager::GetInstance().GetAnimationCilpKeys(eKeyContainerType)[0];
 }
 
 const bool BoneAnimator::IsCurrentAnimClipLastFrame()
 {
-	return mpAnimData->ClipMap[*mCurrentClipKey].IsLastFrame(mFrameCount) ? true : false;
+	return mpAnimData->ClipMap[*mpCurrentClipKey].IsLastFrame(mFrameCount) ? true : false;
 }
 
 void BoneAnimator::prepareBoneTransfromMatrices(const int frame)
 {
-	mpAnimData->PrepareAllBoneTransformMatrices(*mCurrentClipKey, frame);
+	mpAnimData->PrepareAllBoneTransformMatrices(*mpCurrentClipKey, frame);
 	auto& matricices = mBoneTransformMatrices.GetCPUBuffer();
 	for (int boneIndex = 0; boneIndex < matricices.size(); ++boneIndex)
 	{

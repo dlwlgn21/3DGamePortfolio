@@ -18,6 +18,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "CameraScript.h"
+#include "BoxCollider3D.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
 #include "BoneAnimator.h"
@@ -76,7 +77,10 @@ void PlayScene::initPlayer()
 		
 		auto& animator = static_cast<BoneAnimator&>(spSqureGameObject->AddComponent(eComponentType::ANIMATOR, std::make_unique<BoneAnimator>()));
 		animator.InitAnimationData(pAnimData, eAnimClipKeyContainerType::PLAYER);
-		
+
+		auto& boxCollider = static_cast<BoxCollider3D&>(spSqureGameObject->AddComponent(eComponentType::BOX_COLLIDER_3D, std::make_unique<BoxCollider3D>()));
+		boxCollider.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::DEBUG_COLLIDER_BOX_MODEL_KEY));
+
 		spSqureGameObject->AddScript(eScriptType::HEAD, std::make_unique<PlayerScript>());
 		auto& script = static_cast<PlayerScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
 		script.SetBoneAnimator(&animator);

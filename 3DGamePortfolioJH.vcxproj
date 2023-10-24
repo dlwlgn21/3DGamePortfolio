@@ -134,6 +134,7 @@
     <ClInclude Include="2DGamePortfolio.h" />
     <ClInclude Include="AnimationDataManager.h" />
     <ClInclude Include="BoneAnimator.h" />
+    <ClInclude Include="BoxCollider3D.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CubeMapManager.h" />
     <ClInclude Include="CubeMapping.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="AnimationData.cpp" />
     <ClCompile Include="AnimationDataManager.cpp" />
     <ClCompile Include="BoneAnimator.cpp" />
+    <ClCompile Include="BoxCollider3D.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CubeMapManager.cpp" />
     <ClCompile Include="DebugHelper.cpp" />
@@ -298,6 +300,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="DebugBox2DVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="DebugColliderPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="DebugColliderVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
