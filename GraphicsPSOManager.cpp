@@ -230,22 +230,76 @@ void GraphicsPSOManager::initModels()
 
 #pragma region SKINNED_BARNY
 	{
+		//auto& geoGenerator = GeomatryGenerator::GetInstance();
+		//auto& animDataManager = AnimationDataManager::GetInstance();
+		//std::string relativePath = "Assets\\Characters\\SwordMan\\";
+		//std::vector<std::string> animClipNames =
+		//{
+		//	"SwordManIdle.fbx",
+		//	"SwordManWalk.fbx",
+		//	"SwordManSlash.fbx"
+		//};
+
+		//auto [meshes, pAnim] = geoGenerator.ReadFBXFile(relativePath, "SwordManTPose.fbx", AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
+
+		//ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH_1, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[0].SkinnedVertices, meshes[0].Indices);
+		//ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH_2, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[1].SkinnedVertices, meshes[1].Indices);
+		//ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH_3, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[2].SkinnedVertices, meshes[2].Indices);
+		//ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH_4, std::make_unique<jh::graphics::Mesh>())
+		//	->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[3].SkinnedVertices, meshes[3].Indices);
+		//loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshes[0].DiffuseTextureFileFullPath);
+		//loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshes[0].NormalTextureFileFullPath);
+		//pAnim->ClipMap.reserve(animClipNames.size());
+		//animDataManager.GetInstance().InsertAnimationClips(eAnimClipKeyContainerType::PLAYER, animClipNames);
+		//for (auto& name : animClipNames)
+		//{
+		//	geoGenerator.ParseAnimationClip(relativePath, name, AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY, name);
+		//}
+
+		//std::vector<Material*> pMaterials;
+		//std::vector<Mesh*> pMeshs;
+		//pMeshs.reserve(4);
+		//pMaterials.reserve(1);
+		//insertMaterial(keys::BARNY_SKINNNED_MATERIAL_1, mSkinnedBasicPSO, "");
+		//Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::BARNY_DIFFUSE_TEXTURE);
+		//Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::BARNY_NORMAL_TEXTURE);
+		//Material* pMat1 = ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL_1);
+		//pMat1->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
+		//pMat1->SetTexture(eTextureType::NORMAL, pNormalTex);
+		//pMaterials.push_back(ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL_1));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH_1));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH_2));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH_3));
+		//pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH_4));
+
+		//// For Debugging
+		//AnimationData* pReadingData = animDataManager.GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
+		//SkinnedMeshModel* pBarnySkinnedModel = static_cast<SkinnedMeshModel*>(ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL, std::make_unique<SkinnedMeshModel>()));
+		//pBarnySkinnedModel->SetMeshes(pMeshs);
+		//pBarnySkinnedModel->SetMaterials(pMaterials);
+		//pBarnySkinnedModel->InitAnimationDataAndStructuredBuffer(animDataManager.GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY));
+	}
+
+	{
 		auto& geoGenerator = GeomatryGenerator::GetInstance();
 		auto& animDataManager = AnimationDataManager::GetInstance();
-		std::string relativePath = "Assets\\Characters\\Dwarf\\";
+		std::string relativePath = "Assets\\Characters\\TwoHand\\";
 		std::vector<std::string> animClipNames =
 		{
-			"Idle.fbx",
-			"Walking.fbx"
+			"TwoHandSwordWomanIdle.fbx",
+			"TwoHandSwordWomanRun.fbx",
+			"TwoHandSwordWomanSlash.fbx"
 		};
 
-		// Ely By K.Atienza.fbx
-		// character.fbx
-		// characterMesh 읽음.
-		auto [meshes, pAnim] = geoGenerator.ReadFBXFile(relativePath, "Dwarf.fbx", AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
-		assert(meshes.size() == 1);
-		ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH, std::make_unique<jh::graphics::Mesh>())
+		auto [meshes, pAnim] = geoGenerator.ReadFBXFile(relativePath, "TwoHandSwordWomanTPose.fbx", AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
+
+		ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH_1, std::make_unique<jh::graphics::Mesh>())
 			->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[0].SkinnedVertices, meshes[0].Indices);
+		ResourcesManager::InsertOrNull<Mesh>(keys::BARNY_MESH_2, std::make_unique<jh::graphics::Mesh>())
+			->InitVertexIndexBuffer<jh::graphics::SkinnedVertex>(meshes[1].SkinnedVertices, meshes[1].Indices);
 		loadAndInsertTexture(eTextureType::DIFFUSE, keys::BARNY_DIFFUSE_TEXTURE, meshes[0].DiffuseTextureFileFullPath);
 		loadAndInsertTexture(eTextureType::NORMAL, keys::BARNY_NORMAL_TEXTURE, meshes[0].NormalTextureFileFullPath);
 		pAnim->ClipMap.reserve(animClipNames.size());
@@ -255,26 +309,32 @@ void GraphicsPSOManager::initModels()
 			geoGenerator.ParseAnimationClip(relativePath, name, AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY, name);
 		}
 
+		for (UINT i = 0; i < 3; ++i)
+		{
+			std::cout << animClipNames[i] << " Frame Count " << pAnim->ClipMap[animClipNames[i]].KeyBoneAndFrame2DArrays[0].size() << std::endl;
+			std::cout << "Duration " << pAnim->ClipMap[animClipNames[i]].Duration << std::endl;
+			std::cout << "TickPerSecond " << pAnim->ClipMap[animClipNames[i]].TicksPerSec << std::endl;
+		}
+		
 		std::vector<Material*> pMaterials;
 		std::vector<Mesh*> pMeshs;
-		pMeshs.reserve(1);
+		pMeshs.reserve(2);
 		pMaterials.reserve(1);
-		insertMaterial(keys::BARNY_SKINNNED_MATERIAL, mSkinnedBasicPSO, "");
+		insertMaterial(keys::BARNY_SKINNNED_MATERIAL_1, mSkinnedBasicPSO, "");
 		Texture* pDiffuseTex = ResourcesManager::Find<Texture>(keys::BARNY_DIFFUSE_TEXTURE);
 		Texture* pNormalTex = ResourcesManager::Find<Texture>(keys::BARNY_NORMAL_TEXTURE);
-		Material* pMat = ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL);
-		pMat->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
-		pMat->SetTexture(eTextureType::NORMAL, pNormalTex);
-
-		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL));
-		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH));
+		Material* pMat1 = ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL_1);
+		pMat1->SetTexture(eTextureType::DIFFUSE, pDiffuseTex);
+		pMat1->SetTexture(eTextureType::NORMAL, pNormalTex);
+		pMaterials.push_back(ResourcesManager::Find<Material>(keys::BARNY_SKINNNED_MATERIAL_1));
+		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH_1));
+		pMeshs.push_back(ResourcesManager::Find<Mesh>(keys::BARNY_MESH_2));
 
 		// For Debugging
 		AnimationData* pReadingData = animDataManager.GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
 		SkinnedMeshModel* pBarnySkinnedModel = static_cast<SkinnedMeshModel*>(ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL, std::make_unique<SkinnedMeshModel>()));
 		pBarnySkinnedModel->SetMeshes(pMeshs);
 		pBarnySkinnedModel->SetMaterials(pMaterials);
-		//pBarnySkinnedModel->InitAnimationDataAndStructuredBuffer(animDataManager.GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY));
 	}
 #pragma endregion
 }
@@ -360,8 +420,11 @@ void GraphicsPSOManager::initShaders()
 			mSkinnedBasicPSO.mcpVertexShader,
 			mSkinnedBasicPSO.mcpInputLayout
 		);
-		// TODO : 문제일어날 수 있음. 그냥 포인터만 공유하는 것이기 때문에.
-		mSkinnedBasicPSO.mcpPixelShader = mBasicPSO.mcpPixelShader;
+		D3D11Utils::CreatePixelShader(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"Basic3DPS.hlsl",
+			mSkinnedBasicPSO.mcpPixelShader
+		);
 	}
 
 #pragma endregion
@@ -441,7 +504,6 @@ void GraphicsPSOManager::initShaders()
 			L"DebugColliderPS.hlsl",
 			mDebugDrawColliderPSO.mcpPixelShader
 		);
-
 
 	}
 #pragma endregion

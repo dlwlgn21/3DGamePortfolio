@@ -11,6 +11,7 @@ enum ePlayerState
 {
 	IDLE,
 	WALK,
+	ATTACK_SLASH,
 	COUNT
 };
 

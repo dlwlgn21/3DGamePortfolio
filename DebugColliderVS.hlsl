@@ -17,7 +17,7 @@ cbuffer TransformBuffer : register(b0)
 }
 
 
-VertexOutput main(VertexInput Input) : SV_POSITION
+VertexOutput main(VertexInput Input)
 {
     VertexOutput output;
     float4 posProjection = mul(float4(Input.Position.xyz, 1.0), CBWorldMat);

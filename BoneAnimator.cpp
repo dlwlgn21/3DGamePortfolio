@@ -27,6 +27,12 @@ void BoneAnimator::FixedUpdate()
 	prepareBoneTransfromMatrices(mFrameCount);
 	mBoneTransformMatrices.UploadGPUBuffer(0);
 }
+void BoneAnimator::UpdateDyanmicStructuredAnimationBuffer()
+{
+	assert(mpCurrentClipKey != nullptr);
+	prepareBoneTransfromMatrices(mFrameCount);
+	mBoneTransformMatrices.UploadGPUBuffer(0);
+}
 
 void BoneAnimator::ChangeCurrentAnimationClip(const std::string* pKey)
 {

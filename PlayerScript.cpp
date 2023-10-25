@@ -20,6 +20,7 @@ PlayerScript::PlayerScript()
 {
 	mpStates[static_cast<UINT>(ePlayerState::IDLE)] = new jh::fsm::PlayerIdleState(this);
 	mpStates[static_cast<UINT>(ePlayerState::WALK)] = new jh::fsm::PlayerWalkingState(this);
+	mpStates[static_cast<UINT>(ePlayerState::ATTACK_SLASH)] = new jh::fsm::PlayerAttackSlashState(this);
 	mFSM.Init(*mpStates[static_cast<UINT>(ePlayerState::IDLE)]);
 }
 PlayerScript::~PlayerScript()

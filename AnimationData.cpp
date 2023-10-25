@@ -38,16 +38,16 @@ void AnimationData::PrepareAllBoneTransformMatrices(const std::string& clipNameK
             // Root일 경우
             if (parentIdx < 0)
             {
-                if (frame != 0)
-                {
-                    //AccumulatedRootTransformMatrix = Matrix::CreateTranslation(key.Pos - PrevPos) * AccumulatedRootTransformMatrix;
-                }
-                else
-                {
-                    Vector3 temp = AccumulatedRootTransformMatrix.Translation();
-                    temp.y = key.Pos.y; // 높이 방향만 첫 프레임으로 보정
-                    AccumulatedRootTransformMatrix.Translation(temp);
-                }
+                //if (frame != 0)
+                //{
+                //    //AccumulatedRootTransformMatrix = Matrix::CreateTranslation(key.Pos - PrevPos) * AccumulatedRootTransformMatrix;
+                //}
+                //else
+                //{
+                //    //Vector3 temp = AccumulatedRootTransformMatrix.Translation();
+                //    //temp.y = key.Pos.y; // 높이 방향만 첫 프레임으로 보정
+                //    //AccumulatedRootTransformMatrix.Translation(temp);
+                //}
                 //PrevPos = key.Pos;
                 //key.Pos = Vector3(0.0f);
             }

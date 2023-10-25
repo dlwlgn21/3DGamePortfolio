@@ -41,14 +41,14 @@ void Light::InitLight(const eLightType eType)
 	case eLightType::POINT:
 	{
 		mLightInfo.LightFallOffStart = 1.0f;
-		mLightInfo.LightFallOffEnd = 10.0f;
+		mLightInfo.LightFallOffEnd = 100.0f;
 		mLightInfo.LightSpotPower = 0.0f;
 		break;
 	}
 	case eLightType::SPOT:
 	{
 		mLightInfo.LightFallOffStart = 1.0f;
-		mLightInfo.LightFallOffEnd = 10.0f;
+		mLightInfo.LightFallOffEnd = 100.0f;
 		mLightInfo.LightSpotPower = 10.0f; 
 		break;
 	}

@@ -46,10 +46,17 @@ void Material::SetPipeline()
 	gdc.IASetInputLayout(mGraphicsPSO.mcpInputLayout.Get());
 	gdc.IASetPrimitiveTopology(mGraphicsPSO.mPrimitiveTopology);
 	
-	gdc.PSSetSamplers(0, 1, mGraphicsPSO.mcpSampler.GetAddressOf());
+	if (mGraphicsPSO.mcpSampler != nullptr)
+	{
+		gdc.PSSetSamplers(0, 1, mGraphicsPSO.mcpSampler.GetAddressOf());
+	}
 
 	gdc.VSSetShader(mGraphicsPSO.mcpVertexShader.Get(), nullptr, 0);
-	gdc.PSSetShader(mGraphicsPSO.mcpPixelShader.Get(), nullptr, 0);
+	// For DebugDraw. Cause DebugDraw is NO need PixelShader. 
+	if (mGraphicsPSO.mcpPixelShader != nullptr)
+	{
+		gdc.PSSetShader(mGraphicsPSO.mcpPixelShader.Get(), nullptr, 0);
+	}
 	
 	if (app.IsDrawWire())
 	{

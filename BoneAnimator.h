@@ -14,14 +14,17 @@ public:
 	{
 		IDLE,
 		WALK,
+		ATTACK_SLASH,
 		COUNT
 	};
 public:
 	BoneAnimator();
 	virtual ~BoneAnimator() = default;
 
-	void Update();
-	void FixedUpdate();
+	void Update() override;
+	void FixedUpdate() override;
+
+	void UpdateDyanmicStructuredAnimationBuffer();
 
 	void ChangeCurrentAnimationClip(const std::string* key);
 	void InitAnimationData(jh::graphics::AnimationData* pAnimData, const eAnimClipKeyContainerType eKeyContainerType);

@@ -42,11 +42,17 @@ namespace jh::graphics::keys
 #pragma endregion
 
 #pragma region BARNY
-	static const std::string BARNY_MESH				 = "barnyMesh";
+	static const std::string BARNY_MESH_1				 = "Paladin1Mesh";
+	static const std::string BARNY_MESH_2				 = "Paladin2Mesh";
+	static const std::string BARNY_MESH_3				 = "Paladin3Mesh";
+	static const std::string BARNY_MESH_4				 = "Paladin4Mesh";
 	static const std::string BARNY_SKINNED_MESH		 = "barnySMesh";
 	static const std::string BARNY_DIFFUSE_TEXTURE	 = "barnyDTex";
 	static const std::string BARNY_NORMAL_TEXTURE	 = "barnyNTex";
-	static const std::string BARNY_SKINNNED_MATERIAL = "barnyMate";
+	static const std::string BARNY_SKINNNED_MATERIAL_1 = "barnyMate1";
+	static const std::string BARNY_SKINNNED_MATERIAL_2 = "barnyMate2";
+	static const std::string BARNY_SKINNNED_MATERIAL_3 = "barnyMate3";
+	static const std::string BARNY_SKINNNED_MATERIAL_4 = "barnyMate4";
 	static const std::string BARNY_MODEL			 = "barnyModel";
 	static const std::string BARNY_SKINNED_MODEL	 = "barnySkinnedModel";
 #pragma endregion

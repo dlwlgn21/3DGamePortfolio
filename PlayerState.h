@@ -66,6 +66,11 @@ public:
 				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::WALK);
 				ChangePlayerState(ePlayerState::WALK);
 			}
+			if (InputManager::GetKeyState(eKeyCode::Z) == eKeyState::DOWN)
+			{
+				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::ATTACK_SLASH);
+				ChangePlayerState(ePlayerState::ATTACK_SLASH);
+			}
 			break;
 		}
 		default:
@@ -112,6 +117,46 @@ public:
 			moveVector += -transform.GetForwardRef() * 4.0f * Time::DeltaTime();
 			transform.SetPosition(moveVector);
 			if (InputManager::GetKeyState(eKeyCode::UP) != eKeyState::PRESSED)
+			{
+				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE);
+				ChangePlayerState(ePlayerState::IDLE);
+			}
+			else if (InputManager::GetKeyState(eKeyCode::Z) == eKeyState::DOWN)
+			{
+				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::ATTACK_SLASH);
+				ChangePlayerState(ePlayerState::ATTACK_SLASH);
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	void Exit() override
+	{
+	}
+};
+
+class PlayerAttackSlashState : public PlayerState
+{
+public:
+	PlayerAttackSlashState(PlayerScript* pPlayerScript)
+		: PlayerState(pPlayerScript)
+	{
+	}
+	virtual ~PlayerAttackSlashState() = default;
+
+	void Enter() override
+	{
+	}
+
+	void Excute() override
+	{
+		switch (mpOwnerScript->GetCurrAnimState())
+		{
+		case BoneAnimator::eCharacterAnimState::ATTACK_SLASH:
+		{
+			if (mpOwnerScript->GetAnimator().IsCurrentAnimClipLastFrame())
 			{
 				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE);
 				ChangePlayerState(ePlayerState::IDLE);

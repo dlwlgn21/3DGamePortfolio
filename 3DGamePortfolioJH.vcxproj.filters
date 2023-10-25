@@ -338,6 +338,9 @@
     <ClInclude Include="BoxCollider3D.h">
       <Filter>소스 파일\Component\BoxCollider3D</Filter>
     </ClInclude>
+    <ClInclude Include="DebugDraw.h">
+      <Filter>소스 파일\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -471,6 +474,9 @@
     </ClCompile>
     <ClCompile Include="BoxCollider3D.cpp">
       <Filter>소스 파일\Component\BoxCollider3D</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDraw.cpp">
+      <Filter>소스 파일\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

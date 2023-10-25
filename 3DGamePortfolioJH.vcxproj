@@ -138,6 +138,7 @@
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CubeMapManager.h" />
     <ClInclude Include="CubeMapping.h" />
+    <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="DebugHelper.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightingManager.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="BoxCollider3D.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CubeMapManager.cpp" />
+    <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="DebugHelper.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightingManager.cpp" />

@@ -32,7 +32,7 @@ void SceneManager::Render()
 }
 void SceneManager::Release()
 {
-	mspScenes.clear(); 
+	mspScenes.clear();  
 }
 
 }

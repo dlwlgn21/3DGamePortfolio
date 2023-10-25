@@ -77,9 +77,11 @@ void PlayScene::initPlayer()
 		
 		auto& animator = static_cast<BoneAnimator&>(spSqureGameObject->AddComponent(eComponentType::ANIMATOR, std::make_unique<BoneAnimator>()));
 		animator.InitAnimationData(pAnimData, eAnimClipKeyContainerType::PLAYER);
-
+		ResourcesManager::Find<Model>(keys::BARNY_SKINNED_MODEL)->SetBoneAnimator(animator);
 		auto& boxCollider = static_cast<BoxCollider3D&>(spSqureGameObject->AddComponent(eComponentType::BOX_COLLIDER_3D, std::make_unique<BoxCollider3D>()));
 		boxCollider.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::DEBUG_COLLIDER_BOX_MODEL_KEY));
+		boxCollider.InitBondingBox(Vector3(0.0f, 0.4f, 0.0f), Vector3(0.2f, 0.7f, 0.2f), eBoundingBoxType::HIT_BOX);
+		boxCollider.InitBondingBox(Vector3(-0.2f, 0.5f, -0.5f), Vector3(0.5f, 0.3f, 0.5f), eBoundingBoxType::ATTACK_BOX);
 
 		spSqureGameObject->AddScript(eScriptType::HEAD, std::make_unique<PlayerScript>());
 		auto& script = static_cast<PlayerScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
