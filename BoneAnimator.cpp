@@ -1,5 +1,7 @@
 #include "BoneAnimator.h"
 
+#include "Time.h"
+
 using namespace jh::enums;
 using namespace jh::graphics;
 namespace jh
@@ -10,34 +12,34 @@ BoneAnimator::BoneAnimator()
 	, mpAnimData(nullptr)
 	, mBoneTransformMatrices()
 	, mpCurrentClipKey(nullptr)
-	, mFrameCount(0)
+	, mCurrentAnimAccumTime(0.0f)
 {
 }
 void BoneAnimator::Update()
 {
 	if (IsCurrentAnimClipLastFrame())
 	{
-		mFrameCount = 0;
+		mCurrentAnimAccumTime = 0.0f;
 	}
-	++mFrameCount;
+	mCurrentAnimAccumTime += Time::DeltaTime();
 }
 void BoneAnimator::FixedUpdate()
 {
 	assert(mpCurrentClipKey != nullptr);
-	prepareBoneTransfromMatrices(mFrameCount);
+	prepareBoneTransfromMatrices(mCurrentAnimAccumTime);
 	mBoneTransformMatrices.UploadGPUBuffer(0);
 }
 void BoneAnimator::UpdateDyanmicStructuredAnimationBuffer()
 {
 	assert(mpCurrentClipKey != nullptr);
-	prepareBoneTransfromMatrices(mFrameCount);
+	prepareBoneTransfromMatrices(mCurrentAnimAccumTime);
 	mBoneTransformMatrices.UploadGPUBuffer(0);
 }
 
 void BoneAnimator::ChangeCurrentAnimationClip(const std::string* pKey)
 {
 	assert(mpCurrentClipKey != nullptr && pKey != nullptr);
-	mFrameCount = 0;
+	mCurrentAnimAccumTime = 0.0f;
 	mpCurrentClipKey = pKey;
 }
 void BoneAnimator::InitAnimationData(jh::graphics::AnimationData* pAnimData, const eAnimClipKeyContainerType eKeyContainerType)
@@ -56,16 +58,16 @@ void BoneAnimator::InitAnimationData(jh::graphics::AnimationData* pAnimData, con
 
 const bool BoneAnimator::IsCurrentAnimClipLastFrame()
 {
-	return mpAnimData->ClipMap[*mpCurrentClipKey].IsLastFrame(mFrameCount) ? true : false;
+	return mpAnimData->ClipMap[*mpCurrentClipKey].IsLastFrame(mCurrentAnimAccumTime);
 }
 
-void BoneAnimator::prepareBoneTransfromMatrices(const int frame)
+void BoneAnimator::prepareBoneTransfromMatrices(const float currentAccumTime)
 {
-	mpAnimData->PrepareAllBoneTransformMatrices(*mpCurrentClipKey, frame);
+	mpAnimData->PrepareAllBoneTransformMatrices(*mpCurrentClipKey, currentAccumTime);
 	auto& matricices = mBoneTransformMatrices.GetCPUBuffer();
 	for (int boneIndex = 0; boneIndex < matricices.size(); ++boneIndex)
 	{
-		matricices[boneIndex] = mpAnimData->GetFinalTransformMatrixRow(boneIndex, frame).Transpose();
+		matricices[boneIndex] = mpAnimData->GetFinalTransformMatrixRow(boneIndex).Transpose();
 	}
 }
 

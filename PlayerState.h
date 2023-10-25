@@ -65,11 +65,23 @@ public:
 			{
 				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::WALK);
 				ChangePlayerState(ePlayerState::WALK);
+				break;
 			}
 			if (InputManager::GetKeyState(eKeyCode::Z) == eKeyState::DOWN)
 			{
 				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::ATTACK_SLASH);
 				ChangePlayerState(ePlayerState::ATTACK_SLASH);
+				break;
+			}
+
+			auto& transform = mpOwnerScript->GetOwner().GetTransform();
+			if (InputManager::GetKeyState(eKeyCode::RIGHT) == eKeyState::PRESSED)
+			{
+				transform.AccumulateYaw(120.0f * Time::DeltaTime());
+			}
+			if (InputManager::GetKeyState(eKeyCode::LEFT) == eKeyState::PRESSED)
+			{
+				transform.AccumulateYaw(-120.0f * Time::DeltaTime());
 			}
 			break;
 		}

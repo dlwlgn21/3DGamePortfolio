@@ -14,9 +14,12 @@ struct AnimationClip
 {
     struct Key
     {
-        Vector3        Pos      =   Vector3(0.0f);
-        Vector3        Scale    =   Vector3(1.0f);
-        Quaternion     Rot      =   Quaternion();
+        Vector3        Pos                  =   Vector3(0.0f);
+        Vector3        Scale                =   Vector3(1.0f);
+        Quaternion     Rot                  =   Quaternion();
+        double          PositionTime        =   0.0;
+        double          ScaleTime           =   0.0;
+        double          RotationTime        =   0.0;
 
         Matrix GetTransform()
         {
@@ -28,14 +31,14 @@ struct AnimationClip
 
     std::string                             NameOfAnimationClip;                    // Name of this animation clip
     std::vector<std::vector<Key>>           KeyBoneAndFrame2DArrays;                // m_key[boneIdx][frameIdx]
-    int                                     NumChannelsActuallyNumsBones = 0;       // Number of bones
-    int                                     NumKeysActuallyNumsFrames = 0;          // Number of frames of this animation clip
-    double                                  Duration = 0.0;                         // Duration of animation in ticks
-    double                                  TicksPerSec = 0.0;                      // Frames per second
-
-    const bool IsLastFrame(const int frame)
+    int                                     NumChannelsActuallyNumsBones    = 0;    // Number of bones
+    int                                     NumKeysActuallyNumsFrames       = 0;    // Number of frames of this animation clip
+    double                                  Duration                        = 0.0;  // Duration of animation in ticks
+    double                                  TicksPerSec                     = 0.0;  // Frames per second
+    float                                   TotalAnimTime                   = 0.0f;
+    const bool IsLastFrame(const float accumTime)
     {
-        return KeyBoneAndFrame2DArrays[0].size() == frame ? true : false;
+        return accumTime >= TotalAnimTime ? true : false;
     }
 };
 
@@ -50,10 +53,9 @@ struct AnimationData
     Matrix                                          DefaultTransformMatrix;
     Matrix                                          RootTransformMatrix = Matrix();
     Matrix                                          AccumulatedRootTransformMatrix = Matrix();
-    Vector3                                         PrevPos = Vector3(0.0f);
 
-    Matrix GetFinalTransformMatrixRow(const int boneId, const int frame);
-    void PrepareAllBoneTransformMatrices(const std::string& clipName, const int frame);
+    Matrix GetFinalTransformMatrixRow(const int boneId);
+    void PrepareAllBoneTransformMatrices(const std::string& clipName, const float accumTime);
 };
 
 }

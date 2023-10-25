@@ -18,6 +18,8 @@
 #include "ResourcesManager.h"
 #include "GraphicsKeyContainer.h"
 
+
+#include "DebugHelper.h"
 using namespace DirectX::SimpleMath;
 
 namespace jh::graphics

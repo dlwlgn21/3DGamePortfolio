@@ -31,12 +31,12 @@ public:
 	const bool IsCurrentAnimClipLastFrame();
 	jh::graphics::AnimationData& GetAnimData() { assert(mpAnimData != nullptr); return *mpAnimData; }
 private:
-	void prepareBoneTransfromMatrices(const int frame);
+	void prepareBoneTransfromMatrices(const float currentAccumTime);
 private:
 	jh::graphics::AnimationData*										mpAnimData;
 	jh::graphics::DynamicStructuredBuffer<DirectX::SimpleMath::Matrix>	mBoneTransformMatrices;
 	const std::string*													mpCurrentClipKey;
-	int																	mFrameCount;
+	float																mCurrentAnimAccumTime;
 };
 
 }

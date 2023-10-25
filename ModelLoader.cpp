@@ -137,7 +137,8 @@ void ModelLoader::ParseAnimationClips(const std::string& basePath, const std::st
         clip.TicksPerSec = pAnimation->mTicksPerSecond;
         clip.KeyBoneAndFrame2DArrays.resize(pAnimData->BoneNameIndexMap.size());
         clip.NumChannelsActuallyNumsBones = pAnimation->mNumChannels;
-
+        clip.TotalAnimTime = static_cast<float>(clip.Duration / clip.TicksPerSec);
+        double tickPerSecond = 1 / clip.TicksPerSec;
         /*
         * 왜 채널이란 이름이 사용되냐고? 각 본들의 움직임이 각각의 채널로 제공이 되기 떄문임.
         * 각 본들의 움직임이 시간에 따른 변화 곡선임.
@@ -148,20 +149,25 @@ void ModelLoader::ParseAnimationClips(const std::string& basePath, const std::st
             const aiNodeAnim* pNodeAnim = pAnimation->mChannels[c];
             const int32_t boneIndex = pAnimData->BoneNameIndexMap[pNodeAnim->mNodeName.C_Str()];
             clip.KeyBoneAndFrame2DArrays[boneIndex].resize(pNodeAnim->mNumPositionKeys);
-
             // 요기서 시간에 따라 본들이 어떻게 변하는지, Assign 함.
             for (uint32_t frame = 0; frame < pNodeAnim->mNumPositionKeys; frame++)
             {
                 const auto pos = pNodeAnim->mPositionKeys[frame].mValue;
                 const auto rot = pNodeAnim->mRotationKeys[frame].mValue;
                 const auto scale = pNodeAnim->mScalingKeys[frame].mValue;
+                /* TODO : Added Part AT 10-25-18:00 */
+
                 AnimationClip::Key& key = clip.KeyBoneAndFrame2DArrays[boneIndex][frame];
-                key.Pos = { pos.x, pos.y, pos.z };
-                key.Rot = Quaternion(rot.x, rot.y, rot.z, rot.w);
-                key.Scale = { scale.x, scale.y, scale.z };
+                key.Pos =       { pos.x, pos.y, pos.z };
+                key.Rot =       Quaternion(rot.x, rot.y, rot.z, rot.w);
+                key.Scale =     { scale.x, scale.y, scale.z };
+                key.PositionTime    = pNodeAnim->mPositionKeys[frame].mTime * tickPerSecond;
+                key.ScaleTime       = pNodeAnim->mRotationKeys[frame].mTime * tickPerSecond;
+                key.RotationTime    = pNodeAnim->mRotationKeys[frame].mTime * tickPerSecond;
             }
         }
     }
+
 }
 
 void ModelLoader::processNode(aiNode* node, const aiScene* scene, Matrix tr) 

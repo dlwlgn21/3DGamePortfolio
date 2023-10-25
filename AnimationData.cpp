@@ -1,10 +1,12 @@
 #include "AnimationData.h"
+#include <algorithm>
+
 using namespace DirectX::SimpleMath;
 
 namespace jh::graphics
 {
 
-Matrix AnimationData::GetFinalTransformMatrixRow(const int boneId, const int frame)
+Matrix AnimationData::GetFinalTransformMatrixRow(const int boneId)
 {
     return DefaultTransformMatrix.Invert() * OffsetMatrixArray[boneId] * BoneTransformMatrixArray[boneId] * DefaultTransformMatrix;
 
@@ -14,7 +16,7 @@ Matrix AnimationData::GetFinalTransformMatrixRow(const int boneId, const int fra
     // 여기는 교육용 예제라서 좌표계 변환 사례로 참고하시라고 남겨놓았다고 함.
 }
 
-void AnimationData::PrepareAllBoneTransformMatrices(const std::string& clipNameKey, const int frame)
+void AnimationData::PrepareAllBoneTransformMatrices(const std::string& clipNameKey, const float accumTime)
 {
     assert(clipNameKey != "");
     auto iter = ClipMap.find(clipNameKey);
@@ -27,29 +29,48 @@ void AnimationData::PrepareAllBoneTransformMatrices(const std::string& clipNameK
             std::vector<AnimationClip::Key>& keys = clip.KeyBoneAndFrame2DArrays[boneIndex];
 
             // 주의: 모든 채널(뼈)이 frame 개수가 동일하진 않음
-
             const int parentIdx = BoneParentIndexArray[boneIndex];
             const Matrix parentMatrix = parentIdx >= 0 ? BoneTransformMatrixArray[parentIdx] : AccumulatedRootTransformMatrix;
 
-            // keys.size()가 0일 경우에는 Identity 변환
-            // 이 경우에는 그 key에 대해서는 AnimationData가 없었던 이야기임. 멈춰있따. 이런 이야기.
-            AnimationClip::Key key = keys.size() > 0 ? keys[frame % keys.size()] : AnimationClip::Key(); // key가 reference 아님
-
-            // Root일 경우
-            if (parentIdx < 0)
+            AnimationClip::Key key;
+            if (keys.size() == 0)
             {
-                //if (frame != 0)
-                //{
-                //    //AccumulatedRootTransformMatrix = Matrix::CreateTranslation(key.Pos - PrevPos) * AccumulatedRootTransformMatrix;
-                //}
-                //else
-                //{
-                //    //Vector3 temp = AccumulatedRootTransformMatrix.Translation();
-                //    //temp.y = key.Pos.y; // 높이 방향만 첫 프레임으로 보정
-                //    //AccumulatedRootTransformMatrix.Translation(temp);
-                //}
-                //PrevPos = key.Pos;
-                //key.Pos = Vector3(0.0f);
+                key = AnimationClip::Key();
+            }
+            else if (keys.size() == 1)
+            {
+                key = keys[0];
+            }
+            else
+            {
+                UINT frameIndex = 0;
+                for (int i = 0; i < keys.size() - 1; ++i)
+                {
+                    assert(i + 1 < keys.size());
+                    float nextTime = static_cast<float>(keys[i + 1].PositionTime);
+                    if (accumTime < nextTime)
+                    {
+                        frameIndex = i;
+                        break;
+                    }
+                }
+                UINT nextFrameIndex = frameIndex + 1;
+                assert(frameIndex < keys.size());
+                float t1 = (float)keys[frameIndex].PositionTime;
+                float t2 = (float)keys[nextFrameIndex].PositionTime;
+                float deltaTime = t2 - t1;
+                float factor = (accumTime - t1) / deltaTime;
+                factor = std::clamp(factor, 0.0f, 1.0f);
+
+                Vector3 lerpPos = Vector3::Lerp(keys[frameIndex].Pos, keys[nextFrameIndex].Pos, factor);
+                Quaternion lerpRot = Quaternion::Slerp(keys[frameIndex].Rot, keys[nextFrameIndex].Rot, factor);
+                Vector3 lerpScale = Vector3::Lerp(keys[frameIndex].Scale, keys[nextFrameIndex].Scale, factor);
+                key.Pos = lerpPos;
+                key.Scale = lerpScale;
+                key.Rot = lerpRot;
+                key.PositionTime = keys[frameIndex].PositionTime;
+                key.RotationTime = keys[frameIndex].RotationTime;
+                key.ScaleTime = keys[frameIndex].ScaleTime;
             }
             BoneTransformMatrixArray[boneIndex] = key.GetTransform() * parentMatrix;
         }
