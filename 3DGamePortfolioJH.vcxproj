@@ -136,6 +136,7 @@
     <ClInclude Include="BoneAnimator.h" />
     <ClInclude Include="BoxCollider3D.h" />
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="ColliderDebugRenderer.h" />
     <ClInclude Include="CubeMapManager.h" />
     <ClInclude Include="CubeMapping.h" />
     <ClInclude Include="DebugDraw.h" />
@@ -145,6 +146,8 @@
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelLoader.h" />
+    <ClInclude Include="MonsterScript.h" />
+    <ClInclude Include="MonsterState.h" />
     <ClInclude Include="MoveableGameObject.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraScript.h" />
@@ -170,6 +173,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="PlayerScript.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="PlayScene.h" />
@@ -197,6 +201,7 @@
     <ClCompile Include="BoneAnimator.cpp" />
     <ClCompile Include="BoxCollider3D.cpp" />
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="ColliderDebugRenderer.cpp" />
     <ClCompile Include="CubeMapManager.cpp" />
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="DebugHelper.cpp" />
@@ -204,6 +209,7 @@
     <ClCompile Include="LightingManager.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
+    <ClCompile Include="MonsterScript.cpp" />
     <ClCompile Include="MoveableGameObject.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraScript.cpp" />
@@ -223,6 +229,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -302,18 +309,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="DebugBox2DVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="DebugColliderPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="DebugColliderVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

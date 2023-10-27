@@ -10,7 +10,7 @@ namespace jh
 BoneAnimator::BoneAnimator()
 	: Component(jh::enums::eComponentType::ANIMATOR)
 	, mpAnimData(nullptr)
-	, mBoneTransformMatrices()
+	, mBoneTransforms()
 	, mpCurrentClipKey(nullptr)
 	, mCurrentAnimAccumTime(0.0f)
 {
@@ -23,17 +23,12 @@ void BoneAnimator::Update()
 	}
 	mCurrentAnimAccumTime += Time::DeltaTime();
 }
-void BoneAnimator::FixedUpdate()
-{
-	assert(mpCurrentClipKey != nullptr);
-	prepareBoneTransfromMatrices(mCurrentAnimAccumTime);
-	mBoneTransformMatrices.UploadGPUBuffer(0);
-}
+
 void BoneAnimator::UpdateDyanmicStructuredAnimationBuffer()
 {
 	assert(mpCurrentClipKey != nullptr);
-	prepareBoneTransfromMatrices(mCurrentAnimAccumTime);
-	mBoneTransformMatrices.UploadGPUBuffer(0);
+	prepareBoneTransfroms(mCurrentAnimAccumTime);
+	mBoneTransforms.UploadGPUBuffer(0);
 }
 
 void BoneAnimator::ChangeCurrentAnimationClip(const std::string* pKey)
@@ -46,14 +41,21 @@ void BoneAnimator::InitAnimationData(jh::graphics::AnimationData* pAnimData, con
 {
 	assert(pAnimData != nullptr && mpAnimData == nullptr && !pAnimData->ClipMap.empty());
 	mpAnimData = pAnimData;
-	auto& matricices = mBoneTransformMatrices.GetCPUBuffer();
-	matricices.resize(mpAnimData->BoneTransformMatrixArray.size());
-	for (UINT i = 0; i < mpAnimData->BoneTransformMatrixArray.size(); ++i)
+	auto& matricices = mBoneTransforms.GetCPUBuffer();
+	matricices.resize(mpAnimData->BoneTransformArray.size());
+	for (UINT i = 0; i < mpAnimData->BoneTransformArray.size(); ++i)
 	{
 		matricices[i] = Matrix::Identity;
 	}
-	mBoneTransformMatrices.CreateStructuredBuffer(static_cast<UINT>(matricices.size()));
+	mBoneTransforms.CreateStructuredBuffer(static_cast<UINT>(matricices.size()));
 	mpCurrentClipKey = &AnimationDataManager::GetInstance().GetAnimationCilpKeys(eKeyContainerType)[0];
+}
+
+const float BoneAnimator::GetCurrentPlayingClipPercentage()
+{
+	float retTime = mCurrentAnimAccumTime / mpAnimData->ClipMap[*mpCurrentClipKey].TotalAnimTime;
+	assert(retTime >= 0.0f && retTime <= 1.0f);
+	return retTime;
 }
 
 const bool BoneAnimator::IsCurrentAnimClipLastFrame()
@@ -61,14 +63,15 @@ const bool BoneAnimator::IsCurrentAnimClipLastFrame()
 	return mpAnimData->ClipMap[*mpCurrentClipKey].IsLastFrame(mCurrentAnimAccumTime);
 }
 
-void BoneAnimator::prepareBoneTransfromMatrices(const float currentAccumTime)
+void BoneAnimator::prepareBoneTransfroms(const float currentAccumTime)
 {
-	mpAnimData->PrepareAllBoneTransformMatrices(*mpCurrentClipKey, currentAccumTime);
-	auto& matricices = mBoneTransformMatrices.GetCPUBuffer();
+	mpAnimData->PrepareAllBoneTransforms(*mpCurrentClipKey, currentAccumTime);
+	auto& matricices = mBoneTransforms.GetCPUBuffer();
 	for (int boneIndex = 0; boneIndex < matricices.size(); ++boneIndex)
 	{
 		matricices[boneIndex] = mpAnimData->GetFinalTransformMatrixRow(boneIndex).Transpose();
 	}
 }
+
 
 }

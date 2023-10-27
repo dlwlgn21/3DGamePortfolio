@@ -5,6 +5,9 @@
 #include <directxtk/VertexTypes.h>
 #include <DirectXCollision.h>
 
+
+#include <directxtk/Effects.h>
+
 namespace jh
 {
 using namespace DirectX;
@@ -13,6 +16,7 @@ enum class eBoundingBoxType
 {
 	HIT_BOX,
 	ATTACK_BOX,
+	AGRO_BOX,
 	COUNT
 };
 
@@ -22,16 +26,18 @@ public:
 	BoxCollider3D();
 	virtual ~BoxCollider3D() = default;
 
+	void FixedUpdate() override;
+
 	void InitBondingBox(const DirectX::SimpleMath::Vector3& centerPos, const DirectX::SimpleMath::Vector3& extent, const eBoundingBoxType eBoxTpye);
 	void InitBoxScale(const DirectX::SimpleMath::Vector3& scale) { mBoxScale = scale; }
-	void SetModel(jh::graphics::Model* pModel) { assert(pModel != nullptr); mpDebugDrawModel = pModel; }
 	void Render();
 
+	DirectX::BoundingBox& GetBoundingBox(const eBoundingBoxType eBoxType);
+
+
 private:
-	jh::graphics::Model*													mpDebugDrawModel;
 	DirectX::SimpleMath::Vector3											mBoxScale;
 	DirectX::BoundingBox													mBoundingBoxes[static_cast<UINT>(eBoundingBoxType::COUNT)];
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>	mspPrimitiveBatch;
 };
 
 }

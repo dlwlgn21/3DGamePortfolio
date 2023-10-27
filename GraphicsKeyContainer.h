@@ -57,6 +57,22 @@ namespace jh::graphics::keys
 	static const std::string BARNY_SKINNED_MODEL	 = "barnySkinnedModel";
 #pragma endregion
 
+#pragma region MONSTER_MUTANT
+	static const std::string MUTANT_MESH_1 = "Mutant1Mesh";
+	static const std::string MUTANT_MESH_2 = "Mutant2Mesh";
+	static const std::string MUTANT_MESH_3 = "Mutant3Mesh";
+	static const std::string MUTANT_MESH_4 = "Mutant4Mesh";
+	static const std::string MUTANT_SKINNED_MESH = "Mutant4Mesh";
+	static const std::string MUTANT_DIFFUSE_TEXTURE = "MutantDTex";
+	static const std::string MUTANT_NORMAL_TEXTURE = "MutantNTex";
+	static const std::string MUTANT_SKINNNED_MATERIAL_1 = "MutantMate1";
+	static const std::string MUTANT_SKINNNED_MATERIAL_2 = "MutantMate2";
+	static const std::string MUTANT_SKINNNED_MATERIAL_3 = "MutantMate3";
+	static const std::string MUTANT_SKINNNED_MATERIAL_4 = "MutantMate4";
+	static const std::string MUTANT_MODEL = "MutantModel";
+	static const std::string MUTANT_SKINNED_MODEL = "MutantSkinnedModel";
+#pragma endregion
+
 
 	static const std::string CUBE_MAP_TEXTURE = "cubetex";
 	static const std::string CUBE_MAP_MESH = "cubeMesh";
@@ -75,11 +91,5 @@ namespace jh::graphics::keys
 
 	static const std::string MONKEY_MESH_KEY = "monkey";
 	static const std::string MONKEY_DIFFUSE_TEXTURE_KEY = "monkeytex";
-
-
-	static const std::string DEBUG_COLLIDER_BOX_MESH_KEY = "ColliderBoxMesh";
-	static const std::string DEBUG_COLLIDER_BOX_MATERIAL_KEY = "ColliderBoxMaterial";
-	static const std::string DEBUG_COLLIDER_BOX_MODEL_KEY = "ColliderBoxModel";
-
 
 }

@@ -171,7 +171,6 @@ void D3DApp::updateGUI()
 void D3DApp::render()
 {
 	Time::Render(mHdc);
-
 	auto& gd = GraphicDeviceDX11::GetInstance();
 	gd.Clear();
 	SceneManager::GetInstance().Render();

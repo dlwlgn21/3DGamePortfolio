@@ -3,22 +3,25 @@
 
 namespace jh
 {
-	class PlayScene final : public Scene
-	{
-	public:
-		PlayScene();
-		virtual ~PlayScene() = default;
 
-		void Initialize() override;
-		void Update() override;
+class PlayScene final : public Scene
+{
+public:
+	PlayScene();
+	virtual ~PlayScene() = default;
 
-	private:
-		void initCamera();
-		void initPlayer();
-		void initWorldCoord();
-		void initBox();
-		void initLight();
-	};
+	void Initialize() override;
+	void Update() override;
+
+private:
+	void initCamera();
+	void initPlayer();
+	void initMutant();
+	void initWorldCoord();
+	void initBox();
+	void initLight();
+};
+
 }
 
 

@@ -1,8 +1,13 @@
 #include "BoxCollider3D.h"
+
 #include "GameObject.h"
 #include "Transform.h"
 #include "GraphicDeviceDX11.h"
+#include "GraphicsPSOManager.h"
+
 #include "DebugDraw.h"
+
+#include "ColliderDebugRenderer.h"
 
 using namespace jh::enums;
 using namespace jh::graphics;
@@ -13,15 +18,13 @@ namespace jh
 
 BoxCollider3D::BoxCollider3D()
 	: Component(eComponentType::BOX_COLLIDER_3D)
-	, mpDebugDrawModel(nullptr)
 	, mBoundingBoxes()
 	, mBoxScale(Vector3(1.0f, 1.0f, 1.0f))
-	, mspPrimitiveBatch()
 {
-	mspPrimitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(&GraphicDeviceDX11::GetInstance().GetDeivceContext());
-	mBoundingBoxes[0].Extents = Vector3(0.0f, 0.0f, 0.0f);
-	mBoundingBoxes[1].Extents = Vector3(0.0f, 0.0f, 0.0f);
-
+	for (UINT i = 0; i < static_cast<UINT>(eBoundingBoxType::COUNT); ++i)
+	{
+		mBoundingBoxes[i].Extents = Vector3(0.0f, 0.0f, 0.0f);
+	}
 
 }
 
@@ -30,31 +33,53 @@ void BoxCollider3D::InitBondingBox(const DirectX::SimpleMath::Vector3& centerPos
 	mBoundingBoxes[static_cast<UINT>(eBoxTpye)].Center = centerPos;
 	mBoundingBoxes[static_cast<UINT>(eBoxTpye)].Extents = Vector3(extent.x * 0.5f, extent.y * 0.5f, extent.z * 0.5f);
 }
-void BoxCollider3D::Render()
+
+
+DirectX::BoundingBox& BoxCollider3D::GetBoundingBox(const eBoundingBoxType eBoxType)
 {
-	assert(mpDebugDrawModel != nullptr);
-	//const auto& originalScale = GetOwner().GetTransform().GetScale();
-	//GetOwner().GetTransform().SetScale(mBoxScale);
-	//GetOwner().GetTransform().UpdateConstantBuffer();
-	mpDebugDrawModel->SetPipeline();
-	mspPrimitiveBatch->Begin();
-	for (UINT i = 0; i < static_cast<UINT>(eBoundingBoxType::COUNT); ++i)
-	{
-		if (mBoundingBoxes[i].Extents == Vector3(0.0f, 0.0f, 0.0f))
-		{
-			continue;
-		}
-		if (i == static_cast<UINT>(eBoundingBoxType::HIT_BOX))
-		{
-			debug_draw::Draw(mspPrimitiveBatch.get(), mBoundingBoxes[i], DirectX::Colors::Blue);
-		}
-		else if (i == static_cast<UINT>(eBoundingBoxType::ATTACK_BOX))
-		{
-			debug_draw::Draw(mspPrimitiveBatch.get(), mBoundingBoxes[i], DirectX::Colors::OrangeRed);
-		}
-	}
-	mspPrimitiveBatch->End();
-	//GetOwner().GetTransform().SetScale(originalScale);
+	assert(mBoundingBoxes[static_cast<UINT>(eBoxType)].Extents != Vector3(0.0f, 0.0f, 0.0f));
+	return mBoundingBoxes[static_cast<UINT>(eBoxType)];
 }
 
+void BoxCollider3D::FixedUpdate()
+{
+	for (UINT i = 0; i < static_cast<UINT>(eBoundingBoxType::COUNT); ++i)
+	{
+		mBoundingBoxes[i].Center = GetOwner().GetTransform().GetPosition();
+	}
 }
+
+
+void BoxCollider3D::Render()
+{
+	using VertexType = DirectX::VertexPositionColor;
+
+	auto& colliderRenderer = ColliderDebugRenderer::GetInstance();
+	for (UINT i = 0; i < static_cast<UINT>(eBoundingBoxType::COUNT); ++i)
+	{
+		switch (i)
+		{
+		case static_cast<UINT>(eBoundingBoxType::HIT_BOX):
+		{
+			colliderRenderer.BoundingBoxRender(mBoundingBoxes[static_cast<UINT>(i)], DirectX::Colors::Purple);
+			break;
+		}
+		case static_cast<UINT>(eBoundingBoxType::ATTACK_BOX):
+		{
+			colliderRenderer.BoundingBoxRender(mBoundingBoxes[static_cast<UINT>(i)], DirectX::Colors::GreenYellow);
+			break;
+		}
+		case static_cast<UINT>(eBoundingBoxType::AGRO_BOX):
+		{
+			colliderRenderer.BoundingBoxRender(mBoundingBoxes[static_cast<UINT>(i)], DirectX::Colors::AntiqueWhite);
+			break;
+		}
+		default:
+			break;
+		}
+	}
+}
+
+
+}
+

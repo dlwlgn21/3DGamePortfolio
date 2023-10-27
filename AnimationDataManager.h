@@ -9,6 +9,7 @@ namespace jh
 enum class eAnimClipKeyContainerType
 {
 	PLAYER,
+	MONSTER,
 	COUNT
 };
 
@@ -34,6 +35,7 @@ public:
 
 public:
 	static const std::string BASIC_CHARACTER_MORTION_ANIM_DATA_KEY;
+	static const std::string BASIC_MONSTER_MORTION_ANIM_DATA_KEY;
 
 private:
 	AnimationDataManager()

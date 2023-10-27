@@ -410,7 +410,7 @@ void GeomatryGenerator::normalize(const Vector3 center, const float longestLengt
     }
 
     // 애니메이션 데이터 보정에 사용
-   animData.DefaultTransformMatrix = Matrix::CreateScale(scale);
+   animData.DefaultTransform = Matrix::CreateScale(scale);
 }
 
 }

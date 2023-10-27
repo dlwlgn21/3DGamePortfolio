@@ -14,27 +14,48 @@ public:
 	{
 		IDLE,
 		WALK,
-		ATTACK_SLASH,
+		BACK_WALK,
+		STRAFE_RIGHT,
+		STRAFE_LEFT,
+		ROLL,
+		KICK,
+		ATTACK_SLASH_1,
+		ATTACK_SLASH_2,
+		ATTACK_SLASH_3,
 		COUNT
 	};
+	enum class eMonsterAnimState
+	{
+		IDLE,
+		WALK,
+		RUN,
+		ROARING,
+		ROLL,
+		SLASH_ATTACK,
+		JUMP_ATTACK,
+		COUNT
+	};
+
 public:
 	BoneAnimator();
 	virtual ~BoneAnimator() = default;
 
 	void Update() override;
-	void FixedUpdate() override;
 
 	void UpdateDyanmicStructuredAnimationBuffer();
 
 	void ChangeCurrentAnimationClip(const std::string* key);
 	void InitAnimationData(jh::graphics::AnimationData* pAnimData, const eAnimClipKeyContainerType eKeyContainerType);
+	const float GetCurrentPlayingClipPercentage();
 	const bool IsCurrentAnimClipLastFrame();
 	jh::graphics::AnimationData& GetAnimData() { assert(mpAnimData != nullptr); return *mpAnimData; }
+	
+
 private:
-	void prepareBoneTransfromMatrices(const float currentAccumTime);
+	void prepareBoneTransfroms(const float currentAccumTime);
 private:
 	jh::graphics::AnimationData*										mpAnimData;
-	jh::graphics::DynamicStructuredBuffer<DirectX::SimpleMath::Matrix>	mBoneTransformMatrices;
+	jh::graphics::DynamicStructuredBuffer<DirectX::SimpleMath::Matrix>	mBoneTransforms;
 	const std::string*													mpCurrentClipKey;
 	float																mCurrentAnimAccumTime;
 };

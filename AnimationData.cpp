@@ -8,7 +8,7 @@ namespace jh::graphics
 
 Matrix AnimationData::GetFinalTransformMatrixRow(const int boneId)
 {
-    return DefaultTransformMatrix.Invert() * OffsetMatrixArray[boneId] * BoneTransformMatrixArray[boneId] * DefaultTransformMatrix;
+    return DefaultTransform.Invert() * OffsetMatrixArray[boneId] * BoneTransformArray[boneId] * DefaultTransform;
 
     // defaultTransform은 모델을 읽어들일때 GeometryGenerator::Normalize() 에서 계산 
     // DefaultTransformMatrix.Invert() * offsetMatrices[boneId]를 미리 계산해서 합치고 
@@ -16,21 +16,21 @@ Matrix AnimationData::GetFinalTransformMatrixRow(const int boneId)
     // 여기는 교육용 예제라서 좌표계 변환 사례로 참고하시라고 남겨놓았다고 함.
 }
 
-void AnimationData::PrepareAllBoneTransformMatrices(const std::string& clipNameKey, const float accumTime)
+void AnimationData::PrepareAllBoneTransforms(const std::string& clipNameKey, const float accumTime)
 {
     assert(clipNameKey != "");
     auto iter = ClipMap.find(clipNameKey);
     if (iter != ClipMap.end())
     {
         auto& clip = iter->second;
-        for (int boneIndex = 0; boneIndex < BoneTransformMatrixArray.size(); boneIndex++)
+        for (int boneIndex = 0; boneIndex < BoneTransformArray.size(); boneIndex++)
         {
             // keys의 boneID를 인덱싱 하면, 프레임을 인덱싱 할 수 있음.
             std::vector<AnimationClip::Key>& keys = clip.KeyBoneAndFrame2DArrays[boneIndex];
 
             // 주의: 모든 채널(뼈)이 frame 개수가 동일하진 않음
             const int parentIdx = BoneParentIndexArray[boneIndex];
-            const Matrix parentMatrix = parentIdx >= 0 ? BoneTransformMatrixArray[parentIdx] : AccumulatedRootTransformMatrix;
+            const Matrix parentMatrix = parentIdx >= 0 ? BoneTransformArray[parentIdx] : AccumulatedRootTransform;
 
             AnimationClip::Key key;
             if (keys.size() == 0)
@@ -72,7 +72,7 @@ void AnimationData::PrepareAllBoneTransformMatrices(const std::string& clipNameK
                 key.RotationTime = keys[frameIndex].RotationTime;
                 key.ScaleTime = keys[frameIndex].ScaleTime;
             }
-            BoneTransformMatrixArray[boneIndex] = key.GetTransform() * parentMatrix;
+            BoneTransformArray[boneIndex] = key.GetTransform() * parentMatrix;
         }
     }
     else

@@ -89,7 +89,7 @@ void ModelLoader::LoadWithAnimatnionData(const std::string& basePath, const std:
         pAnimData->BoneIndexToNameArray[i.second] = i.first;
     }
     pAnimData->BoneParentIndexArray.resize(pAnimData->BoneNameIndexMap.size(), -1);
-    pAnimData->BoneTransformMatrixArray.resize(pAnimData->BoneNameIndexMap.size());
+    pAnimData->BoneTransformArray.resize(pAnimData->BoneNameIndexMap.size());
     pAnimData->OffsetMatrixArray.resize(pAnimData->BoneNameIndexMap.size());
     Matrix tr = Matrix::Identity;
     // 각 Bone들의 Parent들을 Traverse 하면서 Assign함.

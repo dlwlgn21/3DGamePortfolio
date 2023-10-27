@@ -2,7 +2,8 @@
 
 namespace jh
 {
-	const std::string AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY = "BasicMotionKey";
+	const std::string AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY = "PlayerMotionKey";
+	const std::string AnimationDataManager::BASIC_MONSTER_MORTION_ANIM_DATA_KEY = "MonsterMotionKey";
 
 
 bool AnimationDataManager::InsertAnimationData(const std::string& key, std::unique_ptr<jh::graphics::AnimationData> animDataUniquePtr)

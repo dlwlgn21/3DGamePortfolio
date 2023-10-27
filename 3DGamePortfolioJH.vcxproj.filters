@@ -165,6 +165,18 @@
     <Filter Include="소스 파일\Component\BoxCollider3D">
       <UniqueIdentifier>{abc06ca9-6914-4dd7-b440-0200e39c28a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\FSM\MonsterStateMachine">
+      <UniqueIdentifier>{4061ce1a-f43a-4a3c-bb17-9ed0e7371d1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Script\Monster">
+      <UniqueIdentifier>{e1293941-00d3-4165-bb37-21620f6cb024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers\PlayerManager">
+      <UniqueIdentifier>{47212005-ba33-41b7-b552-5ef5dfb7f13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Managers\DebugRenderer">
+      <UniqueIdentifier>{c8710bf2-6524-4868-b2a4-1bebedf95f9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h">
@@ -341,6 +353,18 @@
     <ClInclude Include="DebugDraw.h">
       <Filter>소스 파일\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterState.h">
+      <Filter>소스 파일\FSM\MonsterStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterScript.h">
+      <Filter>소스 파일\Component\Script\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerManager.h">
+      <Filter>소스 파일\Managers\PlayerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderDebugRenderer.h">
+      <Filter>소스 파일\Managers\DebugRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -478,6 +502,15 @@
     <ClCompile Include="DebugDraw.cpp">
       <Filter>소스 파일\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="MonsterScript.cpp">
+      <Filter>소스 파일\Component\Script\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerManager.cpp">
+      <Filter>소스 파일\Managers\PlayerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderDebugRenderer.cpp">
+      <Filter>소스 파일\Managers\DebugRenderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2DGamePortfolio.rc">
@@ -524,12 +557,6 @@
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="BasicAnimation3DVS.hlsl">
-      <Filter>소스 파일\ShaderFiles</Filter>
-    </FxCompile>
-    <FxCompile Include="DebugColliderVS.hlsl">
-      <Filter>소스 파일\ShaderFiles</Filter>
-    </FxCompile>
-    <FxCompile Include="DebugColliderPS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

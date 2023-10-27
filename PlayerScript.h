@@ -7,11 +7,16 @@
 namespace jh
 {
 
-enum ePlayerState
+enum class ePlayerState
 {
 	IDLE,
 	WALK,
-	ATTACK_SLASH,
+	STRAFE,
+	ROLL,
+	KICK,
+	ATTACK_SLASH_1,
+	ATTACK_SLASH_2,
+	ATTACK_SLASH_3, 
 	COUNT
 };
 
@@ -36,6 +41,9 @@ public:
 	void ChangeAnimationClip(const BoneAnimator::eCharacterAnimState eAnimState);
 	void ChangePlayerState(const ePlayerState eState);
 
+	const float GetWalkSpeed() { return mWalkSpeed; }
+	const float GetTurnRoationSpeedDeg() { return mTurnRotationSpeedDeg; }
+
 private:
 	jh::fsm::StateMachine<PlayerScript>		mFSM;
 	jh::fsm::State<PlayerScript>*			mpStates[static_cast<UINT>(ePlayerState::COUNT)];
@@ -43,6 +51,9 @@ private:
 
 	BoneAnimator::eCharacterAnimState		meAnimState;
 	ePlayerState							mePlayerState;
+
+	float mWalkSpeed;
+	float mTurnRotationSpeedDeg;
 };
 
 }

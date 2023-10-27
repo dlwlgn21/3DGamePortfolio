@@ -48,14 +48,14 @@ struct AnimationData
     std::vector<std::string>                        BoneIndexToNameArray;           // boneNameToId의 Id 순서대로 뼈 이름 저장
     std::vector<int32_t>                            BoneParentIndexArray;           // 부모 뼈의 인덱스
     std::vector<Matrix>                             OffsetMatrixArray;
-    std::vector<Matrix>                             BoneTransformMatrixArray;
+    std::vector<Matrix>                             BoneTransformArray;
     std::unordered_map<std::string, AnimationClip>  ClipMap;
-    Matrix                                          DefaultTransformMatrix;
-    Matrix                                          RootTransformMatrix = Matrix();
-    Matrix                                          AccumulatedRootTransformMatrix = Matrix();
+    Matrix                                          DefaultTransform;
+    Matrix                                          RootTransform = Matrix();
+    Matrix                                          AccumulatedRootTransform = Matrix();
 
     Matrix GetFinalTransformMatrixRow(const int boneId);
-    void PrepareAllBoneTransformMatrices(const std::string& clipName, const float accumTime);
+    void PrepareAllBoneTransforms(const std::string& clipName, const float accumTime);
 };
 
 }
