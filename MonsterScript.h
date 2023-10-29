@@ -29,7 +29,7 @@ public:
 	void SetBoneAnimator(BoneAnimator* pAniamtor) { assert(mpAnimator == nullptr && pAniamtor != nullptr); mpAnimator = pAniamtor; }
 
 
-	const BoneAnimator::eMonsterAnimState GetCurrAnimState()		const { return meAnimState; }
+	const BoneAnimator::eMonsterAnimState	GetCurrAnimState()		const { return meAnimState; }
 	const eMonsterState						GetCurrMonsterState()	const { return meMonsterState; }
 	BoneAnimator& GetAnimator() { return *mpAnimator; }
 

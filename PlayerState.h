@@ -35,6 +35,8 @@ public:
 	{
 		assert(false);
 	}
+
+protected:
 	const bool IsChangeIdleState()
 	{
 		if (!InputManager::IsAnyKeyPressed())

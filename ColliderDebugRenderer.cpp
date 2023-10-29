@@ -32,13 +32,6 @@ void ColliderDebugRenderer::clearPipeline()
 	context.RSSetState(nullptr);
 	context.IASetInputLayout(nullptr);
 }
-void ColliderDebugRenderer::TestRender()
-{
-	m_batch->Begin();
-	debug_draw::Draw(m_batch.get(), box, Colors::Red); // BoundingBox
-	debug_draw::Draw(m_batch.get(), orientedBox, Colors::Blue); // BoundingOrientedBox
-	m_batch->End();
-}
 
 void ColliderDebugRenderer::BoundingBoxRender(const DirectX::BoundingBox& box, const XMVECTORF32& colors)
 {
@@ -61,6 +54,15 @@ void ColliderDebugRenderer::SphereRender(const DirectX::BoundingSphere& sphere, 
 	setPipeline();
 	m_batch->Begin();
 	debug_draw::Draw(m_batch.get(), sphere, colors);
+	m_batch->End();
+	clearPipeline();
+}
+
+void ColliderDebugRenderer::RayRender(const DirectX::SimpleMath::Vector3& origin, const DirectX::SimpleMath::Vector3& direction, const XMVECTORF32& colors)
+{
+	setPipeline();
+	m_batch->Begin();
+	debug_draw::DrawRay(m_batch.get(), origin, direction, colors);
 	m_batch->End();
 	clearPipeline();
 }

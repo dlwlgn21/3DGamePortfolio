@@ -162,9 +162,6 @@
     <Filter Include="소스 파일\Component\Script\Player">
       <UniqueIdentifier>{18637f1c-07ff-4dbb-8e2a-8a43abaa140c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Component\BoxCollider3D">
-      <UniqueIdentifier>{abc06ca9-6914-4dd7-b440-0200e39c28a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\FSM\MonsterStateMachine">
       <UniqueIdentifier>{4061ce1a-f43a-4a3c-bb17-9ed0e7371d1f}</UniqueIdentifier>
     </Filter>
@@ -176,6 +173,9 @@
     </Filter>
     <Filter Include="소스 파일\Managers\DebugRenderer">
       <UniqueIdentifier>{c8710bf2-6524-4868-b2a4-1bebedf95f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Component\Collider3D">
+      <UniqueIdentifier>{abc06ca9-6914-4dd7-b440-0200e39c28a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -347,8 +347,8 @@
     <ClInclude Include="PlayerScript.h">
       <Filter>소스 파일\Component\Script\Player</Filter>
     </ClInclude>
-    <ClInclude Include="BoxCollider3D.h">
-      <Filter>소스 파일\Component\BoxCollider3D</Filter>
+    <ClInclude Include="Collider3D.h">
+      <Filter>소스 파일\Component\Collider3D</Filter>
     </ClInclude>
     <ClInclude Include="DebugDraw.h">
       <Filter>소스 파일\Graphics</Filter>
@@ -496,8 +496,8 @@
     <ClCompile Include="PlayerScript.cpp">
       <Filter>소스 파일\Component\Script\Player</Filter>
     </ClCompile>
-    <ClCompile Include="BoxCollider3D.cpp">
-      <Filter>소스 파일\Component\BoxCollider3D</Filter>
+    <ClCompile Include="Collider3D.cpp">
+      <Filter>소스 파일\Component\Collider3D</Filter>
     </ClCompile>
     <ClCompile Include="DebugDraw.cpp">
       <Filter>소스 파일\Graphics</Filter>

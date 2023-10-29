@@ -30,7 +30,6 @@ public:
 		WALK,
 		RUN,
 		ROARING,
-		ROLL,
 		SLASH_ATTACK,
 		JUMP_ATTACK,
 		COUNT

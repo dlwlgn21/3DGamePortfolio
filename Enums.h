@@ -37,7 +37,7 @@ enum class eComponentType
 	LIGHT,
 	SCRIPT,
 	RIGID_BODY_3D,
-	BOX_COLLIDER_3D,
+	COLLIDER_3D,
 	UI,
 	COUNT
 };

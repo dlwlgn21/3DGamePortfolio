@@ -6,7 +6,7 @@ namespace jh
 
 class PlayerScript;
 class Transform;
-class BoxCollider3D;
+class Collider3D;
 class PlayerManager final
 {
 public:
@@ -23,7 +23,7 @@ public:
 
 	PlayerScript& GetPlayerScript();
 	Transform& GetPlayerTramsform();
-	BoxCollider3D& GetPlayerBoxCollider();
+	Collider3D& GetPlayerCollider();
 
 private:
 	PlayerManager() = default;

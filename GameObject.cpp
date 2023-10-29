@@ -90,9 +90,9 @@ void GameObject::Render()
 		mspComponents[static_cast<UINT>(eComponentType::RENDERER)]->Render();
 	}
 
-	if (mspComponents[static_cast<UINT>(eComponentType::BOX_COLLIDER_3D)] != nullptr)
+	if (mspComponents[static_cast<UINT>(eComponentType::COLLIDER_3D)] != nullptr)
 	{
-		mspComponents[static_cast<UINT>(eComponentType::BOX_COLLIDER_3D)]->Render();
+		mspComponents[static_cast<UINT>(eComponentType::COLLIDER_3D)]->Render();
 	}
 }
 

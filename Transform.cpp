@@ -19,6 +19,7 @@ Transform::Transform()
 	, mUpVector(S_UP)
 	, mPosition(Vector3::Zero)
 	, mRotation({0.0f, 0.0f, 0.0f})
+	, mQuaternion(Vector4(0.0f, 0.0f, 0.0f, 0.0f))
 	, mScale(Vector3::One)
 	, mWolrdMatRow(Matrix::Identity)
 	, mpParent(nullptr)
@@ -30,16 +31,19 @@ void Transform::FixedUpdate()
 
 	// Make Modeling(World) Matrix
 	// Rotation
-	Matrix rotationMat = Matrix::Identity;
-	rotationMat = Matrix::CreateRotationY(DirectX::XMConvertToRadians(mRotation.YawDeg));
-	rotationMat *= Matrix::CreateRotationX(DirectX::XMConvertToRadians(mRotation.PitchDeg));
-	rotationMat *= Matrix::CreateRotationZ(DirectX::XMConvertToRadians(mRotation.RollDeg));
-		
-	mWolrdMatRow = Matrix::CreateScale(mScale) * rotationMat * Matrix::CreateTranslation(mPosition);
+	mQuaternion = Quaternion::CreateFromYawPitchRoll(
+		Vector3(
+			DirectX::XMConvertToRadians(mRotation.PitchDeg),
+			DirectX::XMConvertToRadians(mRotation.YawDeg), 
+			DirectX::XMConvertToRadians(mRotation.RollDeg)
+		)
+	);
+	Matrix rMat = Matrix::CreateFromQuaternion(mQuaternion);
+	mWolrdMatRow = Matrix::CreateScale(mScale) * rMat * Matrix::CreateTranslation(mPosition);
 		 
-	mForwardVector	= Vector3::TransformNormal(S_FORWARD,	rotationMat);
-	mRightVector	= Vector3::TransformNormal(S_RIGHT,		rotationMat);
-	mUpVector		= Vector3::TransformNormal(S_UP,		rotationMat);
+	mForwardVector	= Vector3::TransformNormal(S_FORWARD, rMat);
+	mRightVector	= Vector3::TransformNormal(S_RIGHT,	  rMat);
+	mUpVector		= Vector3::TransformNormal(S_UP,	  rMat);
 }
 
 void Transform::UpdateConstantBuffer()

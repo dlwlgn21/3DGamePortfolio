@@ -1,14 +1,18 @@
 #pragma once
 #include "State.h"
 
+#include "Time.h"
+
 #include "GameObject.h"
 #include "Transform.h"
 #include "MonsterScript.h"
 #include "BoneAnimator.h"
-#include "BoxCollider3D.h"
+#include "Collider3D.h"
 
 #include "PlayerManager.h"
 #include "PlayerScript.h"
+
+#include "DebugHelper.h"
 
 using namespace jh::enums;
 using namespace DirectX;
@@ -26,9 +30,10 @@ public:
 		, mTurnRotationSpeedDeg(pMonsterScript->GetTurnRoationSpeedDeg())
 		, mpTransform(&pMonsterScript->GetOwner().GetTransform())
 		, mpAnimator(&pMonsterScript->GetAnimator())
-		, mpBoxCollider(&static_cast<BoxCollider3D&>(pMonsterScript->GetOwner().GetComponent(jh::enums::eComponentType::BOX_COLLIDER_3D)))
+		, mpCollider(&static_cast<Collider3D&>(pMonsterScript->GetOwner().GetComponent(jh::enums::eComponentType::COLLIDER_3D)))
 		, mpPlayerScript(&PlayerManager::GetInstance().GetPlayerScript())
-		, mpPlayerBoxCollider(&PlayerManager::GetInstance().GetPlayerBoxCollider())
+		, mpPlayerCollider(&PlayerManager::GetInstance().GetPlayerCollider())
+		, mpPlayerTransform(&PlayerManager::GetInstance().GetPlayerTramsform())
 	
 	{
 	}
@@ -45,14 +50,26 @@ public:
 	{
 		assert(false);
 	}
+
+protected:
+	void ChangeAnimationClip(const BoneAnimator::eMonsterAnimState eAnimState)
+	{
+		mpOwnerScript->ChangeAnimationClip(eAnimState);
+	}
+	void ChangeMonsterState(const eMonsterState eState)
+	{
+		mpOwnerScript->ChangeMonsterState(eState);
+	}
+
 protected:
 	float mWalkSpeed;
 	float mTurnRotationSpeedDeg;
 	Transform* mpTransform;
 	BoneAnimator* mpAnimator;
-	BoxCollider3D* mpBoxCollider;
+	Collider3D* mpCollider;
 	PlayerScript* mpPlayerScript;
-	BoxCollider3D* mpPlayerBoxCollider;
+	Collider3D* mpPlayerCollider;
+	Transform* mpPlayerTransform;
 };
 
 class MonsterIdleState final : public MonsterState
@@ -69,12 +86,78 @@ public:
 	}
 	void Excute() override
 	{
-		BoundingBox& agroBox = mpBoxCollider->GetBoundingBox(eBoundingBoxType::AGRO_BOX);
-		BoundingBox& playerHitBox = mpPlayerBoxCollider->GetBoundingBox(eBoundingBoxType::HIT_BOX);
-		if (agroBox.Intersects(playerHitBox))
+		static bool bIsFirstCollision = true;
+		BoundingSphere& agroSphere = mpCollider->GetSphere(eBoundingSphereType::AGRO_SPHERE);
+		BoundingBox& playerHitBox = mpPlayerCollider->GetHitBox();
+		if (agroSphere.Intersects(playerHitBox))
 		{
-			std::cout << playerHitBox.Center.x << ", " << playerHitBox.Center.y << playerHitBox.Center.z << std::endl;
+			if (bIsFirstCollision)
+			{
+				bIsFirstCollision = false;
+				return;
+			}
+
+			ChangeAnimationClip(BoneAnimator::eMonsterAnimState::WALK);
+			ChangeMonsterState(eMonsterState::TRACING);
 		}
+	}
+	void Exit() override
+	{
+	}
+};
+
+
+class MonsterTracingState final : public MonsterState
+{
+public:
+	MonsterTracingState(MonsterScript* pMonsterScript)
+		: MonsterState(pMonsterScript)
+	{
+	}
+	virtual ~MonsterTracingState() = default;
+
+	void Enter() override
+	{
+	}
+	void Excute() override
+	{
+		Vector3 toPlayerDir = mpPlayerTransform->GetPosition() - mpTransform->GetPosition();
+		BoundingSphere& attackSphere = mpCollider->GetSphere(eBoundingSphereType::ATTACK_SPHERE);
+		BoundingBox& playerHitBox = mpPlayerCollider->GetHitBox();
+		if (attackSphere.Intersects(playerHitBox))
+		{
+			ChangeAnimationClip(BoneAnimator::eMonsterAnimState::SLASH_ATTACK);
+			ChangeMonsterState(eMonsterState::ATTACKING);
+		}
+		toPlayerDir.Normalize();
+		auto moveVector = mpTransform->GetPosition();
+		moveVector += toPlayerDir * mpOwnerScript->GetWalkSpeed() * Time::DeltaTime();
+		mpTransform->SetPosition(moveVector);
+		Quaternion q = Quaternion::FromToRotation(-mpTransform->GetForwardRef(), toPlayerDir);
+		Vector3 euler = q.ToEuler();
+		float angle = DirectX::XMConvertToDegrees(euler.y);
+		mpTransform->AccumulateYaw(angle * 5.0f * Time::DeltaTime());
+	}
+	void Exit() override
+	{
+	}
+};
+
+
+class MonsterAttackingState final : public MonsterState
+{
+public:
+	MonsterAttackingState(MonsterScript* pMonsterScript)
+		: MonsterState(pMonsterScript)
+	{
+	}
+	virtual ~MonsterAttackingState() = default;
+
+	void Enter() override
+	{
+	}
+	void Excute() override
+	{
 		
 	}
 	void Exit() override

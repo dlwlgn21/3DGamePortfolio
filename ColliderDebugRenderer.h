@@ -29,11 +29,10 @@ public:
 	ColliderDebugRenderer(const ColliderDebugRenderer& other) = delete;
 	ColliderDebugRenderer& operator=(const ColliderDebugRenderer& other) = delete;
 
-	void TestRender();
 	void BoundingBoxRender(const DirectX::BoundingBox& box, const XMVECTORF32& colors);
 	void OrientedBoxRender(const DirectX::BoundingOrientedBox& box, const XMVECTORF32& colors);
 	void SphereRender(const DirectX::BoundingSphere& sphere, const XMVECTORF32& colors);
-
+	void RayRender(const DirectX::SimpleMath::Vector3& origin, const DirectX::SimpleMath::Vector3& direction, const XMVECTORF32& colors);
 private: 
 	void setPipeline();
 	void clearPipeline();
@@ -46,15 +45,6 @@ private:
 		m_effect->SetVertexColorEnabled(true);
 
 		HRESULT hr;
-		//hr = CreateInputLayoutFromEffect<VertexType>(
-		//	&gd.GetDeivce(), 
-		//	m_effect.get(),
-		//	m_inputLayout.ReleaseAndGetAddressOf()
-		//);
-		//if (FAILED(hr))
-		//{
-		//	assert(false);
-		//}
 
 		// For ColliderRendering
 		{
@@ -71,19 +61,8 @@ private:
 					m_inputLayout.ReleaseAndGetAddressOf()
 			);
 		}
-		if (FAILED(hr))
-		{
-			assert(false);
-		}
-
-
+		if (FAILED(hr)) { assert(false); }
 		m_batch = std::make_unique<PrimitiveBatch<VertexType>>(&gd.GetDeivceContext());
-	
-		box.Center = Vector3(0.0f, 0.0f, 0.0f);
-		box.Extents = Vector3(0.5f, 0.5f, 0.5f);
-
-		orientedBox.Center = Vector3(-1.0f, 0.0f, 0.0f);
-		orientedBox.Extents = Vector3(0.5f, 0.5f, 0.5f);
 	}
 	~ColliderDebugRenderer() = default;
 
@@ -92,11 +71,6 @@ private:
 	std::unique_ptr<DirectX::BasicEffect> m_effect;
 	std::unique_ptr<DirectX::PrimitiveBatch<VertexType>> m_batch;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-
-	DirectX::BoundingFrustum			frustum;
-	DirectX::BoundingBox				box;
-	DirectX::BoundingOrientedBox		orientedBox;
-	DirectX::BoundingSphere				sphere;
 };
 
 

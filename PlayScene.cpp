@@ -19,7 +19,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "CameraScript.h"
-#include "BoxCollider3D.h"
+#include "Collider3D.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
 #include "BoneAnimator.h"
@@ -74,26 +74,24 @@ void PlayScene::initCamera()
 
 void PlayScene::initPlayer()
 {
-	{
-		auto* pAnimData = AnimationDataManager::GetInstance().GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
-		assert(pAnimData != nullptr);
-		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
-		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<SkinnedMeshRenderer>()));
-		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL));
+	auto* pAnimData = AnimationDataManager::GetInstance().GetAnimDataOrNull(AnimationDataManager::BASIC_CHARACTER_MORTION_ANIM_DATA_KEY);
+	assert(pAnimData != nullptr);
+	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
+	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<SkinnedMeshRenderer>()));
+	renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::BARNY_SKINNED_MODEL));
 		
-		auto& animator = static_cast<BoneAnimator&>(spSqureGameObject->AddComponent(eComponentType::ANIMATOR, std::make_unique<BoneAnimator>()));
-		animator.InitAnimationData(pAnimData, eAnimClipKeyContainerType::PLAYER);
-		ResourcesManager::Find<Model>(keys::BARNY_SKINNED_MODEL)->SetBoneAnimator(animator);
-		auto& boxCollider = static_cast<BoxCollider3D&>(spSqureGameObject->AddComponent(eComponentType::BOX_COLLIDER_3D, std::make_unique<BoxCollider3D>()));
-		boxCollider.InitBondingBox(Vector3(0.0f, 0.4f, 0.0f), Vector3(0.2f, 0.7f, 0.2f), eBoundingBoxType::HIT_BOX);
-		boxCollider.InitBondingBox(Vector3(-0.2f, 0.5f, -0.5f), Vector3(0.5f, 0.3f, 0.5f), eBoundingBoxType::ATTACK_BOX);
-
-		spSqureGameObject->AddScript(eScriptType::HEAD, std::make_unique<PlayerScript>());
-		auto& script = static_cast<PlayerScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
-		PlayerManager::GetInstance().SetPlayerScript(script);
-		script.SetBoneAnimator(&animator);
-		AddGameObject(spSqureGameObject, eLayerType::PLAYER);
-	}
+	auto& animator = static_cast<BoneAnimator&>(spSqureGameObject->AddComponent(eComponentType::ANIMATOR, std::make_unique<BoneAnimator>()));
+	animator.InitAnimationData(pAnimData, eAnimClipKeyContainerType::PLAYER);
+	ResourcesManager::Find<Model>(keys::BARNY_SKINNED_MODEL)->SetBoneAnimator(animator);
+	auto& collider = static_cast<Collider3D&>(spSqureGameObject->AddComponent(eComponentType::COLLIDER_3D, std::make_unique<Collider3D>()));
+	collider.InitHitBox(Vector3(0.0f, 0.4f, 0.0f), Vector3(0.2f, 0.7f, 0.2f));
+	collider.InitBoundingSphere(Vector3(-0.2f, 0.5f, -0.5f), 0.5f, eBoundingSphereType::ATTACK_SPHERE);
+	collider.InitAttackBox(Vector3(0.0f, 0.5f, -0.5f), Vector3(0.5f, 0.5f, 0.5f));
+	spSqureGameObject->AddScript(eScriptType::HEAD, std::make_unique<PlayerScript>());
+	auto& script = static_cast<PlayerScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
+	PlayerManager::GetInstance().SetPlayerScript(script);
+	script.SetBoneAnimator(&animator);
+	AddGameObject(spSqureGameObject, eLayerType::PLAYER);
 }
 
 void PlayScene::initMutant()
@@ -107,11 +105,10 @@ void PlayScene::initMutant()
 	auto& animator = static_cast<BoneAnimator&>(spSqureGameObject->AddComponent(eComponentType::ANIMATOR, std::make_unique<BoneAnimator>()));
 	animator.InitAnimationData(pAnimData, eAnimClipKeyContainerType::MONSTER);
 	ResourcesManager::Find<Model>(keys::MUTANT_SKINNED_MODEL)->SetBoneAnimator(animator);
-	auto& boxCollider = static_cast<BoxCollider3D&>(spSqureGameObject->AddComponent(eComponentType::BOX_COLLIDER_3D, std::make_unique<BoxCollider3D>()));
-	boxCollider.InitBondingBox(Vector3(0.0f, 0.4f, 0.0f), Vector3(3.0f, 0.4f, 3.0f), eBoundingBoxType::AGRO_BOX);
-	boxCollider.InitBondingBox(Vector3(0.0f, 0.4f, -0.1f), Vector3(0.2f, 0.4f, 0.2f), eBoundingBoxType::HIT_BOX);
-	boxCollider.InitBondingBox(Vector3(-0.2f, 0.5f, -0.5f), Vector3(0.5f, 0.3f, 0.5f), eBoundingBoxType::ATTACK_BOX);
-
+	auto& collider = static_cast<Collider3D&>(spSqureGameObject->AddComponent(eComponentType::COLLIDER_3D, std::make_unique<Collider3D>()));
+	collider.InitHitBox(Vector3(0.0f, 0.4f, -0.1f), Vector3(0.2f, 0.4f, 0.2f));
+	collider.InitBoundingSphere(Vector3(0.0f, 0.3f, -0.3f), 0.15f, eBoundingSphereType::ATTACK_SPHERE);
+	collider.InitBoundingSphere(Vector3(0.0f, 0.0f, 0.0f), 5.5f, eBoundingSphereType::AGRO_SPHERE);
 	spSqureGameObject->AddScript(eScriptType::HEAD, std::make_unique<MonsterScript>());
 	auto& script = static_cast<MonsterScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
 	script.SetBoneAnimator(&animator);
