@@ -88,8 +88,11 @@ namespace jh::graphics::keys
 	static const std::string BOX_MODEL = "boxModel";
 	static const std::string SPEHERE_MESH_KEY = "speMesh";
 	static const std::string SPEHERE_MODEL_KEY = "speModel";
-
+	
 	static const std::string MONKEY_MESH_KEY = "monkey";
 	static const std::string MONKEY_DIFFUSE_TEXTURE_KEY = "monkeytex";
 
+	static const std::string GROUND_MESH_KEY = "gruondMesh";
+	static const std::string GROUND_MATERIAL_KEY = "groundMat";
+	static const std::string GROUND_MODEL = "groundModel";
 }

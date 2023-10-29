@@ -48,6 +48,7 @@ void PlayerScript::Initialize()
 	mpStates[static_cast<UINT>(ePlayerState::ATTACK_SLASH_1)] = new jh::fsm::PlayerAttackSlash_1_State(this);
 	mpStates[static_cast<UINT>(ePlayerState::ATTACK_SLASH_2)] = new jh::fsm::PlayerAttackSlash_2_State(this);
 	mpStates[static_cast<UINT>(ePlayerState::ATTACK_SLASH_3)] = new jh::fsm::PlayerAttackSlash_3_State(this);
+	mpStates[static_cast<UINT>(ePlayerState::HITTED)] = new jh::fsm::PlayerHittedState(this);
 	mFSM.Init(*mpStates[static_cast<UINT>(ePlayerState::IDLE)]);
 }
 void PlayerScript::Update()

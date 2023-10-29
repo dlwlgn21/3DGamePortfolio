@@ -20,6 +20,7 @@ namespace jh::graphics
 
 		std::vector<Vertex2D> GetTriangle();
 		std::vector<Vertex2D> GetSquare();
+		void MakeSquare(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale);
 		void MakeWorldCoordinate(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale = 1.0f);
 		void MakeBox(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale = 1.0f);
 		void MakeDebugDrawingColliderBox(std::vector<Vertex3DCollider>& outVertices, std::vector<UINT>& outIndices);

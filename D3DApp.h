@@ -31,7 +31,7 @@ public:
 
 	const bool IsDrawWire() const { return mbIsDrawWire; }
 	const bool IsDrawNormal() const { return mbIsDrawNormal; }
-
+	const bool IsDrawCollision() const { return mbIsDrawCollision; }
 private:
 	void update();
 	void fixedUpdate();
@@ -55,6 +55,7 @@ private:
 
 	bool	mbIsDrawWire = false;
 	bool	mbIsDrawNormal = false;
+	bool	mbIsDrawCollision = false;
 };
 
 }

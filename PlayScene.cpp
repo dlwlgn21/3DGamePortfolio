@@ -46,8 +46,8 @@ void PlayScene::Initialize()
 	initCamera();
 	initPlayer(); 
 	initMutant();
-	//initBox();
 	initWorldCoord();
+	initGround();
 	initLight();
 	Scene::Initialize();
 }
@@ -145,6 +145,15 @@ void PlayScene::initLight()
 	AddGameObject(spSqureGameObject, eLayerType::LIGHT); 
 }
 
+void PlayScene::initGround()
+{
+	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
+	spSqureGameObject->SetName("Ground");
+	spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, -0.3f, 0.0f));
+	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
+	renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::GROUND_MODEL));
+	AddGameObject(spSqureGameObject, eLayerType::ENV);
+}
 
 
 

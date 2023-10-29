@@ -16,7 +16,8 @@ enum class ePlayerState
 	KICK,
 	ATTACK_SLASH_1,
 	ATTACK_SLASH_2,
-	ATTACK_SLASH_3, 
+	ATTACK_SLASH_3,
+	HITTED,
 	COUNT
 };
 

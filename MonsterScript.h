@@ -12,7 +12,6 @@ enum class eMonsterState
 	SEARCHING,
 	TRACING,
 	ATTACKING,
-	HITTED,
 	DEAD,
 	COUNT
 };

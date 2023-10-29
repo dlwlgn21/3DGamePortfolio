@@ -46,6 +46,45 @@ std::vector<Vertex2D> GeomatryGenerator::GetSquare()
 	return squre;
 }
 
+void GeomatryGenerator::MakeSquare(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale)
+{
+    outVertices.reserve(24);
+    std::vector<Vector3> positions;
+    std::vector<Vector3> normals;
+    std::vector<Vector2> texcoords;
+    positions.reserve(outVertices.capacity());
+    normals.reserve(outVertices.capacity());
+    texcoords.reserve(outVertices.capacity());
+
+    // À­¸é
+    positions.push_back(Vector3(-1.0f, 0.0f, -1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, 0.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 0.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 0.0f, -1.0f) * scale);
+    normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
+    normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
+    normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
+    normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
+    texcoords.push_back(Vector2(0.0f, 0.0f));
+    texcoords.push_back(Vector2(1.0f, 0.0f));
+    texcoords.push_back(Vector2(1.0f, 1.0f));
+    texcoords.push_back(Vector2(0.0f, 1.0f));
+
+    for (UINT i = 0; i < positions.size(); i++)
+    {
+        Vertex3D v;
+        v.Pos = positions[i];
+        v.Normal = normals[i];
+        v.UV = texcoords[i];
+        v.TangentModel = Vector3(1.0f, 0.0f, 0.0f);
+        outVertices.push_back(v);
+    }
+
+    outIndices.reserve(6);
+    outIndices = { 0,  1,  2,  0,  2,  3 };
+}
+
+
 void GeomatryGenerator::MakeWorldCoordinate(std::vector<Vertex3D>& outVertices, std::vector<UINT>& outIndices, const float scale)
 {
     std::vector<Vector3> positions;

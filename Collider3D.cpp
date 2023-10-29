@@ -1,15 +1,16 @@
 #include "Collider3D.h"
 
+#include "GraphicDeviceDX11.h"
+#include "GraphicsPSOManager.h"
+#include "ColliderDebugRenderer.h"
 #include "Time.h"
+#include "D3DApp.h"
 
 #include "GameObject.h"
 #include "Transform.h"
-#include "GraphicDeviceDX11.h"
-#include "GraphicsPSOManager.h"
 
 #include "DebugDraw.h"
 
-#include "ColliderDebugRenderer.h"
 #include "DebugHelper.h"
 
 using namespace jh::enums;
@@ -86,6 +87,11 @@ void Collider3D::FixedUpdate()
 
 void Collider3D::Render()
 {
+	if (!D3DApp::GetInstance().IsDrawCollision())
+	{
+		return;
+	}
+
 	auto& tr = GetOwner().GetTransform();
 	auto& colliderRenderer = ColliderDebugRenderer::GetInstance();
 	//Vector3 centerToOffset = mAttackBoxOffset - Vector3(0.0f, 0.0f, 0.0f);

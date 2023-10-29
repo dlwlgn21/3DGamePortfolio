@@ -469,4 +469,31 @@ public:
 	}
 
 };
+
+class PlayerHittedState final : public PlayerState
+{
+public:
+	PlayerHittedState(PlayerScript* pPlayerScript)
+		: PlayerState(pPlayerScript)
+	{
+	}
+	virtual ~PlayerHittedState() = default;
+
+	void Enter() override
+	{
+	}
+	void Excute() override
+	{
+		if (mpAnimator->IsCurrentAnimClipLastFrame())
+		{
+			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE);
+			ChangePlayerState(ePlayerState::IDLE);
+		}
+	}
+	void Exit() override
+	{
+	}
+
+};
+
 }

@@ -15,7 +15,7 @@ enum class eLayerType
 	CAMERA,
 	MONSTER,
 	PLAYER,
-
+	ENV,
 	PARTICLE,
 	POST_PROCESS,
 	LIGHT,

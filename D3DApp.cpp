@@ -161,6 +161,7 @@ void D3DApp::updateGUI()
 	ImGui::Checkbox("IsUseNormalTexture", LightingManager::GetInstance().GetIsUseNormalTexture());
 	ImGui::Checkbox("IsDrawWireFrame", &mbIsDrawWire);
 	ImGui::Checkbox("IsDrawNormal", &mbIsDrawNormal);
+	ImGui::Checkbox("IsDrawCollision", &mbIsDrawCollision);
 	//ImGui::SliderFloat("Camera Pitch", &camera.GetTrasform().GetRotation().x, -ANGLE, ANGLE);
 	//ImGui::SliderFloat("Camera Roll", &camera.GetRotation().z, -ANGLE, ANGLE);
 	//ImGui::SliderFloat("Camera Yaw", &camera.GetRotation().y, -ANGLE, ANGLE);

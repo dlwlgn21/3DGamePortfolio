@@ -149,20 +149,44 @@ class MonsterAttackingState final : public MonsterState
 public:
 	MonsterAttackingState(MonsterScript* pMonsterScript)
 		: MonsterState(pMonsterScript)
+		, mbIsAttackSucces(false)
 	{
 	}
 	virtual ~MonsterAttackingState() = default;
 
 	void Enter() override
 	{
+		mbIsAttackSucces = false;
 	}
 	void Excute() override
 	{
-		
+		const float ATTACK_ANIM_PLAYING_PERCENT = mpAnimator->GetCurrentPlayingClipPercentage();
+		if (!mbIsAttackSucces && ATTACK_ANIM_PLAYING_PERCENT > 0.7f && ATTACK_ANIM_PLAYING_PERCENT < 0.8f)
+		{
+			BoundingSphere& attackSphere = mpCollider->GetSphere(eBoundingSphereType::ATTACK_SPHERE);
+			BoundingBox& playerHitBox = mpPlayerCollider->GetHitBox();
+			if (attackSphere.Intersects(playerHitBox))
+			{
+				mbIsAttackSucces = true;
+				mpPlayerScript->ChangeAnimationClip(BoneAnimator::eCharacterAnimState::HITTED);
+				mpPlayerScript->ChangePlayerState(ePlayerState::HITTED);
+				ChangeAnimationClip(BoneAnimator::eMonsterAnimState::IDLE);
+				ChangeMonsterState(eMonsterState::IDLE);
+				return;
+			}
+		}
+
+		if (mpAnimator->IsCurrentAnimClipLastFrame())
+		{
+			ChangeAnimationClip(BoneAnimator::eMonsterAnimState::IDLE);
+			ChangeMonsterState(eMonsterState::IDLE);
+		}
 	}
 	void Exit() override
 	{
 	}
+private:
+	bool mbIsAttackSucces;
 };
 
 }

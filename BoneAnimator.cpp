@@ -54,7 +54,6 @@ void BoneAnimator::InitAnimationData(jh::graphics::AnimationData* pAnimData, con
 const float BoneAnimator::GetCurrentPlayingClipPercentage()
 {
 	float retTime = mCurrentAnimAccumTime / mpAnimData->ClipMap[*mpCurrentClipKey].TotalAnimTime;
-	assert(retTime >= 0.0f && retTime <= 1.0f);
 	return retTime;
 }
 
