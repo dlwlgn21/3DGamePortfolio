@@ -43,15 +43,15 @@ void Model::SetBoneAnimator(jh::BoneAnimator& boneAnimator)
 	mpBoneAnimator = &boneAnimator;
 }
 
-void Model::SetPipeline()
-{
-	assert(mpMeshes.size() != 0);
-	for (size_t i = 0; i < mpMeshes.size(); ++i)
-	{
-		assert(mpMeshes[i] != nullptr);
-		mpMaterials[0]->SetPipeline();
-	}
-}
+//void Model::SetPipeline()
+//{
+//	assert(mpMeshes.size() != 0);
+//	for (size_t i = 0; i < mpMeshes.size(); ++i)
+//	{
+//		assert(mpMeshes[i] != nullptr);
+//		mpMaterials[0]->SetPipeline();
+//	}
+//}
 
 
 void Model::Render()
@@ -60,18 +60,13 @@ void Model::Render()
 	for (size_t i = 0; i < mpMeshes.size(); ++i)
 	{
 		assert(mpMeshes[i] != nullptr);
-		if (mpBoneAnimator != nullptr)
-		{
-			mpBoneAnimator->UpdateDyanmicStructuredAnimationBuffer();
-		}
-
-		mpMaterials[0]->SetPipeline();
+		mpMaterials[i]->SetPipeline();
 		mpMeshes[i]->Render();
 		if (D3DApp::GetInstance().IsDrawNormal())
 		{
 			mpMeshes[i]->DebugNormalRender();
 		}
-		mpMaterials[0]->ClearPipeline();
+		mpMaterials[i]->ClearPipeline();
 	}
 }
 }

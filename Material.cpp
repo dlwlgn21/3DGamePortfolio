@@ -52,12 +52,7 @@ void Material::SetPipeline()
 	}
 
 	gdc.VSSetShader(mGraphicsPSO.mcpVertexShader.Get(), nullptr, 0);
-	// For DebugDraw. Cause DebugDraw is NO need PixelShader. 
-	if (mGraphicsPSO.mcpPixelShader != nullptr)
-	{
-		gdc.PSSetShader(mGraphicsPSO.mcpPixelShader.Get(), nullptr, 0);
-	}
-	
+	gdc.PSSetShader(mGraphicsPSO.mcpPixelShader.Get(), nullptr, 0);
 	if (app.IsDrawWire())
 	{
 		gdc.RSSetState(GraphicsPSOManager::GetInstance().GetRSWire().Get());

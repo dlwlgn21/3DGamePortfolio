@@ -28,8 +28,6 @@
 #include "Light.h"
 
 
-
-
 using namespace jh::enums;
 using namespace jh::graphics;
 using namespace DirectX::SimpleMath;
@@ -47,7 +45,8 @@ void PlayScene::Initialize()
 	initPlayer(); 
 	initMutant();
 	initWorldCoord();
-	initGround();
+	initEnv();
+	//initGround();
 	initLight();
 	Scene::Initialize();
 }
@@ -132,6 +131,17 @@ void PlayScene::initBox()
 	AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 }
 
+void PlayScene::initEnv()
+{
+	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
+	spSqureGameObject->SetName("Catsle");
+	spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, 1.5f, 0.0f));
+	spSqureGameObject->GetTransform().SetScale(Vector3(30.0f, 30.0f, 30.0f));
+	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
+	renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::CATSLE_MODEL_KEY));
+	AddGameObject(spSqureGameObject, eLayerType::ENV);
+}
+
 void PlayScene::initLight()
 {
 	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
@@ -149,7 +159,7 @@ void PlayScene::initGround()
 {
 	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 	spSqureGameObject->SetName("Ground");
-	spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, -0.3f, 0.0f));
+	spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, 1.0f, 0.0f));
 	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
 	renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::GROUND_MODEL));
 	AddGameObject(spSqureGameObject, eLayerType::ENV);

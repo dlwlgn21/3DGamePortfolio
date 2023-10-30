@@ -108,8 +108,8 @@ namespace jh::graphics
 			assert(false);
 			return;
 		}
-		mcpSRV->GetResource(reinterpret_cast<ID3D11Resource**>(mcpTexture.GetAddressOf()));
-		mcpTexture->GetDesc(&mTextureDesc);
+		//mcpSRV->GetResource(reinterpret_cast<ID3D11Resource**>(mcpTexture.GetAddressOf()));
+		//mcpTexture->GetDesc(&mTextureDesc);
 	}
 
 }

@@ -13,8 +13,6 @@
 #include "Model.h"
 #include "SkinnedMeshModel.h"
 #include "MeshData.h"
-#include "Texture.h"
-#include "Material.h"
 #include "ResourcesManager.h"
 #include "GraphicsKeyContainer.h"
 
@@ -37,6 +35,7 @@ void GraphicsPSOManager::Initialize()
 	initTextures();
 	initMaterials();
 	initModels();
+	initEnv();
 }
 
 void GraphicsPSOManager::Release()
@@ -116,16 +115,7 @@ void GraphicsPSOManager::initMesh()
 #pragma endregion
 
 
-#pragma region MONKEY_STATUE
-	{
-		std::string relativePath = "Assets\\Env\\";
-		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "demoscene.fbx");
-		std::vector<jh::graphics::Mesh*> pMeshs;
-		pMeshs.reserve(meshDatas.size());
-		int a = 0;
-	}
 
-#pragma endregion
 
 
 }
@@ -397,6 +387,15 @@ void GraphicsPSOManager::initShaders()
 			L"DebugWorldCoordinatePS.hlsl",
 			mDebugDrawWorldCoordPSO.mcpPixelShader
 		);
+
+		mBasicEnvNoNormalPSO.mcpInputLayout = mBasicPSO.mcpInputLayout;
+		mBasicEnvNoNormalPSO.mcpVertexShader = mBasicPSO.mcpVertexShader;
+
+		D3D11Utils::CreatePixelShader(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"BasicEnvNoNormalPS.hlsl",
+			mBasicEnvNoNormalPSO.mcpPixelShader
+		);
 	}
 #pragma endregion
 
@@ -628,10 +627,87 @@ void GraphicsPSOManager::insertMaterial(const std::string& materialKey, Graphics
 	}
 	pMaterial->SetTexture(eTextureType::DIFFUSE, ResourcesManager::Find<Texture>(textureKeyOrNull));
 }
+void GraphicsPSOManager::initEnv()
+{
+	auto& geoGenerator = GeomatryGenerator::GetInstance();
+#pragma region CATSLE
+	{
+		std::string relativePath = "Assets\\Env\\DungeonTiles\\";
+		std::vector<MeshData> meshDatas = geoGenerator.ReadFromFile(relativePath, "DungeonTiles.fbx");
+		mspCatsleMeshs.reserve(meshDatas.size());
+		mspCatsleMaterials.reserve(meshDatas.size());
+		mspCatsleTextures.reserve(meshDatas.size());
+		mspCatsleMeshs.resize(mspCatsleMeshs.capacity());
+		mspCatsleMaterials.resize(mspCatsleMeshs.capacity());
+		mspCatsleTextures.resize(mspCatsleMeshs.capacity());
+		std::cout << "DungeonTiles size : " << meshDatas.size() << std::endl;
+		for (UINT i = 0; i < meshDatas.size(); ++i)
+		{
+			if (meshDatas[i].DiffuseTextureFileFullPath == L"")
+			{
+				continue;
+			}
+			std::vector<Vertex3D> vertices;
+			std::vector<UINT> indices;
+			//std::string cha(meshDatas[i].DiffuseTextureFileFullPath.begin(), meshDatas[i].DiffuseTextureFileFullPath.end());
+			//std::cout << i << " " << cha << std::endl;
+
+			// Mesh
+			mspCatsleMeshs[i] = std::make_unique<jh::graphics::Mesh>();
+			mspCatsleMeshs[i]->InitVertexIndexBuffer<Vertex3D>(meshDatas[i].Vertices, meshDatas[i].Indices);
+
+			// Texture
+			mspCatsleTextures[i] = std::make_unique<jh::graphics::Texture>();
+			mspCatsleTextures[i]->Load(meshDatas[i].DiffuseTextureFileFullPath);
+			mspCatsleTextures[i]->SetTextureType(eTextureType::DIFFUSE);
+
+			// Material
+			mspCatsleMaterials[i] = std::make_unique<jh::graphics::Material>();
+			mspCatsleMaterials[i]->SetTexture(eTextureType::DIFFUSE, mspCatsleTextures[i].get());
+			mspCatsleMaterials[i]->SetPSO(mBasicEnvNoNormalPSO);
+		}
+	}
+
+
+	{
+		Model* pCatsleModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::CATSLE_MODEL_KEY, std::make_unique<Model>());
+		std::vector<Mesh*> pMeshes;
+		std::vector<Material*> pMaterials;
+		pMeshes.reserve(mspCatsleMeshs.size());
+		pMaterials.reserve(mspCatsleMaterials.size());
+		//for (UINT i = 0; i < mspCatsleMeshs.size(); ++i)
+		//{
+		//	if (mspCatsleMeshs[i] == nullptr)
+		//	{
+		//		continue;
+		//	}
+		//	pMeshes.push_back(mspCatsleMeshs[i].get());
+		//	pMaterials.push_back(mspCatsleMaterials[i].get());
+		//}
+
+		for (UINT i = 0; i < mspCatsleMeshs.size(); ++i)
+		{
+			if (mspCatsleMeshs[i] == nullptr)
+			{
+				continue;
+			}
+			pMeshes.push_back(mspCatsleMeshs[i].get());
+			pMaterials.push_back(mspCatsleMaterials[i].get());
+		}
+
+		pCatsleModel->SetMeshes(pMeshes);
+		pCatsleModel->SetMaterials(pMaterials);
+	}
+#pragma endregion
+}
 void GraphicsPSOManager::initPipelineStates()
 {
 	mBasicPSO.mcpRS = mcpSolidRS;
 	mBasicPSO.mcpSampler = mcpPointBorderSampler;
+	
+	mBasicEnvNoNormalPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	mBasicEnvNoNormalPSO.mcpRS = mcpSolidRS;
+	mBasicEnvNoNormalPSO.mcpSampler = mcpPointWrapSampler;
 
 	mSkinnedBasicPSO.mcpRS = mcpSolidRS;
 	mSkinnedBasicPSO.mcpSampler = mcpPointWrapSampler;
@@ -663,7 +739,7 @@ void GraphicsPSOManager::initCubeMap()
 	auto& gd = jh::graphics::GraphicDeviceDX11::GetInstance();
 	HRESULT hr = DirectX::CreateDDSTextureFromFileEx(
 		&gd.GetDeivce(),
-		L"D:\\3DGamePortfolioJH\\Assets\\skybox\\skybox.dds",
+		L"D:\\3DGamePortfolioJH\\Assets\\skybox\\fantasyCubemap.dds",
 		0,
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_SHADER_RESOURCE,
@@ -683,7 +759,7 @@ void GraphicsPSOManager::initCubeMap()
 	std::vector<Vertex3D> vertices;
 	std::vector<UINT> indices;
 
-	GeomatryGenerator::GetInstance().MakeBox(vertices, indices, 200.0f);
+	GeomatryGenerator::GetInstance().MakeBox(vertices, indices, 100.0f);
 	std::reverse(indices.begin(), indices.end());
 	pCubeMesh->InitVertexIndexBuffer<Vertex3D>(vertices, indices);
 }

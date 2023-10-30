@@ -27,9 +27,9 @@ public:
 	void SetMeshes(std::vector<Mesh*>& pMeshes);
 	void SetMaterials(std::vector<Material*>& pMaterials);
 	void SetBoneAnimator(jh::BoneAnimator& boneAnimator);
-	void SetPipeline();
-	void Render();
-private:
+	//void SetPipeline();
+	virtual void Render();
+protected:
 	std::vector<jh::graphics::Mesh*>			mpMeshes;
 	std::vector<jh::graphics::Material*>		mpMaterials;
 	jh::BoneAnimator*							mpBoneAnimator;

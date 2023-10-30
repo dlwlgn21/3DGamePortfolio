@@ -455,8 +455,14 @@ void ModelLoader::assignTextureFileNames(aiMesh* pMesh, const aiScene* pScene, j
     {
         aiMaterial* material = pScene->mMaterials[pMesh->mMaterialIndex];
         std::string diffuseTextureFullPath = getFullPathTextureFileNameOrEmptyString(material, pScene, aiTextureType_DIFFUSE);
+        if (diffuseTextureFullPath == "")
+        {
+            diffuseTextureFullPath = getFullPathTextureFileNameOrEmptyString(material, pScene, aiTextureType::aiTextureType_BASE_COLOR);
+        }
         //assert(!diffuseTextureFullPath.empty());
         std::string normalTextureFullPath = getFullPathTextureFileNameOrEmptyString(material, pScene, aiTextureType_NORMALS);
+
+
         //assert(!normalTextureFullPath.empty());
 
         meshData.DiffuseTextureFileFullPath = std::wstring(diffuseTextureFullPath.begin(), diffuseTextureFullPath.end());

@@ -20,6 +20,7 @@ private:
 	void initWorldCoord();
 	void initBox();
 	void initGround();
+	void initEnv();
 	void initLight();
 };
 

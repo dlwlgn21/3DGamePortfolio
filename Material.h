@@ -1,3 +1,4 @@
+#pragma once
 #include "GraphicResource.h"
 #include "GraphicPSO.h"
 

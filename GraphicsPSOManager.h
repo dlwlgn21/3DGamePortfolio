@@ -1,6 +1,8 @@
 #pragma once
 #include "GraphicPSO.h"
 #include "Mesh.h"
+#include "Material.h"
+#include "Texture.h"
 #include "ConstantGPUBuffer.h"
 #include "CubeMapping.h"
 
@@ -42,13 +44,14 @@ private:
 	void initAnimations();
 	void loadAndInsertTexture(const eTextureType, const std::string& key, const std::wstring& fileName);
 	void insertMaterial(const std::string& materialKey, GraphicsPSO& pso, const std::string& textureKeyOrNull);
-
+	void initEnv();
 private:
 	GraphicsPSOManager() = default;
 	~GraphicsPSOManager() = default;
 
 public:
 	GraphicsPSO											mBasicPSO;
+	GraphicsPSO											mBasicEnvNoNormalPSO;
 	GraphicsPSO											mSkinnedBasicPSO;
 	GraphicsPSO											mDebugDrawNormalPSO;
 	GraphicsPSO											mDebugDrawWorldCoordPSO;
@@ -63,6 +66,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		mcpSolidRS;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		mcpWireRS;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		mcpBox2DebugDrawRS;
+
+
+	std::vector<std::unique_ptr<jh::graphics::Mesh>>		mspCatsleMeshs;
+	std::vector<std::unique_ptr<jh::graphics::Material>>	mspCatsleMaterials;
+	std::vector<std::unique_ptr<jh::graphics::Texture>>		mspCatsleTextures;
 
 
 };

@@ -95,4 +95,6 @@ namespace jh::graphics::keys
 	static const std::string GROUND_MESH_KEY = "gruondMesh";
 	static const std::string GROUND_MATERIAL_KEY = "groundMat";
 	static const std::string GROUND_MODEL = "groundModel";
+
+	static const std::string CATSLE_MODEL_KEY = "catsleModel";
 }

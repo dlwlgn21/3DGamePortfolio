@@ -49,11 +49,11 @@ void CameraScript::Update()
 
 	if (InputManager::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
 	{
-		pos += fowardDir * mMovementSpeed * Time::DeltaTime();
+		pos += fowardDir * mMovementSpeed * -Time::DeltaTime();
 	}
 	else if (InputManager::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
 	{
-		pos += fowardDir * mMovementSpeed * -Time::DeltaTime();
+		pos += fowardDir * mMovementSpeed * Time::DeltaTime();
 	}
 
 	if (InputManager::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
