@@ -604,9 +604,9 @@ void GraphicsPSOManager::initTextures()
 	loadAndInsertTexture(eTextureType::NORMAL, keys::BASIC_3D_NORMAL_TEXTURE_KEY, L"D:\\3DGamePortfolioJH\\Assets\\Textures\\brickwall_normal.png");
 
 	// CubeMapping
-	Texture* pTex = ResourcesManager::InsertOrNull<Texture>(keys::CUBE_MAP_TEXTURE, std::make_unique<Texture>());
-	pTex->SetTextureType(eTextureType::DIFFUSE);
-	pTex->InitSRV(mCubeMapping.cpCubeMapRSV);
+	//Texture* pTex = ResourcesManager::InsertOrNull<Texture>(keys::CUBE_MAP_TEXTURE, std::make_unique<Texture>());
+	//pTex->SetTextureType(eTextureType::DIFFUSE);
+	//pTex->InitSRV(mCubeMapping.cpCubeMapRSV);  
 }
 
 
@@ -752,7 +752,41 @@ void GraphicsPSOManager::initCubeMap()
 	);
 	if (FAILED(hr))
 	{
-		std::cout << "GraphicsPSOManager::initCubeMap() CreateDDSTextureFromFileEx FAILED" << std::endl;
+		assert(false);
+	}
+	hr = DirectX::CreateDDSTextureFromFileEx(
+		&gd.GetDeivce(),
+		L"D:\\3DGamePortfolioJH\\Assets\\skybox\\fantasyCubeMapDiffuseIBL.dds",
+		0,
+		D3D11_USAGE_DEFAULT,
+		D3D11_BIND_SHADER_RESOURCE,
+		0,
+		D3D11_RESOURCE_MISC_TEXTURECUBE,
+		DirectX::DX11::DDS_LOADER_FLAGS(false),
+		(ID3D11Resource**)cpTexture.GetAddressOf(),
+		mCubeMapping.cpCubeMapDiffuseIBLSRV.ReleaseAndGetAddressOf(),
+		nullptr
+	);
+	if (FAILED(hr))
+	{
+		assert(false);
+	}
+
+	hr = DirectX::CreateDDSTextureFromFileEx(
+		&gd.GetDeivce(),
+		L"D:\\3DGamePortfolioJH\\Assets\\skybox\\fantasyCubeMapSpecularIBL.dds",
+		0,
+		D3D11_USAGE_DEFAULT,
+		D3D11_BIND_SHADER_RESOURCE,
+		0,
+		D3D11_RESOURCE_MISC_TEXTURECUBE,
+		DirectX::DX11::DDS_LOADER_FLAGS(false),
+		(ID3D11Resource**)cpTexture.GetAddressOf(),
+		mCubeMapping.cpCubeMapSepcularIBLSRV.ReleaseAndGetAddressOf(),
+		nullptr
+	);
+	if (FAILED(hr))
+	{
 		assert(false);
 	}
 
@@ -761,7 +795,7 @@ void GraphicsPSOManager::initCubeMap()
 
 	GeomatryGenerator::GetInstance().MakeBox(vertices, indices, 100.0f);
 	std::reverse(indices.begin(), indices.end());
-	pCubeMesh->InitVertexIndexBuffer<Vertex3D>(vertices, indices);
+	pCubeMesh->InitVertexIndexBuffer<Vertex3D>(vertices, indices); 
 }
 
 }

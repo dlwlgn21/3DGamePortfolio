@@ -26,6 +26,7 @@ SkinnedMeshRenderer::SkinnedMeshRenderer()
 void SkinnedMeshRenderer::Render()
 {
 	GetOwner().GetTransform().UpdateConstantBuffer(); 
+	SetIBLShaderResourceViews();
 	mpModel->Render();
 }
 

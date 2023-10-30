@@ -20,6 +20,7 @@ void MeshRenderer::Render()
 {
 	assert(mpModel != nullptr);
 	GetOwner().GetTransform().UpdateConstantBuffer();
+	SetIBLShaderResourceViews();
 	mpModel->Render();
 }
 

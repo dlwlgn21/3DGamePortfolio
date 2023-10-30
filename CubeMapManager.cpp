@@ -4,7 +4,7 @@
 #include "GraphicsPSOManager.h"
 #include "ResourcesManager.h"
 #include "GraphicsKeyContainer.h"
-
+#include "GraphicDeviceDX11.h"
 
 
 #include "Camera.h"
@@ -23,7 +23,9 @@ namespace jh
 
 	void CubeMapManager::Render()
 	{
-		auto& gpuBuffer = GraphicsPSOManager::GetInstance().GetConstantBuffer(eCBType::TRANSFORM);
+		auto& psoManager = GraphicsPSOManager::GetInstance();
+		auto& gd = GraphicDeviceDX11::GetInstance().GetDeivceContext();
+		auto& gpuBuffer = psoManager.GetConstantBuffer(eCBType::TRANSFORM);
 		TransformConstantCPUBuffer cpuBuffer;
 		ZeroMemory(&cpuBuffer, sizeof(TransformConstantCPUBuffer));
 		cpuBuffer.WorldMat = Matrix::Identity; 
@@ -32,6 +34,12 @@ namespace jh
 		gpuBuffer.UpdateBuffer(&cpuBuffer);
 
 		mpMaterial->SetPipeline();
+		ID3D11ShaderResourceView* pSrvs[2] =
+		{
+			psoManager.mCubeMapping.cpCubeMapDiffuseIBLSRV.Get(),
+			psoManager.mCubeMapping.cpCubeMapSepcularIBLSRV.Get()
+		};
+		gd.PSSetShaderResources(0, 2, pSrvs);
 		mpMesh->Render();
 
 	}

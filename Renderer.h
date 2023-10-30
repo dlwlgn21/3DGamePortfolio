@@ -13,7 +13,8 @@ public:
 	jh::enums::eRenererComponentType GetType() const { return meRendererType; }
 
 	void SetModel(jh::graphics::Model* pModel) { assert(pModel != nullptr); mpModel = pModel; }
-
+protected:
+	void SetIBLShaderResourceViews();
 protected:
 	const jh::enums::eRenererComponentType		meRendererType;
 	jh::graphics::Model*						mpModel = nullptr;

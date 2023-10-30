@@ -17,7 +17,8 @@ Texture2D DiffuseTexture : register(t0);
 Texture2D SpecualrTexture : register(t1);
 Texture2D AmbientTexture : register(t2);
 Texture2D NormalTexture : register(t3);
-
+TextureCube DiffuseCube : register(t4);
+TextureCube SpecularCube : register(t5);
 struct Material
 {
     float3  MaterialAmbient;
@@ -170,7 +171,25 @@ float4 main(PixelInput Input) : SV_TARGET
     
     //return float4(color, 1.0);
     //return float4(1.0, 1.0, 1.0, 1.0);
-    return CBIsUseDiffuseTexture == 1 ? float4(color, 1.0) * DiffuseTexture.Sample(PointSampler, Input.UV) : float4(color, 1.0);
+    
+    float4 diffuse = DiffuseCube.Sample(PointSampler, normalWorld);
+    diffuse.rgb *= CBMaterial.MaterialDiffuse.xyz * color;;
+    
+    float4 specular = SpecularCube.Sample(PointSampler, reflect(-toEyeDirVec, normalWorld));
+    
+    specular *= pow((specular.r + specular.g + specular.b) / 3.0f, CBMaterial.MaterialShininess);
+    
+    
+    specular.xyz *= CBMaterial.MaterialSpecular;
+    
+    if (CBIsUseDiffuseTexture)
+    {
+        diffuse.xyz *= DiffuseTexture.Sample(PointSampler, Input.UV);
+    }
+    
+    return diffuse + specular;
+    
+    //return CBIsUseDiffuseTexture == 1 ? float4(color, 1.0) * DiffuseTexture.Sample(PointSampler, Input.UV) : float4(color, 1.0);
     //return float4(Input.Color, 1.0);
     
 }
