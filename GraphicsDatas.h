@@ -77,6 +77,7 @@ namespace jh::graphics
 		int								CBIsUseNormalTexture;
 		GrapicsMaterial					CBMaterial;
 		GrapicsLight					CBLight[MAX_LIGHTS];
+		DirectX::SimpleMath::Matrix     CBLightViewProjectionMatrix;
 	};
 
 	enum class eCBType

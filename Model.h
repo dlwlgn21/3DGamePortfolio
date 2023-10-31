@@ -28,6 +28,8 @@ public:
 	void SetMaterials(std::vector<Material*>& pMaterials);
 	void SetBoneAnimator(jh::BoneAnimator& boneAnimator);
 	//void SetPipeline();
+
+	void ShadowRender();
 	virtual void Render();
 protected:
 	std::vector<jh::graphics::Mesh*>			mpMeshes;

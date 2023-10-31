@@ -37,6 +37,7 @@ private:
 	void fixedUpdate();
 	void updateGUI();
 	void render();
+	void setMainViewport();
 	void onMouseMove(WPARAM btnState, const int mouseX, const int mouseY);
 
 private:

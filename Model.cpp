@@ -4,6 +4,7 @@
 #include "D3DApp.h"
 #include "GraphicDeviceDX11.h"
 #include "GraphicsPSOManager.h"
+#include "ShadowManager.h"
 
 static constexpr const UINT MESH_MAX_COUNT = 8;
 using namespace jh::enums;
@@ -53,7 +54,13 @@ void Model::SetBoneAnimator(jh::BoneAnimator& boneAnimator)
 //	}
 //}
 
-
+void Model::ShadowRender()
+{
+	for (size_t i = 0; i < mpMeshes.size(); ++i)
+	{
+		mpMeshes[i]->Render();
+	}
+}
 void Model::Render()
 {
 	assert(mpMeshes.size() != 0);
@@ -61,7 +68,9 @@ void Model::Render()
 	{
 		assert(mpMeshes[i] != nullptr);
 		mpMaterials[i]->SetPipeline();
+		ShadowManager::GetInstance().SetShadowSRV();
 		mpMeshes[i]->Render();
+		ShadowManager::GetInstance().ClearShadowSRV();
 		if (D3DApp::GetInstance().IsDrawNormal())
 		{
 			mpMeshes[i]->DebugNormalRender();

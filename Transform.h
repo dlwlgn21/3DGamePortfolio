@@ -83,7 +83,7 @@ public:
 	__forceinline DirectX::SimpleMath::Vector3& GetUpRef()			{ return mUpVector; }
 	const DirectX::SimpleMath::Matrix& GetWorldMatrixRow()			{ return mWolrdMatRow; }
 	void UpdateConstantBuffer();
-
+	void UpdateShadowConstantBuffer();
 public:
 	static const DirectX::SimpleMath::Vector3 S_FORWARD;
 	static const DirectX::SimpleMath::Vector3 S_RIGHT;

@@ -2,6 +2,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "D3DApp.h"
+#include "ShadowManager.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -25,7 +26,9 @@ void SkinnedMeshModel::Render()
 		}
 
 		mpMaterials[0]->SetPipeline();
+		ShadowManager::GetInstance().SetShadowSRV();
 		mpMeshes[i]->Render();
+		ShadowManager::GetInstance().ClearShadowSRV();
 		if (D3DApp::GetInstance().IsDrawNormal())
 		{
 			mpMeshes[i]->DebugNormalRender();

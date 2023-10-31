@@ -1,4 +1,6 @@
 #include "Renderer.h"
+#include "GameObject.h"
+#include "Transform.h"
 #include "GraphicsPSOManager.h"
 #include "GraphicDeviceDX11.h"
 
@@ -24,6 +26,12 @@ void Renderer::SetIBLShaderResourceViews()
 		psoManager.mCubeMapping.cpCubeMapSepcularIBLSRV.Get()
 	};
 	gd.PSSetShaderResources(4, 2, pSrvs);
+}
+
+void Renderer::ShadowRender()
+{
+	GetOwner().GetTransform().UpdateShadowConstantBuffer();
+	mpModel->ShadowRender();
 }
 
 }

@@ -3,16 +3,17 @@
 
 #include "D3DApp.h"
 #include "GraphicDeviceDX11.h"
-#include "GraphicsPSOManager.h"
 #include "Time.h"
+
+
+#include "GraphicsPSOManager.h"
 #include "InputManager.h"
 #include "SceneManager.h"
-
-
+#include "ShadowManager.h"
 #include "LightingManager.h"
 #include "CameraManager.h"
 #include "CubeMapManager.h"
-
+#include "ShadowManager.h"
 
 
 #include "GameObject.h"
@@ -48,6 +49,7 @@ const bool D3DApp::Initialize()
 	SceneManager::GetInstance().Initialize();
    	LightingManager::GetInstance().Initialize();
 	CubeMapManager::GetInstance().Initialize();
+	ShadowManager::GetInstance().Initialize();
 	if (!initGUI())
 	{
 		assert(false);
@@ -143,6 +145,7 @@ void D3DApp::update()
 {
 	Time::Update();
 	InputManager::Update();
+	LightingManager::GetInstance().Update();
 	SceneManager::GetInstance().Update();
 }
 
@@ -172,10 +175,23 @@ void D3DApp::updateGUI()
 void D3DApp::render()
 {
 	Time::Render(mHdc);
+	// ShadowMaaping
+	//auto& shadowManager = ShadowManager::GetInstance();
+	//shadowManager.SetShaowPSO();
+	//shadowManager.RenderAtShadowMap();
+
 	auto& gd = GraphicDeviceDX11::GetInstance();
+	setMainViewport();
+	gd.SetMainRenderTarget();
 	gd.Clear();
 	SceneManager::GetInstance().Render();
 	CubeMapManager::GetInstance().Render();
+}
+
+void D3DApp::setMainViewport()
+{
+	auto& gdc = GraphicDeviceDX11::GetInstance().GetDeivceContext();
+	gdc.RSSetViewports(1, GraphicDeviceDX11::GetInstance().GetViewPort());
 }
 
 void D3DApp::onMouseMove(WPARAM btnState, const int mouseX, const int mouseY)

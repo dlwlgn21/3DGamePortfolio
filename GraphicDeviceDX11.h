@@ -17,6 +17,7 @@ public:
 	const GraphicDeviceDX11& operator=(const GraphicDeviceDX11& other) = delete;
 
 	__forceinline void Present();
+	__forceinline void SetMainRenderTarget();
 	__forceinline void Clear();
 
 	void Initialize();
@@ -76,4 +77,12 @@ void GraphicDeviceDX11::Clear()
 	mcpContext->ClearDepthStencilView(mcpDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
+void GraphicDeviceDX11::SetMainRenderTarget()
+{
+	mcpContext->OMSetRenderTargets(
+		1,
+		mcpRenderTargetView.GetAddressOf(),
+		mcpDepthStencilView.Get()
+	);
+}
 }

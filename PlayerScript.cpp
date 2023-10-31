@@ -18,7 +18,7 @@ PlayerScript::PlayerScript()
 	, mpAnimator(nullptr)
 	, meAnimState(BoneAnimator::eCharacterAnimState::IDLE)
 	, mePlayerState(ePlayerState::IDLE)
-	, mWalkSpeed(3.0f)
+	, mWalkSpeed(1.0f)
 	, mTurnRotationSpeedDeg(180.0f)
 {
 	for (UINT i = 0; i < static_cast<UINT>(ePlayerState::COUNT); ++i)

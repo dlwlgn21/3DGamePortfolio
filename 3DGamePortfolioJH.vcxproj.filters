@@ -177,6 +177,9 @@
     <Filter Include="소스 파일\Component\Collider3D">
       <UniqueIdentifier>{abc06ca9-6914-4dd7-b440-0200e39c28a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Managers\ShadowManager">
+      <UniqueIdentifier>{5f86f320-0e11-4ee7-be47-15a0352aa27e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DGamePortfolio.h">
@@ -365,6 +368,9 @@
     <ClInclude Include="ColliderDebugRenderer.h">
       <Filter>소스 파일\Managers\DebugRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowManager.h">
+      <Filter>소스 파일\Managers\ShadowManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DGamePortfolio.cpp">
@@ -511,6 +517,9 @@
     <ClCompile Include="ColliderDebugRenderer.cpp">
       <Filter>소스 파일\Managers\DebugRenderer</Filter>
     </ClCompile>
+    <ClCompile Include="ShadowManager.cpp">
+      <Filter>소스 파일\Managers\ShadowManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2DGamePortfolio.rc">
@@ -559,10 +568,21 @@
     <FxCompile Include="BasicAnimation3DVS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="BasicEnvNoNormalPS.hlsl" />
+    <FxCompile Include="DepthOnlyPS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="DepthOnlyVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="BasicEnvNoNormalPS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VSCommon.hlsli">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </None>
+    <None Include="PSCommon.hlsli">
       <Filter>소스 파일\ShaderFiles</Filter>
     </None>
   </ItemGroup>

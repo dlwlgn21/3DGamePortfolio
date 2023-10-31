@@ -56,12 +56,14 @@ public:
 	GraphicsPSO											mDebugDrawNormalPSO;
 	GraphicsPSO											mDebugDrawWorldCoordPSO;
 	GraphicsPSO											mCubeMapPSO;
+	GraphicsPSO											mDepthOnlyPSO;
 	CubeMapping											mCubeMapping;
 
 private:
 	std::vector<std::unique_ptr<ConstantGPUBuffer>>		mspConstantBuffers;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>			mcpPointBorderSampler;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>			mcpPointWrapSampler;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState>			mcpShadowMappingSampler;
 
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		mcpSolidRS;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		mcpWireRS;

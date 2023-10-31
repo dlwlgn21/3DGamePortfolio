@@ -346,7 +346,7 @@ void GraphicsPSOManager::initShaders()
 	const int FLOAT3_BYTE = 12;
 	const int FLOAT2_BYTE = 8;
 
-#pragma region BASIC_3D_PSO
+#pragma region BASIC_3D_PSO_AND_ENV_PSO
 	{
 		vector<D3D11_INPUT_ELEMENT_DESC> basicIEs = {
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
@@ -395,6 +395,19 @@ void GraphicsPSOManager::initShaders()
 			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
 			L"BasicEnvNoNormalPS.hlsl",
 			mBasicEnvNoNormalPSO.mcpPixelShader
+		);
+
+		D3D11Utils::CreateVertexShaderAndInputLayout(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"DepthOnlyVS.hlsl",
+			basicIEs,
+			mDepthOnlyPSO.mcpVertexShader,
+			mDepthOnlyPSO.mcpInputLayout
+		);
+		D3D11Utils::CreatePixelShader(
+			GraphicDeviceDX11::GetInstance().GetDeivceComPtr(),
+			L"DepthOnlyPS.hlsl",
+			mDepthOnlyPSO.mcpPixelShader
 		);
 	}
 #pragma endregion
@@ -586,16 +599,28 @@ void GraphicsPSOManager::initSamplers()
 		&samplerDesc,
 		mcpPointWrapSampler.ReleaseAndGetAddressOf()
 	);
+	if (FAILED(hr)) {assert(false);}
+
+	// Shadow
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = 0;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.BorderColor[0] = 100.0f; // Å« Z°ª
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+	hr = graphics::GraphicDeviceDX11::GetInstance().GetDeivce().CreateSamplerState(
+		&samplerDesc, mcpShadowMappingSampler.GetAddressOf()
+	);
+	if (FAILED(hr)) {assert(false);}
+
 	graphics::GraphicDeviceDX11::GetInstance().GetDeivceContext().PSSetSamplers(
 		0,
 		1,
 		mcpPointBorderSampler.GetAddressOf()
 	);
 
-	if (FAILED(hr))
-	{
-		assert(false);
-	}
 }
 
 void GraphicsPSOManager::initTextures()
@@ -705,6 +730,8 @@ void GraphicsPSOManager::initPipelineStates()
 	mBasicPSO.mcpRS = mcpSolidRS;
 	mBasicPSO.mcpSampler = mcpPointBorderSampler;
 	
+	mDepthOnlyPSO.mcpSampler = mcpShadowMappingSampler;
+
 	mBasicEnvNoNormalPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	mBasicEnvNoNormalPSO.mcpRS = mcpSolidRS;
 	mBasicEnvNoNormalPSO.mcpSampler = mcpPointWrapSampler;
@@ -787,7 +814,7 @@ void GraphicsPSOManager::initCubeMap()
 	);
 	if (FAILED(hr))
 	{
-		assert(false);
+		assert(false);  
 	}
 
 	std::vector<Vertex3D> vertices;

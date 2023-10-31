@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "PlayerManager.h"
+#include "DebugHelper.h"
+
 
 using namespace DirectX::SimpleMath;
 
@@ -38,17 +40,19 @@ namespace jh
 	{
 		auto& transform = GetOwner().GetTransform();
 		Rotation& rot = transform.GetRotationRef();
-		//mViewMatRow = DirectX::XMMatrixLookAtLH(
-		//	transform.GetPosition(),
-		//	PlayerManager::GetInstance().GetPlayerTramsform().GetPosition(),
-		//	transform.GetUpRef()
-		//);
+		Vector3 targetPos = PlayerManager::GetInstance().GetPlayerTramsform().GetPosition() - transform.GetPosition();
+		targetPos.y += 0.5f;
+		mViewMatRow = DirectX::XMMatrixLookToLH(
+			transform.GetPosition(),
+			targetPos,
+			transform.GetUpRef()
+		);
 		//mViewMatRow = Matrix::CreateRotationY(DirectX::XMConvertToRadians(-rot.YawDeg)) *
 		//			  Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.PitchDeg)) *
 		//			  Matrix::CreateTranslation(-transform.GetPositionRef());
-		mViewMatRow =	Matrix::CreateTranslation(-transform.GetPosition()) *
-						Matrix::CreateRotationY(DirectX::XMConvertToRadians(-rot.YawDeg)) *
-						Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.PitchDeg));
+		//mViewMatRow =	Matrix::CreateTranslation(-transform.GetPosition()) *
+		//				Matrix::CreateRotationY(DirectX::XMConvertToRadians(-rot.YawDeg)) *
+		//				Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.PitchDeg));
 	}
 
 	void Camera::createProjectionMatrix()

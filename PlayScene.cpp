@@ -90,6 +90,7 @@ void PlayScene::initPlayer()
 	auto& script = static_cast<PlayerScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
 	PlayerManager::GetInstance().SetPlayerScript(script);
 	script.SetBoneAnimator(&animator);
+	spSqureGameObject->GetTransform().SetPosition(Vector3(-1.0f, 0.0f, 0.0f));
 	AddGameObject(spSqureGameObject, eLayerType::PLAYER);
 }
 
@@ -111,7 +112,7 @@ void PlayScene::initMutant()
 	spSqureGameObject->AddScript(eScriptType::HEAD, std::make_unique<MonsterScript>());
 	auto& script = static_cast<MonsterScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
 	script.SetBoneAnimator(&animator);
-	spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+	spSqureGameObject->GetTransform().SetPosition(Vector3(-1.0f, 0.0f, -10.0f));
 	AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 }
 
@@ -135,7 +136,7 @@ void PlayScene::initEnv()
 {
 	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 	spSqureGameObject->SetName("Catsle");
-	spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, 1.5f, 0.0f));
+	spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, 1.2f, 0.0f));
 	spSqureGameObject->GetTransform().SetScale(Vector3(30.0f, 30.0f, 30.0f));
 	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
 	renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::CATSLE_MODEL_KEY));
@@ -147,11 +148,9 @@ void PlayScene::initLight()
 	std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 	spSqureGameObject->SetName("Point");
 	auto& transform = spSqureGameObject->GetTransform();
-	transform.SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+	//transform.SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 	auto& light = static_cast<Light&>(spSqureGameObject->AddComponent(eComponentType::LIGHT, std::make_unique<Light>()));
 	light.InitLight(eLightType::POINT);
-	auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
-	renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::SPEHERE_MODEL_KEY));
 	AddGameObject(spSqureGameObject, eLayerType::LIGHT); 
 }
 
