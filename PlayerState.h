@@ -49,7 +49,7 @@ protected:
 	}
 	const bool IsChangeWalkState()
 	{
-		if (InputManager::GetKeyState(eKeyCode::UP) == eKeyState::PRESSED)
+		if (InputManager::GetKeyState(eKeyCode::W) == eKeyState::PRESSED)
 		{
 			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::WALK);
 			ChangePlayerState(ePlayerState::WALK);
@@ -59,7 +59,7 @@ protected:
 	}
 	const bool IsChangeStrafeRightState()
 	{
-		if (InputManager::GetKeyState(eKeyCode::RIGHT) == eKeyState::DOWN)
+		if (InputManager::GetKeyState(eKeyCode::D) == eKeyState::DOWN)
 		{
 			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::STRAFE_RIGHT);
 			ChangePlayerState(ePlayerState::STRAFE);
@@ -69,7 +69,7 @@ protected:
 	}
 	const bool IsChangeStrafeLeftState()
 	{
-		if (InputManager::GetKeyState(eKeyCode::LEFT) == eKeyState::DOWN)
+		if (InputManager::GetKeyState(eKeyCode::A) == eKeyState::DOWN)
 		{
 			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::STRAFE_LEFT);
 			ChangePlayerState(ePlayerState::STRAFE);
@@ -79,7 +79,7 @@ protected:
 	}
 	const bool IsChangeBackWalkState()
 	{
-		if (InputManager::GetKeyState(eKeyCode::DOWN) == eKeyState::PRESSED)
+		if (InputManager::GetKeyState(eKeyCode::S) == eKeyState::PRESSED)
 		{
 			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::BACK_WALK);
 			ChangePlayerState(ePlayerState::WALK);
@@ -89,7 +89,7 @@ protected:
 	}
 	const bool IsChangeAttackState()
 	{
-		if (InputManager::GetKeyState(eKeyCode::Z) == eKeyState::DOWN)
+		if (InputManager::GetKeyState(eKeyCode::Q) == eKeyState::DOWN)
 		{
 			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::ATTACK_SLASH_1);
 			ChangePlayerState(ePlayerState::ATTACK_SLASH_1);
@@ -99,7 +99,7 @@ protected:
 	}
 	const bool IsChangeRollState()
 	{
-		if (InputManager::GetKeyState(eKeyCode::C) == eKeyState::DOWN)
+		if (InputManager::GetKeyState(eKeyCode::R) == eKeyState::DOWN)
 		{
 			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::ROLL);
 			ChangePlayerState(ePlayerState::ROLL);
@@ -109,7 +109,7 @@ protected:
 	}
 	const bool IsChangeKickState()
 	{
-		if (InputManager::GetKeyState(eKeyCode::X) == eKeyState::DOWN)
+		if (InputManager::GetKeyState(eKeyCode::E) == eKeyState::DOWN)
 		{
 			ChangeAnimationClip(BoneAnimator::eCharacterAnimState::KICK);
 			ChangePlayerState(ePlayerState::KICK);
@@ -195,17 +195,17 @@ public:
 		{
 		case BoneAnimator::eCharacterAnimState::WALK:
 		{
-			if (InputManager::GetKeyState(eKeyCode::RIGHT) == eKeyState::PRESSED)
+			if (InputManager::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
 			{
 				mpTransform->AccumulateYaw(mTurnRotationSpeedDeg * 2 * Time::DeltaTime());
 			}
-			if (InputManager::GetKeyState(eKeyCode::LEFT) == eKeyState::PRESSED)
+			if (InputManager::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
 			{
 				mpTransform->AccumulateYaw(-mTurnRotationSpeedDeg * 2 * Time::DeltaTime());
 			}
 			moveVector += -mpTransform->GetForwardRef() * mWalkSpeed * Time::DeltaTime();
 			mpTransform->SetPosition(moveVector);
-			if (InputManager::GetKeyState(eKeyCode::UP) != eKeyState::PRESSED)
+			if (InputManager::GetKeyState(eKeyCode::W) != eKeyState::PRESSED)
 			{
 				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE);
 				ChangePlayerState(ePlayerState::IDLE);
@@ -215,9 +215,17 @@ public:
 		}
 		case BoneAnimator::eCharacterAnimState::BACK_WALK:
 		{
+			if (InputManager::GetKeyState(eKeyCode::D) == eKeyState::PRESSED)
+			{
+				mpTransform->AccumulateYaw(mTurnRotationSpeedDeg * 2 * Time::DeltaTime());
+			}
+			if (InputManager::GetKeyState(eKeyCode::A) == eKeyState::PRESSED)
+			{
+				mpTransform->AccumulateYaw(-mTurnRotationSpeedDeg * 2 * Time::DeltaTime());
+			}
 			moveVector += mpTransform->GetForwardRef() * mWalkSpeed * Time::DeltaTime();
 			mpTransform->SetPosition(moveVector);
-			if (InputManager::GetKeyState(eKeyCode::DOWN) != eKeyState::PRESSED)
+			if (InputManager::GetKeyState(eKeyCode::S) != eKeyState::PRESSED)
 			{
 				ChangeAnimationClip(BoneAnimator::eCharacterAnimState::IDLE);
 				ChangePlayerState(ePlayerState::IDLE);
@@ -368,7 +376,7 @@ protected:
 	void SetIsZKeyDown()
 	{
 		if (mbIsGoToNextAttack) {return;}
-		if (InputManager::GetKeyState(eKeyCode::Z) == eKeyState::PRESSED)
+		if (InputManager::GetKeyState(eKeyCode::Q) == eKeyState::PRESSED)
 		{ 
 			mbIsZKeyDown = true; 
 			mbIsGoToNextAttack = true;

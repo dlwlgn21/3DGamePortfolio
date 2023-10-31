@@ -42,17 +42,17 @@ namespace jh
 		Rotation& rot = transform.GetRotationRef();
 		Vector3 targetPos = PlayerManager::GetInstance().GetPlayerTramsform().GetPosition() - transform.GetPosition();
 		targetPos.y += 0.5f;
-		mViewMatRow = DirectX::XMMatrixLookToLH(
-			transform.GetPosition(),
-			targetPos,
-			transform.GetUpRef()
-		);
+		//mViewMatRow = DirectX::XMMatrixLookToLH(
+		//	transform.GetPosition(),
+		//	targetPos,
+		//	Vector3(0.0f, 1.0f, 0.0f)
+		//);
 		//mViewMatRow = Matrix::CreateRotationY(DirectX::XMConvertToRadians(-rot.YawDeg)) *
 		//			  Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.PitchDeg)) *
 		//			  Matrix::CreateTranslation(-transform.GetPositionRef());
-		//mViewMatRow =	Matrix::CreateTranslation(-transform.GetPosition()) *
-		//				Matrix::CreateRotationY(DirectX::XMConvertToRadians(-rot.YawDeg)) *
-		//				Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.PitchDeg));
+		mViewMatRow =	Matrix::CreateTranslation(-transform.GetPosition()) *
+						Matrix::CreateRotationY(DirectX::XMConvertToRadians(-rot.YawDeg)) *
+						Matrix::CreateRotationX(DirectX::XMConvertToRadians(rot.PitchDeg));
 	}
 
 	void Camera::createProjectionMatrix()

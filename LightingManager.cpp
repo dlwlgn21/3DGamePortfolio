@@ -30,8 +30,8 @@ void LightingManager::Update()
 	assert(mpLights[0] != nullptr);
 	auto& playerTr = PlayerManager::GetInstance().GetPlayerTramsform();
 	Vector3 lightPos = playerTr.GetPosition();
-	lightPos += playerTr.GetForwardRef() * 2.0f;
-	lightPos.y += 3.0f;
+	lightPos.z += 1.0f;
+	lightPos.y += 6.0f;
 	mpLights[0]->GetOwner().GetTransform().SetPosition(lightPos);
 }
 

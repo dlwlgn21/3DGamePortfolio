@@ -30,8 +30,10 @@ void CameraScript::Update()
 {
 	Vector3 pos = mpTransform->GetPosition();
 	auto& playerTr = PlayerManager::GetInstance().GetPlayerTramsform();
-	pos = playerTr.GetPosition() +  playerTr.GetForwardRef() * 1.5f;
+	pos = playerTr.GetPosition();
+	//pos = Vector3::Transform(pos, Matrix::CreateRotationY(DirectX::XMConvertToRadians(-playerTr.GetYawDeg())));
 	pos.y += 0.7f;
+	pos.z += 1.0f;
 	mpTransform->SetPosition(pos);
 	if (InputManager::GetKeyState(eKeyCode::SPACE) == eKeyState::PRESSED)
 	{
@@ -71,18 +73,19 @@ void CameraScript::Update()
 
 void CameraScript::MouseUpdate(const float mouseNdcX, const float mouseNdcY)
 {
-	//if (mbIsPressedSpaceBar)
-	//{
-	//	return;
-	//}
-	// 
-	//Rotation& rot = mpTransform->GetRotationRef();
-	//Vector3& viewDir = mpTransform->GetForwardRef();
-	//Vector3& rightDir = mpTransform->GetRightRef();
-	//rot.YawDeg = mouseNdcX * XMConvertToDegrees(XM_2PI); // 좌우 360도
-	//rot.PitchDeg = mouseNdcY * XMConvertToDegrees(XM_PIDIV2); // 위 아래 90도
-	//viewDir = Vector3::Transform(Transform::S_FORWARD, Matrix::CreateRotationY(XMConvertToRadians(rot.YawDeg)));
-	//rightDir = Transform::S_UP.Cross(viewDir);
+	if (mbIsPressedSpaceBar)
+	{
+		return;
+	}
+	 
+	Rotation& rot = mpTransform->GetRotationRef();
+	Vector3& viewDir = mpTransform->GetForwardRef();
+	Vector3& rightDir = mpTransform->GetRightRef();
+	rot.YawDeg = mouseNdcX * XMConvertToDegrees(XM_2PI); // 좌우 360도
+	rot.PitchDeg = mouseNdcY * XMConvertToDegrees(XM_PIDIV2); // 위 아래 90도
+	viewDir = Vector3::Transform(Transform::S_FORWARD, Matrix::CreateRotationY(XMConvertToRadians(rot.YawDeg)));
+	rightDir = Transform::S_UP.Cross(viewDir);
+
 }
 
 }

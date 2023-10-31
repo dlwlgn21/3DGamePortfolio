@@ -113,6 +113,7 @@ void PlayScene::initMutant()
 	auto& script = static_cast<MonsterScript&>(spSqureGameObject->GetScript(eScriptType::HEAD));
 	script.SetBoneAnimator(&animator);
 	spSqureGameObject->GetTransform().SetPosition(Vector3(-1.0f, 0.0f, -10.0f));
+	spSqureGameObject->GetTransform().SetScale(Vector3(1.5f, 1.5f, 1.5f));
 	AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 }
 
