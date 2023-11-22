@@ -12,65 +12,36 @@ namespace jh::graphics
 
 Material::Material()
 	: GraphicResource(eResourceType::MATERIAL)
+	, mpGraphicsPSO(nullptr)
 {
-	for (UINT i = 0; i < static_cast<UINT>(eTextureType::COUNT); ++i)
-	{
-		mpTextures[i] = nullptr;
-	}
 }
 
-void Material::ClearPipeline()
-{
-	for (UINT i = 0; i < static_cast<UINT>(eTextureType::COUNT); ++i)
-	{
-		if (mpTextures[i] != nullptr)
-		{
-			mpTextures[i]->Clear(static_cast<UINT>(i));
-		}
-	}
-	
-}
-
-void Material::SetTexture(const eTextureType eType, Texture* pTexture)
-{
-	assert(mpTextures[static_cast<UINT>(eType)] == nullptr);
-	mpTextures[static_cast<UINT>(eType)] = pTexture;
-}
 
 void Material::SetPipeline()
 {
-	assert(mGraphicsPSO.mcpInputLayout != nullptr);
+	assert(mpGraphicsPSO->mcpInputLayout != nullptr);
 	auto& gdc = GraphicDeviceDX11::GetInstance().GetDeivceContext();
 	auto& app = D3DApp::GetInstance();
 
-	gdc.IASetInputLayout(mGraphicsPSO.mcpInputLayout.Get());
-	gdc.IASetPrimitiveTopology(mGraphicsPSO.mPrimitiveTopology);
-	
-	if (mGraphicsPSO.mcpSampler != nullptr)
+	gdc.IASetInputLayout(mpGraphicsPSO->mcpInputLayout.Get());
+	gdc.IASetPrimitiveTopology(mpGraphicsPSO->mPrimitiveTopology);
+
+	if (mpGraphicsPSO->mcpSampler != nullptr)
 	{
-		gdc.PSSetSamplers(0, 1, mGraphicsPSO.mcpSampler.GetAddressOf());
+		gdc.PSSetSamplers(0, 1, mpGraphicsPSO->mcpSampler.GetAddressOf());
 	}
 
-	gdc.VSSetShader(mGraphicsPSO.mcpVertexShader.Get(), nullptr, 0);
-	gdc.PSSetShader(mGraphicsPSO.mcpPixelShader.Get(), nullptr, 0);
+	gdc.VSSetShader(mpGraphicsPSO->mcpVertexShader.Get(), nullptr, 0);
+	gdc.PSSetShader(mpGraphicsPSO->mcpPixelShader.Get(), nullptr, 0);
 	if (app.IsDrawWire())
 	{
 		gdc.RSSetState(GraphicsPSOManager::GetInstance().GetRSWire().Get());
 	}
 	else
 	{
-		gdc.RSSetState(mGraphicsPSO.mcpRS.Get());
-	}
-
-	for (UINT i = 0; i < static_cast<UINT>(eTextureType::COUNT); ++i)
-	{
-		if (mpTextures[i] != nullptr)
-		{
-			mpTextures[i]->PSSetSRV();
-		}
+		gdc.RSSetState(mpGraphicsPSO->mcpRS.Get());
 	}
 	LightingManager::GetInstance().UpdateConstantBuffer();
-
 }
 
 }

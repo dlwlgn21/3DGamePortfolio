@@ -25,7 +25,7 @@ void SkinnedMeshModel::Render()
 			mpBoneAnimator->UpdateDyanmicStructuredAnimationBuffer();
 		}
 
-		mpMaterials[0]->SetPipeline();
+		mpMaterial->SetPipeline();
 		ShadowManager::GetInstance().SetShadowSRV();
 		mpMeshes[i]->Render();
 		ShadowManager::GetInstance().ClearShadowSRV();
@@ -33,7 +33,6 @@ void SkinnedMeshModel::Render()
 		{
 			mpMeshes[i]->DebugNormalRender();
 		}
-		mpMaterials[0]->ClearPipeline();
 	}
 }
 

@@ -28,8 +28,6 @@ public:
 #pragma region GETTER
 	ID3D11Device& GetDeivce() { assert(mcpDevice != nullptr); return *mcpDevice.Get(); }
 	ID3D11DeviceContext& GetDeivceContext() { assert(mcpContext != nullptr);  return *mcpContext.Get(); }
-	Microsoft::WRL::ComPtr<ID3D11Device>& GetDeivceComPtr() { assert(mcpDevice != nullptr); return mcpDevice; }
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext>& GetDeivceContextComPtr() { assert(mcpContext != nullptr);  return mcpContext; }
 			
 	D3D11_VIEWPORT* GetViewPort() { return &mViewPort; }
 	Microsoft::WRL::ComPtr<ID3D11Texture2D>& GetRenderTarget() { return mcpRenderTargetTextrue; }

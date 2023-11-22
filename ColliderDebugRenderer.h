@@ -64,7 +64,10 @@ private:
 		if (FAILED(hr)) { assert(false); }
 		m_batch = std::make_unique<PrimitiveBatch<VertexType>>(&gd.GetDeivceContext());
 	}
-	~ColliderDebugRenderer() = default;
+	~ColliderDebugRenderer()
+	{
+		m_inputLayout.Reset();
+	}
 
 private:
 	std::unique_ptr<DirectX::CommonStates> m_states;

@@ -272,8 +272,9 @@ const bool D3DApp::initGUI()
 	ImGui::StyleColorsLight();
 
 	// Setup Platform/Renderer backends
-	auto& instance = GraphicDeviceDX11::GetInstance();
-	if (!ImGui_ImplDX11_Init(instance.GetDeivceComPtr().Get(), instance.GetDeivceContextComPtr().Get()))
+	auto& device = GraphicDeviceDX11::GetInstance().GetDeivce();
+	auto& dc = GraphicDeviceDX11::GetInstance().GetDeivceContext();
+	if (!ImGui_ImplDX11_Init(&device, &dc))
 	{
 		assert(false);
 		return false;

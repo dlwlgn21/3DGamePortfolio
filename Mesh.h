@@ -5,11 +5,12 @@
 namespace jh::graphics
 {
 
+class Texture;
 class Mesh : public GraphicResource
 {
 public:
 	Mesh();
-	~Mesh();
+	virtual ~Mesh();
 	void Render();
 	void DebugNormalRender();
 
@@ -17,6 +18,8 @@ public:
 	void InitVertexIndexBuffer(std::vector<T>& vetices, std::vector<UINT>& indicies);
 	template<class T>
 	void InitVertexIndexBufferWithoutNormal(std::vector<T>& vetices, std::vector<UINT>& indicies);
+
+	void SetTextures(jh::graphics::Texture* pDiffuseTextureOrNull, jh::graphics::Texture* pNormalTextureOrNull);
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> mcpVertexBuffer = nullptr;
@@ -28,6 +31,9 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> mcpDebugNormalVertexBuffer = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> mcpDebugNormalIndexBuffer = nullptr;
 	UINT mDebugNormalIndexCount = 0;
+
+	jh::graphics::Texture*	mpDiffuseTexture = nullptr;
+	jh::graphics::Texture*	mpNormalTexture = nullptr;
 };
 
 template<class T>

@@ -8,7 +8,27 @@
 #include "2DGamePortfolio.h"
 #include "D3DApp.h"
 
+#include <d3d11.h>
+#include <dxgidebug.h>
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "dxguid.lib")
+
 using namespace std;
+
+#ifdef _DEBUG
+void D3DMemoryLeakCheck() 
+{
+    HMODULE dxgiDebugDll = GetModuleHandleW(L"dxgidebug.dll");
+    decltype(&DXGIGetDebugInterface) GetDebugInterface = reinterpret_cast<decltype(& DXGIGetDebugInterface)>(GetProcAddress(dxgiDebugDll, "DXGIGetDebugInterface"));
+    IDXGIDebug* pDebug;
+    GetDebugInterface(IID_PPV_ARGS(&pDebug));
+
+    OutputDebugStringW(L"++++++ Direct3D Object ref Count MemoryLeackCheck ++++++\n");
+    pDebug->ReportLiveObjects(DXGI_DEBUG_D3D11, DXGI_DEBUG_RLO_DETAIL);
+    OutputDebugStringW(L"++++++ MEMORY LEAK!!! ++++++\n");
+    pDebug->Release();
+}
+#endif // DEBUG
 
 
 int main() {
@@ -18,6 +38,11 @@ int main() {
         assert(false);
         return -1;
     }
-
-    return instance.Run();
+    if (instance.Run() == 0)
+    {
+#ifdef _DEBUG
+        D3DMemoryLeakCheck();
+#endif // DEBUG
+    }
+    return 0;
 }

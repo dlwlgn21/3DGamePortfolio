@@ -22,21 +22,21 @@ public:
 	virtual ~Model() = default;
 
 	void SetModelType(const eModelType eType) { meModelType = eType; }
-	const eModelType GetType() const		  {return meModelType;}
+	const eModelType GetType() const { return meModelType; }
 
 	void SetMeshes(std::vector<Mesh*>& pMeshes);
-	void SetMaterials(std::vector<Material*>& pMaterials);
+	void SetMaterial(jh::graphics::Material& material);
 	void SetBoneAnimator(jh::BoneAnimator& boneAnimator);
 	//void SetPipeline();
 
 	void ShadowRender();
 	virtual void Render();
+
 protected:
 	std::vector<jh::graphics::Mesh*>			mpMeshes;
-	std::vector<jh::graphics::Material*>		mpMaterials;
+	jh::graphics::Material*						mpMaterial;
 	jh::BoneAnimator*							mpBoneAnimator;
 	eModelType									meModelType;
-};	
+};
 
 }
-

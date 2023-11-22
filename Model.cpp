@@ -17,6 +17,7 @@ namespace jh::graphics
 Model::Model()
 	: GraphicResource(eResourceType::MODEL)
 	, meModelType(eModelType::NON_SKINNED_MESH_MODEL)
+	, mpMaterial(nullptr)
 	, mpBoneAnimator(nullptr)
 
 {
@@ -30,29 +31,15 @@ void Model::SetMeshes(std::vector<Mesh*>& pMeshes)
 	}
 	mpMeshes = pMeshes;
 }
-void Model::SetMaterials(std::vector<Material*>& pMaterials)
+void Model::SetMaterial(jh::graphics::Material& material)
 {
-	for (auto* pMaterial : pMaterials)
-	{
-		assert(pMaterial != nullptr);
-	}
-	mpMaterials = pMaterials;
+	mpMaterial = &material;
 }
 
 void Model::SetBoneAnimator(jh::BoneAnimator& boneAnimator)
 {
 	mpBoneAnimator = &boneAnimator;
 }
-
-//void Model::SetPipeline()
-//{
-//	assert(mpMeshes.size() != 0);
-//	for (size_t i = 0; i < mpMeshes.size(); ++i)
-//	{
-//		assert(mpMeshes[i] != nullptr);
-//		mpMaterials[0]->SetPipeline();
-//	}
-//}
 
 void Model::ShadowRender()
 {
@@ -67,7 +54,7 @@ void Model::Render()
 	for (size_t i = 0; i < mpMeshes.size(); ++i)
 	{
 		assert(mpMeshes[i] != nullptr);
-		mpMaterials[i]->SetPipeline();
+		mpMaterial->SetPipeline();
 		ShadowManager::GetInstance().SetShadowSRV();
 		mpMeshes[i]->Render();
 		ShadowManager::GetInstance().ClearShadowSRV();
@@ -75,7 +62,7 @@ void Model::Render()
 		{
 			mpMeshes[i]->DebugNormalRender();
 		}
-		mpMaterials[i]->ClearPipeline();
 	}
 }
+
 }

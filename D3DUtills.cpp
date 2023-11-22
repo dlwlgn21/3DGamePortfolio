@@ -37,7 +37,7 @@ namespace jh
     }
 
     void D3D11Utils::CreateVertexShaderAndInputLayout(
-        ComPtr<ID3D11Device>& device, const wstring& filename,
+        ID3D11Device& device, const wstring& filename,
         const vector<D3D11_INPUT_ELEMENT_DESC>& inputElements,
         ComPtr<ID3D11VertexShader>& m_vertexShader,
         ComPtr<ID3D11InputLayout>& m_inputLayout) 
@@ -67,7 +67,7 @@ namespace jh
 
         CheckResult(hr, errorBlob.Get());
 
-        hr = device->CreateVertexShader(
+        hr = device.CreateVertexShader(
             shaderBlob->GetBufferPointer(),
             shaderBlob->GetBufferSize(), 
             NULL,
@@ -77,7 +77,7 @@ namespace jh
         {
             assert(false);
         }
-        hr = device->CreateInputLayout(
+        hr = device.CreateInputLayout(
             inputElements.data(), 
             UINT(inputElements.size()),
             shaderBlob->GetBufferPointer(),
@@ -137,7 +137,7 @@ namespace jh
             &m_domainShader);
     }
 
-    void D3D11Utils::CreatePixelShader(ComPtr<ID3D11Device>& device,
+    void D3D11Utils::CreatePixelShader(ID3D11Device& device,
         const wstring& filename,
         ComPtr<ID3D11PixelShader>& m_pixelShader) {
         ComPtr<ID3DBlob> shaderBlob;
@@ -156,12 +156,12 @@ namespace jh
 
         CheckResult(hr, errorBlob.Get());
 
-        device->CreatePixelShader(shaderBlob->GetBufferPointer(),
+        device.CreatePixelShader(shaderBlob->GetBufferPointer(),
             shaderBlob->GetBufferSize(), NULL,
             &m_pixelShader);
     }
 
-    void D3D11Utils::CreateIndexBuffer(ComPtr<ID3D11Device>& device,
+    void D3D11Utils::CreateIndexBuffer(ID3D11Device& device,
         const std::vector<uint32_t>& indices,
         ComPtr<ID3D11Buffer>& indexBuffer) {
         D3D11_BUFFER_DESC bufferDesc = {};
@@ -176,7 +176,7 @@ namespace jh
         indexBufferData.SysMemPitch = 0;
         indexBufferData.SysMemSlicePitch = 0;
 
-        device->CreateBuffer(&bufferDesc, &indexBufferData,
+        device.CreateBuffer(&bufferDesc, &indexBufferData,
             indexBuffer.GetAddressOf());
     }
 
@@ -611,7 +611,7 @@ namespace jh
         cout << filename << endl;
     }
 
-    void D3D11Utils::CreateDynamicStructuredBuffer(ComPtr<ID3D11Device>& device, const UINT numElements, const UINT sizeElement, const void* initData, ComPtr<ID3D11Buffer>& buffer, ComPtr<ID3D11ShaderResourceView>& srv)
+    void D3D11Utils::CreateDynamicStructuredBuffer(ID3D11Device& device, const UINT numElements, const UINT sizeElement, const void* initData, ComPtr<ID3D11Buffer>& buffer, ComPtr<ID3D11ShaderResourceView>& srv)
     {
         D3D11_BUFFER_DESC bufferDesc;
         ZeroMemory(&bufferDesc, sizeof(bufferDesc));
@@ -626,12 +626,12 @@ namespace jh
             D3D11_SUBRESOURCE_DATA bufferData;
             ZeroMemory(&bufferData, sizeof(bufferData));
             bufferData.pSysMem = initData;
-            ThrowIfFailed(device->CreateBuffer(&bufferDesc, &bufferData,
+            ThrowIfFailed(device.CreateBuffer(&bufferDesc, &bufferData,
                 buffer.GetAddressOf()));
         }
         else {
             ThrowIfFailed(
-                device->CreateBuffer(&bufferDesc, NULL, buffer.GetAddressOf()));
+                device.CreateBuffer(&bufferDesc, NULL, buffer.GetAddressOf()));
         }
 
 
@@ -640,7 +640,7 @@ namespace jh
         srvDesc.Format = DXGI_FORMAT_UNKNOWN;
         srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
         srvDesc.BufferEx.NumElements = numElements;
-        device->CreateShaderResourceView(buffer.Get(), &srvDesc, srv.GetAddressOf());
+        device.CreateShaderResourceView(buffer.Get(), &srvDesc, srv.GetAddressOf());
     }
 
 }

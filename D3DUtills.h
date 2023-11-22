@@ -33,7 +33,7 @@ class D3D11Utils
 {
 public:
     static void CreateVertexShaderAndInputLayout(
-        ComPtr<ID3D11Device>& device, 
+        ID3D11Device& device, 
         const wstring& filename,
         const vector<D3D11_INPUT_ELEMENT_DESC>& inputElements,
         ComPtr<ID3D11VertexShader>& m_vertexShader,
@@ -56,12 +56,12 @@ public:
         );
 
     static void CreatePixelShader(
-        ComPtr<ID3D11Device>& device,
+        ID3D11Device& device,
         const wstring& filename,
         ComPtr<ID3D11PixelShader>& m_pixelShader);
 
     static void CreateIndexBuffer(
-        ComPtr<ID3D11Device>& device,
+        ID3D11Device& device,
         const vector<uint32_t>& indices,
         ComPtr<ID3D11Buffer>& indexBuffer
     );
@@ -181,7 +181,7 @@ public:
         const std::string filename);
 
     static void CreateDynamicStructuredBuffer(
-        ComPtr<ID3D11Device>& device,
+        ID3D11Device& device,
         const UINT numElements,
         const UINT sizeElement,
         const void* initData,
