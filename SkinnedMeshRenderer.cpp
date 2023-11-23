@@ -16,19 +16,9 @@ using namespace jh::graphics;
 
 namespace jh
 {
-static int frameCount = 0;
-
 SkinnedMeshRenderer::SkinnedMeshRenderer()
 	: Renderer(eRenererComponentType::SKINNED_MESH_RENDERER)
 {
 }
-
-void SkinnedMeshRenderer::Render()
-{
-	GetOwner().GetTransform().UpdateConstantBuffer(); 
-	SetIBLShaderResourceViews();
-	mpModel->Render();
-}
-
 
 }

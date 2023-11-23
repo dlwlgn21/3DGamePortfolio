@@ -175,11 +175,7 @@ void D3DApp::updateGUI()
 void D3DApp::render()
 {
 	Time::Render(mHdc);
-	// ShadowMaaping
-	auto& shadowManager = ShadowManager::GetInstance();
-	shadowManager.SetShadowPSO();
-	shadowManager.RenderAtShadowMap(); 
-
+	ShadowManager::GetInstance().RenderAtShadowMap();
 	auto& gd = GraphicDeviceDX11::GetInstance();
 	setMainViewport();
 	gd.Clear();

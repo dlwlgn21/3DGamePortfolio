@@ -6,8 +6,8 @@ namespace jh
 
 struct ShadowMapping
 {
-    UINT ShadowViewportWidth = 2048;
-    UINT ShadowViewportHeight = 2048;
+    UINT ShadowViewportWidth = 4096;
+    UINT ShadowViewportHeight = 4096;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> mcpShadowBuffer;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilView> mcpShadowDSV;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mcpShadowSRV;
@@ -28,13 +28,14 @@ public:
 
 
     void Initialize();
-    void SetShadowPSO();
     void SetShadowSRV();
     void ClearShadowSRV();
     void RenderAtShadowMap();
     ShadowMapping& GetShadowMapping() { return mShadowMapping; }
 
-
+private:
+    void setShadowPSO();
+    void setShadowSkinnedPSO();
 private:
     ShadowManager() = default;
     ~ShadowManager()

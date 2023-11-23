@@ -44,7 +44,7 @@ float4 main(PixelInput Input) : SV_TARGET0
 
     if (currentDepth > shadowDepth + 0.00125f)
     {
-        shadowFactor = 0.0;
+        shadowFactor = 0.5;
     }
     color *= shadowFactor;
     

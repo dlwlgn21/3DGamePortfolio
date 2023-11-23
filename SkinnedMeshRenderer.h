@@ -10,8 +10,6 @@ class SkinnedMeshRenderer final : public Renderer
 public:
 	SkinnedMeshRenderer();
 	virtual ~SkinnedMeshRenderer() = default;
-
-	void Render() override;
 };
 
 

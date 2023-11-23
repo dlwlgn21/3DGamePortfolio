@@ -29,7 +29,7 @@ public:
 	void SetBoneAnimator(jh::BoneAnimator& boneAnimator);
 	//void SetPipeline();
 
-	void ShadowRender();
+	virtual void ShadowRender();
 	virtual void Render();
 
 protected:

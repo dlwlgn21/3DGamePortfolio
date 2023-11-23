@@ -451,6 +451,14 @@ namespace jh::graphics
 				L"Basic3DPS.hlsl",
 				mSkinnedBasicPSO.mcpPixelShader
 			);
+
+			D3D11Utils::CreateVertexShaderAndInputLayout(
+				device,
+				L"SkinnedDepthOnlyVS.hlsl",
+				skinnedIEs,
+				mSkinnedDepthOnlyPSO.mcpVertexShader,
+				mSkinnedDepthOnlyPSO.mcpInputLayout
+			);
 		}
 
 #pragma endregion
@@ -714,6 +722,11 @@ namespace jh::graphics
 		mDepthOnlyPSO.mcpSampler = mcpShadowMappingSampler;
 		mDepthOnlyPSO.mcpRS = mcpSolidRS;
 		mDepthOnlyPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+		mSkinnedDepthOnlyPSO.mcpSampler = mcpShadowMappingSampler;
+		mSkinnedDepthOnlyPSO.mcpRS = mcpSolidRS;
+		mSkinnedDepthOnlyPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		mSkinnedDepthOnlyPSO.mcpPixelShader = mDepthOnlyPSO.mcpPixelShader;
 
 		mBasicEnvNoNormalPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		mBasicEnvNoNormalPSO.mcpRS = mcpSolidRS;

@@ -12,7 +12,8 @@ class SkinnedMeshModel final : public Model
 public:
 	SkinnedMeshModel();
 	virtual ~SkinnedMeshModel() = default;
-	void Render();
+	void ShadowRender() override;
+	void Render() override;
 };
 
 }

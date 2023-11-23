@@ -16,6 +16,19 @@ Renderer::Renderer(const jh::enums::eRenererComponentType eRendererType)
 {
 }
 
+void Renderer::ShadowRender()
+{
+	GetOwner().GetTransform().UpdateConstantBuffer();
+	mpModel->ShadowRender();
+}
+
+void Renderer::Render()
+{
+	assert(mpModel != nullptr);
+	GetOwner().GetTransform().UpdateConstantBuffer();
+	SetIBLShaderResourceViews();
+	mpModel->Render();
+}
 void Renderer::SetIBLShaderResourceViews()
 {
 	auto& psoManager = GraphicsPSOManager::GetInstance();
@@ -27,11 +40,4 @@ void Renderer::SetIBLShaderResourceViews()
 	};
 	gd.PSSetShaderResources(4, 2, pSrvs);
 }
-
-void Renderer::ShadowRender()
-{
-	GetOwner().GetTransform().UpdateConstantBuffer();
-	mpModel->ShadowRender();
-}
-
 }

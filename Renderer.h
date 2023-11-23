@@ -10,11 +10,12 @@ public:
 	Renderer(const jh::enums::eRenererComponentType eRendererType);
 	virtual ~Renderer() = default;
 
-	jh::enums::eRenererComponentType GetType() const { return meRendererType; }
+	const jh::enums::eRenererComponentType GetType() const { return meRendererType; }
 
 	void ShadowRender();
-
 	void SetModel(jh::graphics::Model* pModel) { assert(pModel != nullptr); mpModel = pModel; }
+	void Render() override;
+
 protected:
 	void SetIBLShaderResourceViews();
 protected:

@@ -56,6 +56,7 @@ namespace jh::graphics
 		GraphicsPSO											mDebugDrawWorldCoordPSO;
 		GraphicsPSO											mCubeMapPSO;
 		GraphicsPSO											mDepthOnlyPSO;
+		GraphicsPSO											mSkinnedDepthOnlyPSO;
 		CubeMapping											mCubeMapping;
 
 	private:

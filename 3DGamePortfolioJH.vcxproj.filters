@@ -577,6 +577,9 @@
     <FxCompile Include="BasicEnvNoNormalPS.hlsl">
       <Filter>소스 파일\ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="SkinnedDepthOnlyVS.hlsl">
+      <Filter>소스 파일\ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VSCommon.hlsli">

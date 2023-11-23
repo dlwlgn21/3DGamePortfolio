@@ -14,6 +14,20 @@ SkinnedMeshModel::SkinnedMeshModel()
 {
 }
 
+void SkinnedMeshModel::ShadowRender()
+{
+	assert(mpMeshes.size() != 0);
+	for (size_t i = 0; i < mpMeshes.size(); ++i)
+	{
+		assert(mpMeshes[i] != nullptr);
+		if (mpBoneAnimator != nullptr)
+		{
+			mpBoneAnimator->UpdateDyanmicStructuredAnimationBuffer();
+		}
+		mpMeshes[i]->Render();
+	}
+}
+
 void SkinnedMeshModel::Render()
 {
 	assert(mpMeshes.size() != 0);
