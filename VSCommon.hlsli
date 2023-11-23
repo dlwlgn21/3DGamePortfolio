@@ -10,12 +10,11 @@ struct VertexOutput
 {
     float4 PositionProjection : SV_Position;
     float3 PositionWorld : POSITION;
+    float4 ClipPosition : TEXCOORD0;
     float3 NormalWorld : NORMAL;
-    float2 UV : TEXCOORD0;
+    float2 UV : TEXCOORD1;
     float3 TangentWorld : TANGENT0;
 };
-
-
 
 cbuffer TransformBuffer : register(b0)
 {
@@ -23,4 +22,10 @@ cbuffer TransformBuffer : register(b0)
     matrix CBWorldInvTransposedMat;
     matrix CBViewMat;
     matrix CBProjectionMat;
+}
+
+cbuffer ShadowBuffer : register(b2)
+{
+    matrix CBLightViewMat;
+    matrix CBLightProjectionMat;
 }

@@ -19,6 +19,7 @@ private:
 	void initMutant();
 	void initWorldCoord();
 	void initBox();
+	void initSphere();
 	void initGround();
 	void initEnv();
 	void initLight();

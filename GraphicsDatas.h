@@ -5,6 +5,7 @@ static constexpr const UINT MAX_LIGHTS = 3;
 static constexpr const UINT SIMD_ALIGN_SIZE = 16;
 static constexpr const UINT TRANSFORM_CONSTANT_BUFFER_SLOT = 0;
 static constexpr const UINT LIGHTING_CONSTANT_BUFFER_SLOT = 1;
+static constexpr const UINT SHADOWING_CONSTANT_BUFFER_SLOT = 2;
 
 namespace jh::graphics
 {
@@ -77,13 +78,19 @@ namespace jh::graphics
 		int								CBIsUseNormalTexture;
 		GrapicsMaterial					CBMaterial;
 		GrapicsLight					CBLight[MAX_LIGHTS];
-		DirectX::SimpleMath::Matrix     CBLightViewProjectionMatrix;
+	};
+
+	struct alignas(SIMD_ALIGN_SIZE) ShadowConstantCPUBuffer
+	{
+		DirectX::SimpleMath::Matrix LightViewMat;
+		DirectX::SimpleMath::Matrix LightProjectionMat;
 	};
 
 	enum class eCBType
 	{
 		TRANSFORM,
 		LIGHTING,
+		SHADOWING,
 		COUNT
 	};
 

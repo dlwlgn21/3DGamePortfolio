@@ -2,8 +2,9 @@ struct PixelInput
 {
     float4 Position : SV_Position;
     float3 PositionWorld : POSITION;
+    float4 ClipPosition : TEXCOORD0;
     float3 NormalWorld : NORMAL;
-    float2 UV : TEXCOORD0;
+    float2 UV : TEXCOORD1;
     float3 TangentWorld : TANGENT0;
 };
 
@@ -50,7 +51,6 @@ cbuffer LighthingConstantBuffer : register(b1)
     int CBIsUseNormalTexture;
     Material CBMaterial;
     Light CBLight[MAX_LIGHTS];
-    float4x4 CBLightViewProjectionMatrix;
 }
 
 

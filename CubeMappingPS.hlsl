@@ -8,7 +8,7 @@ TextureCube DiffuseCube : register(t0);
 TextureCube SpecularCube : register(t1);
 SamplerState Sampler : register(s0);
 
-float4 main(PixelInput Input) : SV_TARGET
+float4 main(PixelInput Input) : SV_TARGET0
 {
     // 주의: 텍스춰 좌표가 float3 입니다.
     return SpecularCube.Sample(Sampler, Input.PositionWorld.xyz);

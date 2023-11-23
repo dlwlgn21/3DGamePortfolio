@@ -19,7 +19,7 @@ namespace jh
 void LightingManager::Initialize()
 {
 	mpLights.reserve(MAX_LIGHTS);
-	mMaterial.MaterialAmbient = DirectX::SimpleMath::Vector3(0.2f, 0.2f, 0.2f);
+	mMaterial.MaterialAmbient = DirectX::SimpleMath::Vector3(0.4f, 0.4f, 0.4f);
 	mMaterial.MaterialShininess = 100.0f; 
 	mMaterial.MaterialDiffuse = DirectX::SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 0.0f); 
 	mMaterial.MaterialSpecular = DirectX::SimpleMath::Vector4(1.0f, 1.0f, 1.0f, 0.0f);
@@ -74,7 +74,6 @@ void LightingManager::UpdateConstantBuffer()
 		cpuBuffer.CBLight[1] = l->mLightInfo;
 		cpuBuffer.CBMaterial = mMaterial; 
 	}
-	cpuBuffer.CBLightViewProjectionMatrix = (GetShadowMappingViewMatrixRow() * GetShadowMappingProjectionMatrixRow()).Transpose();
 	gpuBuffer.UpdateBuffer(&cpuBuffer);
 }
 
@@ -82,16 +81,16 @@ DirectX::SimpleMath::Matrix& LightingManager::GetShadowMappingViewMatrixRow()
 {
 	// 그림자맵을 만들 때 필요
 	mLightViewMatrix = DirectX::XMMatrixLookAtLH(
-		mpLights[0]->GetOwner().GetTransform().GetPosition(), 
+		mpLights[0]->GetOwner().GetTransform().GetPosition(),
 		PlayerManager::GetInstance().GetPlayerTramsform().GetPosition(),
-		mpLights[0]->GetOwner().GetTransform().GetUpRef()
+		Vector3(0.0f, 1.0f, 0.0f)
 	);
 	return mLightViewMatrix;
 }
 
 DirectX::SimpleMath::Matrix& LightingManager::GetShadowMappingProjectionMatrixRow()
 {
-	mLightProjectionMatrix = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(120.0f), 1.0f, 0.01f, 100.0f);
+	mLightProjectionMatrix = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(120.0f), 1.0f, 1.0f, 100.0f);
 	return mLightProjectionMatrix;
 }
 

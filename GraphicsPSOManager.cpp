@@ -140,7 +140,6 @@ namespace jh::graphics
 	{
 		insertMaterial(keys::BASIC_3D_MATERIAL_KEY, mBasicPSO);
 		insertMaterial(keys::WORLD_COORD_MATERIAL, mDebugDrawWorldCoordPSO);
-		insertMaterial(keys::GROUND_MATERIAL_KEY, mBasicPSO);
 #pragma region FEMALE_SOLDER
 		{
 			//insertMaterial(keys::FEMALE_SOLDER_MATERIAL, mBasicPSO, "");
@@ -160,21 +159,21 @@ namespace jh::graphics
 
 		insertMaterial(keys::CUBE_MAP_MATERIAL, mCubeMapPSO);
 
-		// Normal
-		{
-			Texture* p3DBasicNormalTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_NORMAL_TEXTURE_KEY);
-			Material* pMat = ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY);
-		}
+
 	}
 
 	void GraphicsPSOManager::initModels()
 	{
 #pragma region DEBUG_BOX
 		{
+			// Normal
+			Texture* p3DBasicDiffuseTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY);
+			Texture* p3DBasicNormalTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_NORMAL_TEXTURE_KEY);
 			Model* pBoxModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::BOX_MODEL, std::make_unique<Model>());
 			std::vector<Mesh*> pMeshes;
 			pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::BOX_MESH_KEY));
 			pBoxModel->SetMeshes(pMeshes);
+			pMeshes[0]->SetTextures(p3DBasicDiffuseTex, p3DBasicNormalTex);
 			pBoxModel->SetMaterial(*ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
 		}
 #pragma endregion
@@ -185,7 +184,7 @@ namespace jh::graphics
 			std::vector<Mesh*> pMeshes;
 			pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::GROUND_MESH_KEY));
 			pGroundModel->SetMeshes(pMeshes);
-			pGroundModel->SetMaterial(*ResourcesManager::Find<Material>(keys::GROUND_MATERIAL_KEY));
+			pGroundModel->SetMaterial(*ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
 		}
 #pragma endregion
 
@@ -194,9 +193,12 @@ namespace jh::graphics
 #pragma region DEBUG_SPEHRE
 		{
 			Model* pSpehereModel = ResourcesManager::InsertOrNull<jh::graphics::Model>(keys::SPEHERE_MODEL_KEY, std::make_unique<Model>());
+			Texture* p3DBasicDiffuseTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_DIFFUSE_BOX_TEXTURE_KEY);
+			Texture* p3DBasicNormalTex = ResourcesManager::Find<Texture>(keys::BASIC_3D_NORMAL_TEXTURE_KEY);
 			std::vector<Mesh*> pMeshes;
 			pMeshes.push_back(ResourcesManager::Find<Mesh>(keys::SPEHERE_MESH_KEY));
 			pSpehereModel->SetMeshes(pMeshes);
+			pMeshes[0]->SetTextures(p3DBasicDiffuseTex, p3DBasicNormalTex);
 			pSpehereModel->SetMaterial(*ResourcesManager::Find<Material>(keys::BASIC_3D_MATERIAL_KEY));
 		}
 #pragma endregion
@@ -565,6 +567,9 @@ namespace jh::graphics
 
 		mspConstantBuffers[static_cast<UINT>(eCBType::LIGHTING)] = std::make_unique<jh::graphics::ConstantGPUBuffer>(eCBType::LIGHTING);
 		mspConstantBuffers[static_cast<UINT>(eCBType::LIGHTING)]->Create(sizeof(LighthingConstantCPUBuffer));
+
+		mspConstantBuffers[static_cast<UINT>(eCBType::SHADOWING)] = std::make_unique<jh::graphics::ConstantGPUBuffer>(eCBType::SHADOWING);
+		mspConstantBuffers[static_cast<UINT>(eCBType::SHADOWING)]->Create(sizeof(ShadowConstantCPUBuffer));
 	}
 
 	void GraphicsPSOManager::initSamplers()
@@ -707,6 +712,8 @@ namespace jh::graphics
 		mBasicPSO.mcpSampler = mcpPointBorderSampler;
 
 		mDepthOnlyPSO.mcpSampler = mcpShadowMappingSampler;
+		mDepthOnlyPSO.mcpRS = mcpSolidRS;
+		mDepthOnlyPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 		mBasicEnvNoNormalPSO.mPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		mBasicEnvNoNormalPSO.mcpRS = mcpSolidRS;

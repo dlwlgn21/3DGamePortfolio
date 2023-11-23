@@ -176,14 +176,14 @@ void D3DApp::render()
 {
 	Time::Render(mHdc);
 	// ShadowMaaping
-	//auto& shadowManager = ShadowManager::GetInstance();
-	//shadowManager.SetShaowPSO();
-	//shadowManager.RenderAtShadowMap();
+	auto& shadowManager = ShadowManager::GetInstance();
+	shadowManager.SetShadowPSO();
+	shadowManager.RenderAtShadowMap(); 
 
 	auto& gd = GraphicDeviceDX11::GetInstance();
 	setMainViewport();
-	gd.SetMainRenderTarget();
 	gd.Clear();
+	gd.SetMainRenderTarget();
 	SceneManager::GetInstance().Render();
 	CubeMapManager::GetInstance().Render();
 }

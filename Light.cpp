@@ -13,7 +13,7 @@ Light::Light()
 {
 	mLightInfo.LightStrengh = Vector3(0.0f, 0.0f, 0.0f);
 	mLightInfo.LightDirection = Vector3(0.0f, 0.0f, 0.0f);
-	mLightInfo.LightPosition = Vector3(0.0f, 0.0f, 0.0f);
+	mLightInfo.LightPosition = Vector3(0.0f, 0.0f, 0.0f); 
 	mLightInfo.LightFallOffStart = 0.0f;
 	mLightInfo.LightFallOffEnd = 0.0f;
 	mLightInfo.LightSpotPower = 0.0f;

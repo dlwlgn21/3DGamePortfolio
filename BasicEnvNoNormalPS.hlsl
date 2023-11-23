@@ -1,6 +1,6 @@
 #include "PSCommon.hlsli"
 
-float4 main(PixelInput Input) : SV_TARGET
+float4 main(PixelInput Input) : SV_TARGET0
 {
     float3 toEyeDirVec = normalize(CBEyeWorld.xyz - Input.PositionWorld);
     

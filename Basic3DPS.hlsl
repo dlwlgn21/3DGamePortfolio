@@ -1,6 +1,6 @@
 #include "PSCommon.hlsli"
 
-float4 main(PixelInput Input) : SV_TARGET
+float4 main(PixelInput Input) : SV_TARGET0
 {
     float3 toEyeDirVec = normalize(CBEyeWorld.xyz - Input.PositionWorld);
     
@@ -31,30 +31,22 @@ float4 main(PixelInput Input) : SV_TARGET
     //return float4(color, 1.0);
     //return float4(1.0, 1.0, 1.0, 1.0);
     
-    //float shadowFactor = 1.0;
-    //const float nearZ = 0.1; // 카메라 설정과 동일
+    float shadowFactor = 1.0;
+    const float nearZ = 1.0; // 카메라 설정과 동일
         
-    //// 1. Project posWorld to light screen. 광원투영 공간의 NDC로 프로젝션 해버림.
-    //// light.viewProj 사용
-    //float4 lightScreen = mul(float4(Input.PositionWorld, 1.0),CBLightViewProjectionMatrix);
-    //lightScreen.xyz /= lightScreen.w;
-    //float currentDepth = lightScreen.z;
-        
-    //// 2. 카메라(광원)에서 볼 때의 텍스춰 좌표 계산
-    //// [-1, 1]x[-1, 1] -> [0, 1]x[0, 1]
-    //// 주의: 텍스춰 좌표와 NDC는 y가 반대
-    //float2 lightTexcoord = float2(lightScreen.x, -lightScreen.y);
-    //lightTexcoord += 1.0;
-    //lightTexcoord *= 0.5;
-    //// 3. 쉐도우맵에서 값 가져오기
-    //float shadowDepth = ShadowMap.Sample(ShadowSampler, lightTexcoord).r;
-    //// 4. 가려져 있다면 그림자로 표시
-    //// 힌트: 작은 bias (0.001 정도) 필요
-    //if (shadowDepth + 0.00125 < currentDepth)
-    //{
-    //    shadowFactor = 0.0;
-    //}
-    //color *= shadowFactor;
+    float currentDepth = Input.ClipPosition.z / Input.ClipPosition.w;
+    
+    // 좌표계 변환 For Sampling from ShadowMap
+    float2 uv = Input.ClipPosition.xy / Input.ClipPosition.w;
+    uv.y = -uv.y;
+    uv = uv * 0.5 + 0.5;
+    float shadowDepth = ShadowMap.Sample(ShadowSampler, uv).r;
+
+    if (currentDepth > shadowDepth + 0.00125f)
+    {
+        shadowFactor = 0.0;
+    }
+    color *= shadowFactor;
     
     float4 diffuse = DiffuseCube.Sample(PointSampler, normalWorld);
     diffuse.rgb *= CBMaterial.MaterialDiffuse.xyz * color;;
@@ -64,11 +56,11 @@ float4 main(PixelInput Input) : SV_TARGET
     specular *= pow((specular.r + specular.g + specular.b) / 3.0f, CBMaterial.MaterialShininess);
     
     
-    specular.xyz *= CBMaterial.MaterialSpecular;
+    specular.xyz *= CBMaterial.MaterialSpecular.xyz;
     
     if (CBIsUseDiffuseTexture)
     {
-        diffuse.xyz *= DiffuseTexture.Sample(PointSampler, Input.UV);
+        diffuse.xyz *= DiffuseTexture.Sample(PointSampler, Input.UV).xyz;
     }
     
     return diffuse + specular;

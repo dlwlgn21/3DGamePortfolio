@@ -58,7 +58,7 @@ namespace debug_draw
             { { { -1.f,  1.f, -1.f, 0.f } } },
             { { {  1.f,  1.f, -1.f, 0.f } } },
             { { {  1.f,  1.f,  1.f, 0.f } } },
-            { { { -1.f,  1.f,  1.f, 0.f } } }
+            { { { -1.f,  1.f,  1.f, 0.f } } } 
         };
 
         static const WORD s_indices[] =

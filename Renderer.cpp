@@ -30,7 +30,7 @@ void Renderer::SetIBLShaderResourceViews()
 
 void Renderer::ShadowRender()
 {
-	GetOwner().GetTransform().UpdateShadowConstantBuffer();
+	GetOwner().GetTransform().UpdateConstantBuffer();
 	mpModel->ShadowRender();
 }
 

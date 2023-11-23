@@ -13,10 +13,16 @@ struct SkinnedVertexInput
 
 struct SkinnedVertexOutput
 {
+    //float4 PositionProjection : SV_Position;
+    //float3 PositionWorld : POSITION;
+    //float3 NormalWorld : NORMAL;
+    //float2 UV : TEXCOORD0;
+    //float3 TangentWorld : TANGENT0;
     float4 PositionProjection : SV_Position;
     float3 PositionWorld : POSITION;
+    float4 ClipPosition : TEXCOORD0;
     float3 NormalWorld : NORMAL;
-    float2 UV : TEXCOORD0;
+    float2 UV : TEXCOORD1;
     float3 TangentWorld : TANGENT0;
 };
 
@@ -26,6 +32,12 @@ cbuffer TransformBuffer : register(b0)
     matrix CBWorldInvTransposedMat;
     matrix CBViewMat;
     matrix CBProjectionMat;
+}
+
+cbuffer ShadowBuffer : register(b2)
+{
+    matrix CBLightViewMat;
+    matrix CBLightProjectionMat;
 }
 
 StructuredBuffer<float4x4> BoneTransforms : register(t0);
@@ -67,11 +79,16 @@ SkinnedVertexOutput main(SkinnedVertexInput Input)
     // Animation Part END
     
     float4 worldPos = mul(float4(PositionModel, 1.0), CBWorldMat);
+    float4 clipPos = worldPos;
     output.PositionWorld = worldPos.xyz;
     
     float4 viewPos = mul(worldPos, CBViewMat);
     float4 projectionPos = mul(viewPos, CBProjectionMat);
     output.PositionProjection = projectionPos;
+    
+    clipPos = mul(clipPos, CBLightViewMat);
+    clipPos = mul(clipPos, CBLightProjectionMat);
+    output.ClipPosition = clipPos;
     
     output.UV = Input.UV;
     

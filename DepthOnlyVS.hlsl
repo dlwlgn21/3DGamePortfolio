@@ -1,9 +1,17 @@
 #include "VSCommon.hlsli"
-
-float4 main(VertexInput Input) : SV_POSITION
+struct DepthOnlyVSOutput
 {
-    float4 pos = mul(float4(Input.Position, 1.0f), CBWorldMat);
-    pos = mul(pos, CBViewMat);
-    pos = mul(pos, CBProjectionMat);
-    return pos;
+    float4 Position : SV_Position;
+    float4 ClipPosition : TEXCOORD0;
+};
+
+DepthOnlyVSOutput main(VertexInput Input)
+{
+    DepthOnlyVSOutput output;
+    float4 clipPos = mul(float4(Input.Position, 1.0f), CBWorldMat);
+    clipPos = mul(clipPos, CBLightViewMat);
+    clipPos = mul(clipPos, CBLightProjectionMat);
+    output.ClipPosition = clipPos;
+    output.Position = output.ClipPosition;
+    return output;
 }

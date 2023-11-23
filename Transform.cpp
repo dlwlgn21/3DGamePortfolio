@@ -61,22 +61,19 @@ void Transform::UpdateConstantBuffer()
 	cpuBuffer.ViewMat = Camera::GetGpuViewMatrixRow().Transpose();
 	cpuBuffer.ProjectionMat = Camera::GetGpuProjectionMatrixRow().Transpose();
 	gpuBuffer.UpdateBuffer(&cpuBuffer);
+
+	UpdateShadowConstantBuffer();
+
 }
 
 void Transform::UpdateShadowConstantBuffer()
 {
-	auto& gpuBuffer = graphics::GraphicsPSOManager::GetInstance().GetConstantBuffer(graphics::eCBType::TRANSFORM);
+	auto& gpuBuffer = graphics::GraphicsPSOManager::GetInstance().GetConstantBuffer(graphics::eCBType::SHADOWING);
 	auto& lightingManager = LightingManager::GetInstance();
-	graphics::TransformConstantCPUBuffer cpuBuffer;
-	ZeroMemory(&cpuBuffer, sizeof(graphics::TransformConstantCPUBuffer));
-	cpuBuffer.WorldMat = mWolrdMatRow.Transpose();
-
-	cpuBuffer.WolrdInvTransposedMat = cpuBuffer.WorldMat;
-	cpuBuffer.WolrdInvTransposedMat.Translation(Vector3(0.0f));
-	cpuBuffer.WolrdInvTransposedMat = cpuBuffer.WolrdInvTransposedMat.Transpose().Invert();
-
-	cpuBuffer.ViewMat = lightingManager.GetShadowMappingViewMatrixRow().Transpose();
-	cpuBuffer.ProjectionMat = lightingManager.GetShadowMappingProjectionMatrixRow().Transpose();
+	graphics::ShadowConstantCPUBuffer cpuBuffer;
+	ZeroMemory(&cpuBuffer, sizeof(graphics::ShadowConstantCPUBuffer));
+	cpuBuffer.LightViewMat = lightingManager.GetShadowMappingViewMatrixRow().Transpose();
+	cpuBuffer.LightProjectionMat = lightingManager.GetShadowMappingProjectionMatrixRow().Transpose();
 	gpuBuffer.UpdateBuffer(&cpuBuffer);
 }
 

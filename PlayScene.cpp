@@ -43,11 +43,12 @@ namespace jh
 	{
 		initCamera();
 		initPlayer();
-		initMutant();
-		initWorldCoord();
-		initEnv();
-		//initGround();
+		//initMutant();
+		//initWorldCoord();
+		//initEnv();
+		initGround();
 		initLight();
+		initSphere();
 		Scene::Initialize();
 	}
 	void PlayScene::Update()
@@ -132,6 +133,13 @@ namespace jh
 		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::BOX_MODEL));
 		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
 	}
+	void PlayScene::initSphere()
+	{
+		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
+		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
+		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::SPEHERE_MODEL_KEY));
+		AddGameObject(spSqureGameObject, eLayerType::MONSTER);
+	}
 
 	void PlayScene::initEnv()
 	{
@@ -149,7 +157,7 @@ namespace jh
 		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 		spSqureGameObject->SetName("Point");
 		auto& transform = spSqureGameObject->GetTransform();
-		//transform.SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+		transform.SetPosition(Vector3(0.0f, 10.0f, 0.0f)); 
 		auto& light = static_cast<Light&>(spSqureGameObject->AddComponent(eComponentType::LIGHT, std::make_unique<Light>()));
 		light.InitLight(eLightType::POINT);
 		AddGameObject(spSqureGameObject, eLayerType::LIGHT);
@@ -159,7 +167,7 @@ namespace jh
 	{
 		std::unique_ptr<GameObject> spSqureGameObject = std::make_unique<GameObject>();
 		spSqureGameObject->SetName("Ground");
-		spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, 1.0f, 0.0f));
+		spSqureGameObject->GetTransform().SetPosition(Vector3(0.0f, -1.0f, 0.0f));
 		auto& renderer = static_cast<MeshRenderer&>(spSqureGameObject->AddComponent(eComponentType::RENDERER, std::make_unique<MeshRenderer>()));
 		renderer.SetModel(ResourcesManager::Find<jh::graphics::Model>(keys::GROUND_MODEL));
 		AddGameObject(spSqureGameObject, eLayerType::ENV);

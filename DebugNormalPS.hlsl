@@ -7,7 +7,7 @@ struct DebugVertexOutput
     float3 Color : COLOR;
 };
 
-float4 main(DebugVertexOutput Input) : SV_TARGET
+float4 main(DebugVertexOutput Input) : SV_TARGET0
 {
     return float4(Input.Color, 1.0f);
 }

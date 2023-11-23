@@ -63,6 +63,11 @@ void ConstantGPUBuffer::UpdateBuffer(void* pData)
 		context.PSSetConstantBuffers(LIGHTING_CONSTANT_BUFFER_SLOT, 1, mcpGPUBuffer.GetAddressOf());
 		break;
 	}
+	case jh::graphics::eCBType::SHADOWING:
+	{
+		context.VSSetConstantBuffers(SHADOWING_CONSTANT_BUFFER_SLOT, 1, mcpGPUBuffer.GetAddressOf());
+		break;
+	}
 	default:
 		assert(false);
 		break;

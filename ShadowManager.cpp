@@ -71,7 +71,7 @@ namespace jh
     }
 
 
-    void ShadowManager::SetShaowPSO()
+    void ShadowManager::SetShadowPSO()
     {
         auto& dc = GraphicDeviceDX11::GetInstance().GetDeivceContext();
         auto& pso = GraphicsPSOManager::GetInstance().mDepthOnlyPSO;
@@ -102,7 +102,7 @@ namespace jh
                     Renderer* pRenderer = static_cast<Renderer*>(gameobject->GetComponentOrNull(eComponentType::RENDERER));
                     if (pRenderer != nullptr)
                     {
-                        pRenderer->ShadowRender();
+                        pRenderer->ShadowRender(); 
                     }
                 }
             }

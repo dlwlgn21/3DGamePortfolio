@@ -1,9 +1,10 @@
-struct DepthOnlyPixelShaderInput
+struct DepthOnlyVSOutput
 {
-    float4 PositionProjection : SV_POSITION;
+    float4 Position : SV_Position;
+    float4 ClipPosition : TEXCOORD0;
 };
-
-float4 main(DepthOnlyPixelShaderInput Input : SV_POSITION) : SV_Target0
+float4 main(DepthOnlyVSOutput Input) : SV_Target0
 {
-    return float4(1, 1, 1, 1);
+    float depth = Input.ClipPosition.z / Input.ClipPosition.w;
+    return float4(depth.xxx, 1);
 }
